@@ -1,0 +1,46 @@
+rag|20231010_rag_swellama7b->20240402_rag_gpt4                         p'=0.027 | v3_s x0.88 greg x1.52 cf x1.52 | couv v3_s 0.92 greg 1.00 cf 0.97
+rag|20231010_rag_swellama7b->20240402_rag_claude3opus                  p'=0.043 | v3_s x0.92 greg x1.26 cf x1.07 | couv v3_s 0.84 greg 0.56 cf 0.94
+swe-agent|20240402_sweagent_gpt4->20240620_sweagent_claude3.5sonnet    p'=0.230 | v3_s x1.31 greg x1.22 cf x1.21 | couv v3_s 0.90 greg 0.89 cf 0.95
+autocoderover|20240530_autocoderover-v20240408->20240621_autocoderover p'=0.307 | v3_s x1.97 greg x1.71 cf x1.69 | couv v3_s 0.94 greg 0.90 cf 0.92
+moatless|20240617_moatless_gpt4o->20240623_moatless_claude35sonnet     p'=0.267 | v3_s x2.16 greg x1.98 cf x1.85 | couv v3_s 0.95 greg 0.88 cf 0.90
+amazon-q|20240509_amazon-q-developer-agent-20240430-dev->20240721_amaz p'=0.297 | v3_s x1.73 greg x1.59 cf x1.58 | couv v3_s 0.94 greg 0.92 cf 0.93
+swe-agent|20240620_sweagent_claude3.5sonnet->20240728_sweagent_gpt4o   p'=0.183 | v3_s x1.52 greg x1.52 cf x1.40 | couv v3_s 0.92 greg 0.89 cf 0.90
+marscode|20240723_marscode-agent-dev->20240912_marscode-agent-dev      p'=0.393 | v3_s x2.36 greg x1.98 cf x1.95 | couv v3_s 0.95 greg 0.91 cf 0.94
+ibm|20240612_IBM_Research_Agent101->20241016_IBM-SWE-1.0               p'=0.237 | v3_s x3.03 greg x2.99 cf x2.93 | couv v3_s 0.97 greg 0.94 cf 0.96
+openhands|20240725_opendevin_codeact_v1.8_claude35sonnet->20241025_Ope p'=0.417 | v3_s x1.90 greg x1.60 cf x1.58 | couv v3_s 0.94 greg 0.92 cf 0.95
+agentless|20240630_agentless_gpt4o->20241028_agentless-1.5_gpt4o       p'=0.320 | v3_s x3.35 greg x3.02 cf x2.82 | couv v3_s 0.98 greg 0.96 cf 0.95
+appmap-navie|20240615_appmap-navie_gpt4o->20241113_navie-2-gpt4o-sonne p'=0.360 | v3_s x2.43 greg x2.08 cf x1.96 | couv v3_s 0.94 greg 0.92 cf 0.94
+moatless|20240623_moatless_claude35sonnet->20241117_moatless_claude-3. p'=0.383 | v3_s x2.83 greg x2.50 cf x2.49 | couv v3_s 0.98 greg 0.94 cf 0.95
+agentless|20241028_agentless-1.5_gpt4o->20241202_agentless-1.5_claude- p'=0.407 | v3_s x3.18 greg x2.58 cf x2.48 | couv v3_s 0.96 greg 0.91 cf 0.93
+gru|20240811_gru->20241208_gru                                         p'=0.487 | v3_s x3.07 greg x2.59 cf x2.55 | couv v3_s 0.97 greg 0.91 cf 0.92
+moatless|20241117_moatless_claude-3.5-sonnet-20241022->20250111_moatle p'=0.307 | v3_s x2.39 greg x2.25 cf x2.16 | couv v3_s 0.93 greg 0.91 cf 0.91
+opencsg|20240524_opencsg_starship_gpt4->20250113_OpenCSG-Starship-Agen p'=0.397 | v3_s x2.21 greg x1.94 cf x1.92 | couv v3_s 0.94 greg 0.94 cf 0.94
+isoform|20240829_Isoform->20250114_Isoform                             p'=0.550 | v3_s x1.99 greg x1.69 cf x1.67 | couv v3_s 0.95 greg 0.89 cf 0.94
+moatless|20250111_moatless_deepseek_v3->20250114_moatless_claude-3.5-s p'=0.390 | v3_s x2.22 greg x1.89 cf x1.86 | couv v3_s 0.93 greg 0.92 cf 0.94
+agentless|20241202_agentless-1.5_claude-3.5-sonnet-20241022->20250214_ p'=0.323 | v3_s x2.22 greg x1.91 cf x1.88 | couv v3_s 0.96 greg 0.93 cf 0.95
+swe-agent|20240728_sweagent_gpt4o->20250226_sweagent_claude-3-7-sonnet p'=0.480 | v3_s x3.08 greg x2.65 cf x2.70 | couv v3_s 0.98 greg 0.90 cf 0.94
+swe-fixer|20241128_SWE-Fixer_Qwen2.5-7b-retriever_Qwen2.5-72b-editor_2 p'=0.247 | v3_s x8.16 greg x9.55 cf x5.49 | couv v3_s 1.00 greg 0.97 cf 0.97
+codefuse|20250104_codefuse-aais->20250310_codefuse-cgm                 p'=0.440 | v3_s x4.14 greg x3.43 cf x3.43 | couv v3_s 1.00 greg 0.95 cf 0.97
+swe-agent|20250226_sweagent_claude-3-7-sonnet-20250219->20250526_sweag p'=0.567 | v3_s x2.12 greg x1.82 cf x1.81 | couv v3_s 0.94 greg 0.91 cf 0.95
+kgcompass|20250609_KGCompass_deepseek-v3->20250619_KGCompass_claude-3. p'=0.460 | v3_s x2.23 greg x1.89 cf x1.76 | couv v3_s 0.94 greg 0.91 cf 0.94
+experepair|20250613_ExpeRepair-v1.0->20250625_ExpeRepair-v1_claude-4-s p'=0.603 | v3_s x3.37 greg x3.05 cf x3.05 | couv v3_s 0.98 greg 0.95 cf 0.95
+agentless|20250214_agentless_lite_o3_mini->20250627_agentless_MCTS-Ref p'=0.163 | v3_s x1.40 greg x1.28 cf x1.29 | couv v3_s 0.91 greg 0.84 cf 0.96
+kgcompass|20250619_KGCompass_claude-3.5-sonnet-20241022->20250906_KGCo p'=0.583 | v3_s x1.66 greg x1.45 cf x1.42 | couv v3_s 0.94 greg 0.88 cf 0.91
+
+tous (28)
+  reset_u  gain médian x1.000 min x1.00 >=0,95 100% | couv moy 0.922 min 0.880 | largeur moy 0.318
+  v3_s     gain médian x2.223 min x0.88 >=0,95 93% | couv moy 0.947 min 0.845 | largeur moy 0.240
+  greg_s   gain médian x1.930 min x1.22 >=0,95 100% | couv moy 0.904 min 0.560 | largeur moy 0.237
+  greg_cf_s gain médian x1.870 min x1.07 >=0,95 100% | couv moy 0.940 min 0.895 | largeur moy 0.298
+
+p' < 0,10 (2)
+  reset_u  gain médian x1.000 min x1.00 >=0,95 100% | couv moy 0.965 min 0.955 | largeur moy 0.157
+  v3_s     gain médian x0.899 min x0.88 >=0,95 0% | couv moy 0.883 min 0.845 | largeur moy 0.142
+  greg_s   gain médian x1.391 min x1.26 >=0,95 100% | couv moy 0.780 min 0.560 | largeur moy 0.090
+  greg_cf_s gain médian x1.294 min x1.07 >=0,95 100% | couv moy 0.958 min 0.940 | largeur moy 0.605
+
+p' >= 0,10 (26)
+  reset_u  gain médian x1.000 min x1.00 >=0,95 100% | couv moy 0.919 min 0.880 | largeur moy 0.330
+  v3_s     gain médian x2.225 min x1.31 >=0,95 100% | couv moy 0.953 min 0.895 | largeur moy 0.248
+  greg_s   gain médian x1.960 min x1.22 >=0,95 100% | couv moy 0.913 min 0.840 | largeur moy 0.248
+  greg_cf_s gain médian x1.898 min x1.21 >=0,95 100% | couv moy 0.939 min 0.895 | largeur moy 0.274

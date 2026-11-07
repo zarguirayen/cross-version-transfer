@@ -349,3 +349,62 @@ def graph_greg(X: np.ndarray, probe_idx: np.ndarray, y_probe: np.ndarray, weight
     from scipy.stats import t as student
     h = student.ppf(1 - (1 - level) / 2, df=max(df, 1)) * np.sqrt(var)
     return Estimate(float(np.clip(est, 0, 1)), float(max(est - h, 0)), float(min(est + h, 1)), "graph_greg", {})
+
+
+def _bma_predict(X: np.ndarray, idx: np.ndarray, y: np.ndarray, draws: int, rng) -> np.ndarray:
+    """Probabilité prédite sur les N tâches, moyenne sur les sous-ensembles de covariables (vraisemblance
+    marginale), ajustée sur les probes idx ; constante de Jeffreys si les probes ont toutes le même résultat."""
+    N, d = X.shape
+    m, s = len(idx), int(y.sum())
+    if not 0 < s < m:
+        return np.full(N, (s + 0.5) / (m + 1))
+    subsets = [()] + [tuple(c for c in range(d) if (k >> c) & 1) for k in range(1, 2 ** d)]
+    fits = []
+    for cs in subsets:
+        Z = np.column_stack([np.ones(m)] + [X[idx, c] for c in cs])
+        prec = np.diag([1 / 4.0] + [1.0] * len(cs))
+        B, lml, _ = _logit_posterior(Z, y.astype(float), prec, draws, rng)
+        Xc = np.column_stack([np.ones(N)] + [X[:, c] for c in cs])
+        fits.append((lml, (1 / (1 + np.exp(-(B @ Xc.T)))).mean(axis=0)))
+    lml = np.array([f[0] for f in fits]); pw = np.exp(lml - lml.max()); pw /= pw.sum()
+    return sum(p * f[1] for p, f in zip(pw, fits))
+
+
+def graph_greg_cf(X: np.ndarray, probe_idx: np.ndarray, y_probe: np.ndarray, weights: np.ndarray,
+                  draws: int = 1500, rng=None, level: float = LEVEL) -> Estimate:
+    """GREG à ajustement croisé (cross-fitting ; Zrnic & Candès 2024 pour l'inférence assistée par prédiction).
+    Plan stratifié, probes données dans l'ordre des strates. Pli A = strates paires, pli B = strates impaires :
+    chaque pli couvre toute l'échelle de difficulté. Le modèle ajusté sur un pli prédit les résidus de l'autre,
+    donc les résidus sont hors échantillon. Estimation = moyenne des deux modèles sur les N tâches + correction
+    pondérée par les résidus croisés. Variance : strates appariées (Cochran §5A.12), plancher Jeffreys/(4m).
+    Intervalle : proportion à taille effective n* = p(1 − p)/v, corrigée des degrés de liberté, quantiles de
+    Beta de Jeffreys (Korn & Graubard 1998)."""
+    from scipy.stats import beta as Beta, t as student
+    rng = rng or np.random.default_rng()
+    N = X.shape[0]; m = len(probe_idx)
+    y = y_probe.astype(float); w = np.asarray(weights, float)
+    A = np.arange(0, m, 2); Bf = np.arange(1, m, 2)
+    PA = _bma_predict(X, probe_idx[A], y[A], draws, rng)
+    PB = _bma_predict(X, probe_idx[Bf], y[Bf], draws, rng)
+    e = np.empty(m)
+    e[A] = y[A] - PB[probe_idx[A]]
+    e[Bf] = y[Bf] - PA[probe_idx[Bf]]
+    est = float(np.clip(((PA + PB) / 2).mean() + (w * e).sum() / N, 0, 1))
+    pairs = [(i, i + 1) for i in range(0, m - 1, 2)]
+    var = sum(((w[a] + w[b]) / N) ** 2 * (e[a] - e[b]) ** 2 / 4 for a, b in pairs)
+    s = int(y.sum()); pj = (s + 0.5) / (m + 1)
+    var = max(var, pj * (1 - pj) / (4 * m))
+    pc = min(max(est, 1e-6), 1 - 1e-6)
+    alpha = 1 - level
+    n_eff = pc * (1 - pc) / var
+    n_eff *= (student.ppf(1 - alpha / 2, m - 1) / student.ppf(1 - alpha / 2, max(len(pairs), 1))) ** 2
+    x = pc * n_eff
+    lo = Beta.ppf(alpha / 2, x + 0.5, n_eff - x + 0.5)
+    hi = Beta.ppf(1 - alpha / 2, x + 0.5, n_eff - x + 0.5)
+    # convention de l'intervalle de Jeffreys (Brown, Cai & DasGupta 2001) : borne basse 0 si aucune probe n'a
+    # réussi, borne haute 1 si toutes ont réussi
+    if s == 0:
+        lo = 0.0
+    if s == m:
+        hi = 1.0
+    return Estimate(est, float(lo), float(hi), "graph_greg_cf", dict(n_eff=float(n_eff)))
