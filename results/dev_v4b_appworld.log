@@ -1,0 +1,64 @@
+test_normal|A_modele|react_gpt4turbo->react_gpt4o                      p'=0.488 | v3_u x1.29 v3_s x1.09 greg_s x0.96 reset_s x1.01 | couv v3_s 0.93 greg_s 0.91
+test_normal|A_modele|plan_exec_gpt4turbo->plan_exec_gpt4o              p'=0.446 | v3_u x1.28 v3_s x1.30 greg_s x1.16 reset_s x1.20 | couv v3_s 0.93 greg_s 0.93
+test_normal|A_modele|full_code_refl_gpt4turbo->full_code_refl_gpt4o    p'=0.339 | v3_u x1.55 v3_s x1.78 greg_s x1.55 reset_s x1.47 | couv v3_s 0.92 greg_s 0.90
+test_normal|A_modele|ipfuncall_gpt4turbo->ipfuncall_gpt4o              p'=0.321 | v3_u x1.31 v3_s x2.37 greg_s x2.10 reset_s x1.60 | couv v3_s 0.96 greg_s 0.95
+test_normal|B_architecture|react_gpt4turbo->full_code_refl_gpt4turbo   p'=0.256 | v3_u x1.36 v3_s x2.01 greg_s x1.87 reset_s x1.88 | couv v3_s 0.96 greg_s 0.94
+test_normal|B_architecture|react_gpt4turbo->plan_exec_gpt4turbo        p'=0.327 | v3_u x1.29 v3_s x1.52 greg_s x1.33 reset_s x1.39 | couv v3_s 0.93 greg_s 0.90
+test_normal|B_architecture|react_gpt4turbo->ipfuncall_gpt4turbo        p'=0.304 | v3_u x1.09 v3_s x0.95 greg_s x0.85 reset_s x0.91 | couv v3_s 0.85 greg_s 0.88
+test_normal|B_architecture|react_gpt4o->plan_exec_gpt4o                p'=0.446 | v3_u x1.31 v3_s x1.48 greg_s x1.31 reset_s x1.39 | couv v3_s 0.91 greg_s 0.92
+test_normal|B_architecture|react_gpt4o->full_code_refl_gpt4o           p'=0.339 | v3_u x1.38 v3_s x1.44 greg_s x1.29 reset_s x1.31 | couv v3_s 0.94 greg_s 0.91
+test_normal|B_architecture|react_gpt4o->ipfuncall_gpt4o                p'=0.321 | v3_u x1.03 v3_s x1.24 greg_s x1.13 reset_s x1.21 | couv v3_s 0.93 greg_s 0.91
+test_normal|B_architecture|react_llama3->plan_exec_llama3              p'=0.089 | v3_u x0.90 v3_s x1.16 greg_s x1.31 reset_s x1.14 | couv v3_s 0.92 greg_s 0.88
+test_normal|B_architecture|react_llama3->full_code_refl_llama3         p'=0.244 | v3_u x1.44 v3_s x1.53 greg_s x1.49 reset_s x1.30 | couv v3_s 0.94 greg_s 0.90
+test_normal|B_architecture|react_deepseekcoder->plan_exec_deepseekcode p'=0.018 | v3_u x0.70 v3_s x0.79 greg_s x1.82 reset_s x1.13 | couv v3_s 0.97 greg_s 1.00
+test_normal|B_architecture|react_deepseekcoder->full_code_refl_deepsee p'=0.131 | v3_u x1.12 v3_s x1.02 greg_s x0.96 reset_s x0.95 | couv v3_s 0.90 greg_s 0.89
+test_normal|C_famille|react_llama3->react_gpt4o                        p'=0.488 | v3_u x1.29 v3_s x1.16 greg_s x1.03 reset_s x1.09 | couv v3_s 0.92 greg_s 0.90
+test_normal|C_famille|react_deepseekcoder->react_gpt4o                 p'=0.488 | v3_u x1.31 v3_s x1.31 greg_s x1.16 reset_s x1.25 | couv v3_s 0.91 greg_s 0.89
+test_normal|C_famille|plan_exec_llama3->plan_exec_gpt4o                p'=0.446 | v3_u x1.27 v3_s x1.57 greg_s x1.42 reset_s x1.51 | couv v3_s 0.93 greg_s 0.91
+test_normal|C_famille|plan_exec_deepseekcoder->plan_exec_gpt4o         p'=0.446 | v3_u x1.20 v3_s x1.43 greg_s x1.29 reset_s x1.35 | couv v3_s 0.93 greg_s 0.91
+test_normal|C_famille|full_code_refl_llama3->full_code_refl_gpt4o      p'=0.339 | v3_u x1.45 v3_s x1.51 greg_s x1.35 reset_s x1.09 | couv v3_s 0.91 greg_s 0.90
+test_normal|C_famille|full_code_refl_deepseekcoder->full_code_refl_gpt p'=0.339 | v3_u x1.38 v3_s x1.47 greg_s x1.34 reset_s x1.19 | couv v3_s 0.94 greg_s 0.91
+test_challenge|A_modele|react_gpt4turbo->react_gpt4o                   p'=0.302 | v3_u x1.66 v3_s x1.66 greg_s x1.39 reset_s x1.38 | couv v3_s 0.91 greg_s 0.88
+test_challenge|A_modele|plan_exec_gpt4turbo->plan_exec_gpt4o           p'=0.197 | v3_u x1.24 v3_s x1.07 greg_s x1.02 reset_s x0.91 | couv v3_s 0.93 greg_s 0.91
+test_challenge|A_modele|full_code_refl_gpt4turbo->full_code_refl_gpt4o p'=0.192 | v3_u x1.54 v3_s x1.96 greg_s x1.73 reset_s x1.47 | couv v3_s 0.96 greg_s 0.91
+test_challenge|A_modele|ipfuncall_gpt4turbo->ipfuncall_gpt4o           p'=0.180 | v3_u x1.43 v3_s x2.21 greg_s x2.00 reset_s x1.59 | couv v3_s 0.95 greg_s 0.88
+test_challenge|B_architecture|react_gpt4turbo->plan_exec_gpt4turbo     p'=0.110 | v3_u x1.13 v3_s x1.21 greg_s x1.34 reset_s x1.20 | couv v3_s 0.91 greg_s 0.89
+test_challenge|B_architecture|react_gpt4turbo->full_code_refl_gpt4turb p'=0.125 | v3_u x1.50 v3_s x1.74 greg_s x2.08 reset_s x1.92 | couv v3_s 0.96 greg_s 0.94
+test_challenge|B_architecture|react_gpt4turbo->ipfuncall_gpt4turbo     p'=0.146 | v3_u x1.05 v3_s x1.33 greg_s x1.21 reset_s x1.27 | couv v3_s 0.90 greg_s 0.80
+test_challenge|B_architecture|react_gpt4o->plan_exec_gpt4o             p'=0.197 | v3_u x1.31 v3_s x1.03 greg_s x0.96 reset_s x1.01 | couv v3_s 0.90 greg_s 0.86
+test_challenge|B_architecture|react_gpt4o->full_code_refl_gpt4o        p'=0.192 | v3_u x1.31 v3_s x1.69 greg_s x1.71 reset_s x1.60 | couv v3_s 0.94 greg_s 0.92
+test_challenge|B_architecture|react_llama3->plan_exec_llama3           p'=0.024 | v3_u x0.77 v3_s x0.83 greg_s x1.76 reset_s x1.22 | couv v3_s 0.93 greg_s 0.97
+test_challenge|B_architecture|react_gpt4o->ipfuncall_gpt4o             p'=0.180 | v3_u x1.20 v3_s x1.61 greg_s x1.52 reset_s x1.48 | couv v3_s 0.93 greg_s 0.89
+test_challenge|B_architecture|react_deepseekcoder->plan_exec_deepseekc p'=0.007 | v3_u x0.81 v3_s x0.59 greg_s x3.65 reset_s x0.69 | couv v3_s 0.80 greg_s 1.00
+test_challenge|B_architecture|react_llama3->full_code_refl_llama3      p'=0.070 | v3_u x0.99 v3_s x0.95 greg_s x1.34 reset_s x1.09 | couv v3_s 0.93 greg_s 0.83
+test_challenge|B_architecture|react_deepseekcoder->full_code_refl_deep p'=0.058 | v3_u x0.96 v3_s x0.91 greg_s x1.40 reset_s x1.03 | couv v3_s 0.88 greg_s 0.77
+test_challenge|C_famille|react_llama3->react_gpt4o                     p'=0.302 | v3_u x1.80 v3_s x2.03 greg_s x1.83 reset_s x1.88 | couv v3_s 0.94 greg_s 0.92
+test_challenge|C_famille|react_deepseekcoder->react_gpt4o              p'=0.302 | v3_u x1.50 v3_s x1.88 greg_s x1.56 reset_s x1.78 | couv v3_s 0.94 greg_s 0.90
+test_challenge|C_famille|plan_exec_llama3->plan_exec_gpt4o             p'=0.197 | v3_u x1.22 v3_s x1.60 greg_s x1.41 reset_s x1.47 | couv v3_s 0.94 greg_s 0.90
+test_challenge|C_famille|plan_exec_deepseekcoder->plan_exec_gpt4o      p'=0.197 | v3_u x1.47 v3_s x1.62 greg_s x1.56 reset_s x1.53 | couv v3_s 0.92 greg_s 0.93
+test_challenge|C_famille|full_code_refl_llama3->full_code_refl_gpt4o   p'=0.192 | v3_u x1.41 v3_s x2.35 greg_s x2.13 reset_s x2.03 | couv v3_s 0.97 greg_s 0.94
+test_challenge|C_famille|full_code_refl_deepseekcoder->full_code_refl_ p'=0.192 | v3_u x1.36 v3_s x1.68 greg_s x1.50 reset_s x1.48 | couv v3_s 0.95 greg_s 0.93
+
+tous (40)
+  reset_u  gain médian x1.000 min x1.00 >=0,95 100% | couv moy 0.924 min 0.850 | largeur moy 0.286
+  v3_u     gain médian x1.298 min x0.70 >=0,95 90% | couv moy 0.917 min 0.875 | largeur moy 0.244
+  greg_u   gain médian x1.162 min x0.94 >=0,95 98% | couv moy 0.861 min 0.740 | largeur moy 0.231
+  reset_s  gain médian x1.306 min x0.69 >=0,95 92% | couv moy 0.959 min 0.885 | largeur moy 0.290
+  v3_s     gain médian x1.480 min x0.59 >=0,95 88% | couv moy 0.925 min 0.800 | largeur moy 0.240
+  greg_s   gain médian x1.393 min x0.85 >=0,95 98% | couv moy 0.903 min 0.765 | largeur moy 0.253
+
+p' < 0,10 (6)
+  reset_u  gain médian x1.000 min x1.00 >=0,95 100% | couv moy 0.966 min 0.920 | largeur moy 0.164
+  v3_u     gain médian x0.852 min x0.70 >=0,95 33% | couv moy 0.921 min 0.875 | largeur moy 0.156
+  greg_u   gain médian x1.437 min x0.98 >=0,95 100% | couv moy 0.883 min 0.740 | largeur moy 0.101
+  reset_s  gain médian x1.107 min x0.69 >=0,95 83% | couv moy 0.977 min 0.950 | largeur moy 0.167
+  v3_s     gain médian x0.872 min x0.59 >=0,95 17% | couv moy 0.904 min 0.800 | largeur moy 0.154
+  greg_s   gain médian x1.578 min x1.31 >=0,95 100% | couv moy 0.907 min 0.765 | largeur moy 0.105
+
+p' >= 0,10 (34)
+  reset_u  gain médian x1.000 min x1.00 >=0,95 100% | couv moy 0.917 min 0.850 | largeur moy 0.308
+  v3_u     gain médian x1.309 min x1.03 >=0,95 100% | couv moy 0.916 min 0.885 | largeur moy 0.260
+  greg_u   gain médian x1.156 min x0.94 >=0,95 97% | couv moy 0.858 min 0.780 | largeur moy 0.255
+  reset_s  gain médian x1.382 min x0.91 >=0,95 94% | couv moy 0.956 min 0.885 | largeur moy 0.312
+  v3_s     gain médian x1.524 min x0.95 >=0,95 100% | couv moy 0.929 min 0.855 | largeur moy 0.255
+  greg_s   gain médian x1.370 min x0.85 >=0,95 97% | couv moy 0.903 min 0.800 | largeur moy 0.279

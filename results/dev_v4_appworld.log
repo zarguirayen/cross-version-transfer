@@ -1,0 +1,64 @@
+test_normal|A_modele|react_gpt4turbo->react_gpt4o                      p'=0.488 | v3_u x1.43 v3_s x1.53 reset_s x1.45 | couv v3_s 0.90
+test_normal|A_modele|plan_exec_gpt4turbo->plan_exec_gpt4o              p'=0.446 | v3_u x1.28 v3_s x1.51 reset_s x1.41 | couv v3_s 0.92
+test_normal|A_modele|full_code_refl_gpt4turbo->full_code_refl_gpt4o    p'=0.339 | v3_u x1.41 v3_s x1.82 reset_s x1.48 | couv v3_s 0.94
+test_normal|A_modele|ipfuncall_gpt4turbo->ipfuncall_gpt4o              p'=0.321 | v3_u x1.39 v3_s x1.55 reset_s x1.14 | couv v3_s 0.94
+test_normal|B_architecture|react_gpt4turbo->full_code_refl_gpt4turbo   p'=0.256 | v3_u x1.36 v3_s x2.03 reset_s x1.87 | couv v3_s 0.97
+test_normal|B_architecture|react_gpt4turbo->plan_exec_gpt4turbo        p'=0.327 | v3_u x1.35 v3_s x1.63 reset_s x1.47 | couv v3_s 0.94
+test_normal|B_architecture|react_gpt4turbo->ipfuncall_gpt4turbo        p'=0.304 | v3_u x1.12 v3_s x1.06 reset_s x1.02 | couv v3_s 0.90
+test_normal|B_architecture|react_gpt4o->plan_exec_gpt4o                p'=0.446 | v3_u x1.29 v3_s x1.68 reset_s x1.48 | couv v3_s 0.93
+test_normal|B_architecture|react_gpt4o->full_code_refl_gpt4o           p'=0.339 | v3_u x1.49 v3_s x1.64 reset_s x1.47 | couv v3_s 0.96
+test_normal|B_architecture|react_gpt4o->ipfuncall_gpt4o                p'=0.321 | v3_u x1.20 v3_s x1.21 reset_s x1.14 | couv v3_s 0.89
+test_normal|B_architecture|react_llama3->plan_exec_llama3              p'=0.089 | v3_u x0.92 v3_s x0.98 reset_s x0.98 | couv v3_s 0.90
+test_normal|B_architecture|react_llama3->full_code_refl_llama3         p'=0.244 | v3_u x1.47 v3_s x1.98 reset_s x1.72 | couv v3_s 0.96
+test_normal|B_architecture|react_deepseekcoder->plan_exec_deepseekcode p'=0.018 | v3_u x0.65 v3_s x0.63 reset_s x0.89 | couv v3_s 0.98
+test_normal|B_architecture|react_deepseekcoder->full_code_refl_deepsee p'=0.131 | v3_u x1.22 v3_s x1.03 reset_s x0.98 | couv v3_s 0.84
+test_normal|C_famille|react_llama3->react_gpt4o                        p'=0.488 | v3_u x1.22 v3_s x1.29 reset_s x1.24 | couv v3_s 0.92
+test_normal|C_famille|react_deepseekcoder->react_gpt4o                 p'=0.488 | v3_u x1.38 v3_s x1.66 reset_s x1.55 | couv v3_s 0.91
+test_normal|C_famille|plan_exec_llama3->plan_exec_gpt4o                p'=0.446 | v3_u x1.23 v3_s x1.39 reset_s x1.27 | couv v3_s 0.93
+test_normal|C_famille|plan_exec_deepseekcoder->plan_exec_gpt4o         p'=0.446 | v3_u x1.23 v3_s x1.44 reset_s x1.39 | couv v3_s 0.93
+test_normal|C_famille|full_code_refl_llama3->full_code_refl_gpt4o      p'=0.339 | v3_u x1.51 v3_s x1.67 reset_s x1.35 | couv v3_s 0.95
+test_normal|C_famille|full_code_refl_deepseekcoder->full_code_refl_gpt p'=0.339 | v3_u x1.43 v3_s x1.78 reset_s x1.32 | couv v3_s 0.95
+test_challenge|A_modele|react_gpt4turbo->react_gpt4o                   p'=0.302 | v3_u x1.48 v3_s x1.80 reset_s x1.52 | couv v3_s 0.92
+test_challenge|A_modele|plan_exec_gpt4turbo->plan_exec_gpt4o           p'=0.197 | v3_u x1.34 v3_s x1.39 reset_s x1.25 | couv v3_s 0.91
+test_challenge|A_modele|full_code_refl_gpt4turbo->full_code_refl_gpt4o p'=0.192 | v3_u x1.47 v3_s x1.67 reset_s x1.24 | couv v3_s 0.95
+test_challenge|A_modele|ipfuncall_gpt4turbo->ipfuncall_gpt4o           p'=0.180 | v3_u x1.56 v3_s x1.48 reset_s x1.20 | couv v3_s 0.90
+test_challenge|B_architecture|react_gpt4turbo->plan_exec_gpt4turbo     p'=0.110 | v3_u x1.15 v3_s x1.37 reset_s x1.35 | couv v3_s 0.93
+test_challenge|B_architecture|react_gpt4turbo->full_code_refl_gpt4turb p'=0.125 | v3_u x1.53 v3_s x1.69 reset_s x1.80 | couv v3_s 0.94
+test_challenge|B_architecture|react_gpt4turbo->ipfuncall_gpt4turbo     p'=0.146 | v3_u x1.07 v3_s x1.00 reset_s x0.94 | couv v3_s 0.90
+test_challenge|B_architecture|react_gpt4o->plan_exec_gpt4o             p'=0.197 | v3_u x1.31 v3_s x1.33 reset_s x1.24 | couv v3_s 0.95
+test_challenge|B_architecture|react_gpt4o->full_code_refl_gpt4o        p'=0.192 | v3_u x1.28 v3_s x1.48 reset_s x1.47 | couv v3_s 0.95
+test_challenge|B_architecture|react_llama3->plan_exec_llama3           p'=0.024 | v3_u x0.72 v3_s x0.54 reset_s x0.77 | couv v3_s 0.89
+test_challenge|B_architecture|react_gpt4o->ipfuncall_gpt4o             p'=0.180 | v3_u x1.16 v3_s x1.27 reset_s x1.21 | couv v3_s 0.94
+test_challenge|B_architecture|react_deepseekcoder->plan_exec_deepseekc p'=0.007 | v3_u x0.78 v3_s x0.65 reset_s x0.83 | couv v3_s 0.83
+test_challenge|B_architecture|react_llama3->full_code_refl_llama3      p'=0.070 | v3_u x1.02 v3_s x1.31 reset_s x1.52 | couv v3_s 0.95
+test_challenge|B_architecture|react_deepseekcoder->full_code_refl_deep p'=0.058 | v3_u x1.00 v3_s x0.75 reset_s x0.77 | couv v3_s 0.88
+test_challenge|C_famille|react_llama3->react_gpt4o                     p'=0.302 | v3_u x1.46 v3_s x1.31 reset_s x1.20 | couv v3_s 0.88
+test_challenge|C_famille|react_deepseekcoder->react_gpt4o              p'=0.302 | v3_u x1.54 v3_s x2.29 reset_s x2.09 | couv v3_s 0.96
+test_challenge|C_famille|plan_exec_llama3->plan_exec_gpt4o             p'=0.197 | v3_u x1.24 v3_s x1.75 reset_s x1.60 | couv v3_s 0.93
+test_challenge|C_famille|plan_exec_deepseekcoder->plan_exec_gpt4o      p'=0.197 | v3_u x1.29 v3_s x1.40 reset_s x1.33 | couv v3_s 0.91
+test_challenge|C_famille|full_code_refl_llama3->full_code_refl_gpt4o   p'=0.192 | v3_u x1.36 v3_s x1.49 reset_s x1.38 | couv v3_s 0.95
+test_challenge|C_famille|full_code_refl_deepseekcoder->full_code_refl_ p'=0.192 | v3_u x1.65 v3_s x1.65 reset_s x1.34 | couv v3_s 0.93
+
+tous (40)
+  reset_u  gain médian x1.000 min x1.00 >=0,95 100% | couv moy 0.919 min 0.860 | largeur moy 0.286
+  bma_u    gain médian x1.100 min x0.73 >=0,95 95% | couv moy 0.934 min 0.880 | largeur moy 0.276
+  v3_u     gain médian x1.302 min x0.65 >=0,95 90% | couv moy 0.914 min 0.875 | largeur moy 0.244
+  reset_s  gain médian x1.334 min x0.77 >=0,95 88% | couv moy 0.956 min 0.900 | largeur moy 0.290
+  bma_s    gain médian x1.490 min x0.67 >=0,95 88% | couv moy 0.954 min 0.895 | largeur moy 0.278
+  v3_s     gain médian x1.481 min x0.54 >=0,95 90% | couv moy 0.924 min 0.835 | largeur moy 0.240
+
+p' < 0,10 (6)
+  reset_u  gain médian x1.000 min x1.00 >=0,95 100% | couv moy 0.975 min 0.945 | largeur moy 0.162
+  bma_u    gain médian x1.065 min x0.73 >=0,95 67% | couv moy 0.973 min 0.935 | largeur moy 0.164
+  v3_u     gain médian x0.846 min x0.65 >=0,95 33% | couv moy 0.924 min 0.875 | largeur moy 0.154
+  reset_s  gain médian x0.862 min x0.77 >=0,95 33% | couv moy 0.972 min 0.915 | largeur moy 0.167
+  bma_s    gain médian x0.935 min x0.67 >=0,95 33% | couv moy 0.966 min 0.895 | largeur moy 0.168
+  v3_s     gain médian x0.701 min x0.54 >=0,95 33% | couv moy 0.905 min 0.835 | largeur moy 0.155
+
+p' >= 0,10 (34)
+  reset_u  gain médian x1.000 min x1.00 >=0,95 100% | couv moy 0.910 min 0.860 | largeur moy 0.308
+  bma_u    gain médian x1.100 min x0.98 >=0,95 100% | couv moy 0.927 min 0.880 | largeur moy 0.296
+  v3_u     gain médian x1.356 min x1.07 >=0,95 100% | couv moy 0.913 min 0.875 | largeur moy 0.259
+  reset_s  gain médian x1.351 min x0.94 >=0,95 97% | couv moy 0.953 min 0.900 | largeur moy 0.312
+  bma_s    gain médian x1.534 min x0.94 >=0,95 97% | couv moy 0.952 min 0.900 | largeur moy 0.297
+  v3_s     gain médian x1.520 min x1.00 >=0,95 100% | couv moy 0.927 min 0.845 | largeur moy 0.255

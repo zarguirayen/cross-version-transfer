@@ -306,3 +306,46 @@ def graph_v3(X: np.ndarray, probe_idx: np.ndarray, y_probe: np.ndarray, y_prev: 
         return Estimate(e.mean, e.lo, e.hi, "graph_v3", dict(fallback=True))
     e = graph_bma_logit(X, probe_idx, y_probe, draws=draws, rng=rng, level=level)
     return Estimate(e.mean, e.lo, e.hi, "graph_v3", dict(fallback=False, **e.extra))
+
+
+def graph_greg(X: np.ndarray, probe_idx: np.ndarray, y_probe: np.ndarray, weights: np.ndarray | None = None,
+               draws: int = 2000, rng=None, level: float = LEVEL) -> Estimate:
+    """Estimateur assisté par modèle (GREG, Särndal et al. 1992) : prédictions du graphe (moyenne de modèles,
+    graph_bma_logit) corrigées par les résidus observés sur les probes. Sans biais sous le plan quel que soit le
+    modèle. weights[i] = nombre de tâches que la probe i représente (N_h pour 1 probe par strate ; N/m sous un
+    tirage uniforme). Variance : strates regroupées par paires adjacentes (Cochran 1977, §5A.12) ; intervalle
+    t de Student, avec un plancher de variance binomiale de Jeffreys pour les résidus tous nuls."""
+    rng = rng or np.random.default_rng()
+    N, d = X.shape
+    m = len(probe_idx)
+    w = np.full(m, N / m) if weights is None else np.asarray(weights, float)
+    y = y_probe.astype(float)
+    s = int(y.sum())
+    if 0 < s < m:
+        cols = tuple(range(d))
+        subsets = [()] + [tuple(c for c in range(d) if (k >> c) & 1) for k in range(1, 2 ** d)]
+        fits = []
+        for cs in subsets:
+            Z = np.column_stack([np.ones(m)] + [X[probe_idx, c] for c in cs])
+            prec = np.diag([1 / 4.0] + [1.0] * len(cs))
+            B, lml, _ = _logit_posterior(Z, y, prec, draws, rng)
+            Xc = np.column_stack([np.ones(N)] + [X[:, c] for c in cs])
+            fits.append((lml, (1 / (1 + np.exp(-(B @ Xc.T)))).mean(axis=0)))
+        lml = np.array([f[0] for f in fits]); pw = np.exp(lml - lml.max()); pw /= pw.sum()
+        P = sum(p * f[1] for p, f in zip(pw, fits))
+    else:
+        P = np.full(N, (s + 0.5) / (m + 1))          # aucun modèle identifiable : prédiction constante de Jeffreys
+    e = y - P[probe_idx]
+    est = P.mean() + (w * e).sum() / N
+    if weights is None:                                  # tirage uniforme : variance du résidu moyen
+        var, df = (1 - m / N) * e.var(ddof=1) / m, m - 1
+    else:                                                # 1 probe par strate, probes dans l'ordre des strates
+        pairs = [(i, i + 1) for i in range(0, m - 1, 2)]
+        var = sum(((w[a] + w[b]) / N) ** 2 * (e[a] - e[b]) ** 2 / 4 for a, b in pairs)
+        df = len(pairs)
+    # plancher : le plan ne peut pas être plus de 4 fois plus précis qu'un tirage uniforme au taux de Jeffreys
+    pj = (s + 0.5) / (m + 1)
+    var = max(var, pj * (1 - pj) / (4 * m))
+    from scipy.stats import t as student
+    h = student.ppf(1 - (1 - level) / 2, df=max(df, 1)) * np.sqrt(var)
+    return Estimate(float(np.clip(est, 0, 1)), float(max(est - h, 0)), float(min(est + h, 1)), "graph_greg", {})
