@@ -1,6 +1,7 @@
 # Pré-enregistrement — pilote G2 et hypothèses H1 à H4
 
-**Statut : à valider par Rayen, puis figé par le tag git `prereg-v1` avant toute lecture des résultats réels.**
+**Statut : validé tel quel par Rayen Zargui le 7 novembre 2026 à 14 h 44 (Paris), par délégation explicite,
+et figé par le tag git `prereg-v1` avant toute lecture des résultats réels.**
 Rédigé le 7 novembre 2026. Analyse figée dans `experiments/g2_preregistered.py` (même commit).
 Aucune statistique de résultat n'a été calculée sur les données réelles à la date de rédaction ; seul un
 audit de forme a été fait (`docs/DATA_AUDIT.md`). Le script a été testé à blanc sur des données synthétiques.
