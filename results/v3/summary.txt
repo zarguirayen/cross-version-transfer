@@ -1,0 +1,6 @@
+H1-v3 — 89 transitions, m=20 : erreur relative médiane loi 0.036 ; soutenue (<= 0,20) : True
+H5-v3 — gain médian graphe v3 x2.014 vs prédécesseur seul x1.531 ; Wilcoxon p = 7.8e-14 ; >= 0,95 x reset sur 97% ; couverture moy 0.946 ; soutenue : True
+H6-v3 — pire gain v3 x0.604 ; pire couverture v3 0.865 ; soutenue (>= 0,80 et >= 0,80) : False
+H7-v3 — graphe v3 x2.014 vs écosystème seul (type IRT, sans arête de lignée) x2.006 ; Wilcoxon p = 0.038 ; soutenue (p < 0,05) : True
+H2-v3 — 87 transitions : phi² médian lignée 0.367 vs témoin de même taux 0.316 ; Wilcoxon p = 8.9e-07 ; soutenue (p < 0,05) : True
+H4-v3 — 11 régressions réelles >= 10 points : alerte 0.923 avec 30.3 probes ; fausses alertes sur 73 transitions sans baisse 0.008 ; soutenue (>= 0,80 et <= 0,10) : True

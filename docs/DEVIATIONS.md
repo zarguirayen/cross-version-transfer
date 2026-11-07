@@ -27,5 +27,15 @@ Chaque entrée : date, ce qui change, pourquoi, effet attendu sur les conclusion
   0,3 % et 0,7 % de fausses alertes. Le verdict pré-enregistré n'est pas modifié.
 - **Constat v2** : les 4 échecs de H5 concernent des versions à moins de 10 % de réussite. La règle de repli
   (BMA si moins de 2 succès parmi les probes) est une proposition, à confirmer dans une v3 sur données neuves.
+- **7 novembre 2026, développement v3 avant le gel `prereg-v3`** (données déjà vues uniquement) : scripts
+  `dev_v3_estimator.py`, `dev_v3_rules.py`, `dev_v3b_estimator.py` (prior empirique, arrêté à 23/40 transitions
+  faute de gain net, abandonné), `dev_h7_appworld.py`. Toutes les variantes essayées sont listées dans
+  PREREGISTRATION_V3.md.
+- **7 novembre 2026, après le gel v3, constat sur les données** : la soumission
+  `20260226_mini-v2.0.0_gemini-3-pro-high` est publiée avec resolved = false pour les 500 tâches (coûts et appels
+  présents). Elle reste dans l'analyse principale, conformément à la règle figée. Analyse de sensibilité
+  exploratoire sans elle (2 transitions en moins) : graphe ×2,03, pire cas ×0,76, H7 p = 0,022, H2 inchangée.
+  Aucun verdict pré-enregistré n'est modifié ; H6 échoue dans les deux cas.
+- **Analyses descriptives v3** : `experiments/v3_descriptive.py` (prévues comme « rapportées sans critère »).
 - **Constat** : écart de 0,6 point entre notre taux de régression Mistral MATH (55,8 %) et celui publié par
   Sheng & Lu (55,2 %). Non expliqué ; sans effet sur les conclusions.
