@@ -21,5 +21,11 @@ Chaque entrée : date, ce qui change, pourquoi, effet attendu sur les conclusion
   (`experiments/g2_exploratory_h4_power.py`, graine 20261108). Motif : H4 a échoué à m ≤ 40 ; on cherche le
   budget nécessaire. Statut : exploratoire, à re-tester dans un nouveau pré-enregistrement avant toute
   revendication. Les critères et l'analyse principale ne sont pas modifiés.
+- **7 novembre 2026, après le gel v2, analyse exploratoire** : fausses alertes de H4-v2 sous un bruit qui ne
+  change pas le taux moyen (`experiments/v2_exploratory_h4_null.py`). Motif : le bruit symétrique pré-enregistré
+  fait monter le taux des agents testés (tous sous 0,5), ce qui rendait le contrôle trop facile. Résultat :
+  0,3 % et 0,7 % de fausses alertes. Le verdict pré-enregistré n'est pas modifié.
+- **Constat v2** : les 4 échecs de H5 concernent des versions à moins de 10 % de réussite. La règle de repli
+  (BMA si moins de 2 succès parmi les probes) est une proposition, à confirmer dans une v3 sur données neuves.
 - **Constat** : écart de 0,6 point entre notre taux de régression Mistral MATH (55,8 %) et celui publié par
   Sheng & Lu (55,2 %). Non expliqué ; sans effet sur les conclusions.

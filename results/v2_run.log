@@ -1,0 +1,45 @@
+fait : test_normal A_modele react_gpt4turbo -> react_gpt4o
+fait : test_normal A_modele plan_exec_gpt4turbo -> plan_exec_gpt4o
+fait : test_normal A_modele full_code_refl_gpt4turbo -> full_code_refl_gpt4o
+fait : test_normal A_modele ipfuncall_gpt4turbo -> ipfuncall_gpt4o
+fait : test_normal B_architecture react_gpt4turbo -> plan_exec_gpt4turbo
+fait : test_normal B_architecture react_gpt4turbo -> full_code_refl_gpt4turbo
+fait : test_normal B_architecture react_gpt4turbo -> ipfuncall_gpt4turbo
+fait : test_normal B_architecture react_gpt4o -> plan_exec_gpt4o
+fait : test_normal B_architecture react_gpt4o -> full_code_refl_gpt4o
+fait : test_normal B_architecture react_gpt4o -> ipfuncall_gpt4o
+fait : test_normal B_architecture react_llama3 -> plan_exec_llama3
+fait : test_normal B_architecture react_llama3 -> full_code_refl_llama3
+fait : test_normal B_architecture react_deepseekcoder -> plan_exec_deepseekcoder
+fait : test_normal B_architecture react_deepseekcoder -> full_code_refl_deepseekcoder
+fait : test_normal C_famille react_llama3 -> react_gpt4o
+fait : test_normal C_famille react_deepseekcoder -> react_gpt4o
+fait : test_normal C_famille plan_exec_llama3 -> plan_exec_gpt4o
+fait : test_normal C_famille plan_exec_deepseekcoder -> plan_exec_gpt4o
+fait : test_normal C_famille full_code_refl_llama3 -> full_code_refl_gpt4o
+fait : test_normal C_famille full_code_refl_deepseekcoder -> full_code_refl_gpt4o
+fait : test_challenge A_modele react_gpt4turbo -> react_gpt4o
+fait : test_challenge A_modele plan_exec_gpt4turbo -> plan_exec_gpt4o
+fait : test_challenge A_modele full_code_refl_gpt4turbo -> full_code_refl_gpt4o
+fait : test_challenge A_modele ipfuncall_gpt4turbo -> ipfuncall_gpt4o
+fait : test_challenge B_architecture react_gpt4turbo -> plan_exec_gpt4turbo
+fait : test_challenge B_architecture react_gpt4turbo -> full_code_refl_gpt4turbo
+fait : test_challenge B_architecture react_gpt4turbo -> ipfuncall_gpt4turbo
+fait : test_challenge B_architecture react_gpt4o -> plan_exec_gpt4o
+fait : test_challenge B_architecture react_gpt4o -> full_code_refl_gpt4o
+fait : test_challenge B_architecture react_gpt4o -> ipfuncall_gpt4o
+fait : test_challenge B_architecture react_llama3 -> plan_exec_llama3
+fait : test_challenge B_architecture react_llama3 -> full_code_refl_llama3
+fait : test_challenge B_architecture react_deepseekcoder -> plan_exec_deepseekcoder
+fait : test_challenge B_architecture react_deepseekcoder -> full_code_refl_deepseekcoder
+fait : test_challenge C_famille react_llama3 -> react_gpt4o
+fait : test_challenge C_famille react_deepseekcoder -> react_gpt4o
+fait : test_challenge C_famille plan_exec_llama3 -> plan_exec_gpt4o
+fait : test_challenge C_famille plan_exec_deepseekcoder -> plan_exec_gpt4o
+fait : test_challenge C_famille full_code_refl_llama3 -> full_code_refl_gpt4o
+fait : test_challenge C_famille full_code_refl_deepseekcoder -> full_code_refl_gpt4o
+H1-v2 — 40 transitions, m=20 : erreur relative médiane loi 0.027 ; soutenue (<= 0,20) : True
+H5 — gain médian graphe x1.395 vs prédécesseur seul x1.121 ; Wilcoxon p = 0.0000 ; graphe >= 0,95 x reset sur 90% ; couverture graphe moy 0.909 min 0.677 ; soutenue : True
+H2-v2 — phi² médian : A_modele 0.301 (n=8), B_architecture 0.081 (n=20), C_famille 0.045 (n=12) ; Kruskal-Wallis p = 0.0026 ; soutenue (p < 0,05) : True
+H4-v2 — 11 agents x split : puissance 0.859 avec 52.3 probes en moyenne ; fausses alertes (bruit 5 %) 0.001 ; soutenue (puissance >= 0,80, probes <= 60, fausses alertes <= 0,10) : True
+code de sortie : 0
