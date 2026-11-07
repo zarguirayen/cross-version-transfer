@@ -1,0 +1,8 @@
+[ds_bma, proportional] 200 scénarios tirés au hasard, m = 20, 400 mondes chacun (erreur type d'une couverture ≈ 0.015)
+gain vs reset        : médiane x1.05, min x0.87, part < 0,95 : 2.5%
+gain / loi finie     : médiane 1.00, 5e-95e centiles 0.93-1.06
+  si phi2 >= 0,3     : médiane 1.00 (n=27)
+couverture estimateur: moyenne 0.915, min 0.877, part < 0,88 : 1.0%, part < 0,85 : 0.0%
+couverture reset hyb.: moyenne 0.907, min 0.863, part < 0,88 : 9.0%
+couverture reset Jef.: moyenne 0.897, min 0.815, part < 0,88 : 19.5%
+écrit : /home/claude/cross-version-transfer/results/g1_heldout_ds_bma_proportional_m20.csv

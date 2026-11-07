@@ -1,0 +1,8 @@
+[ds_bma, adaptive] 200 scénarios tirés au hasard, m = 20, 400 mondes chacun (erreur type d'une couverture ≈ 0.015)
+gain vs reset        : médiane x1.07, min x0.80, part < 0,95 : 12.0%
+gain / loi finie     : médiane 1.01, 5e-95e centiles 0.87-1.19
+  si phi2 >= 0,3     : médiane 1.08 (n=27)
+couverture estimateur: moyenne 0.912, min 0.860, part < 0,88 : 3.0%, part < 0,85 : 0.0%
+couverture reset hyb.: moyenne 0.907, min 0.863, part < 0,88 : 9.0%
+couverture reset Jef.: moyenne 0.897, min 0.815, part < 0,88 : 19.5%
+écrit : /home/claude/cross-version-transfer/results/g1_heldout_ds_bma_adaptive_m20.csv
