@@ -1,0 +1,42 @@
+mcq_n3000|qwen                                          p'=0.436 | bma x1.33 graph x1.49 fp x1.49 v3 x1.40 | couv g 0.91 fp 0.91 v3 0.91
+mcq_n3000|llama                                         p'=0.311 | bma x1.67 graph x1.73 fp x1.73 v3 x1.64 | couv g 0.93 fp 0.93 v3 0.94
+mcq_n3000|mistral                                       p'=0.293 | bma x1.37 graph x1.39 fp x1.39 v3 x1.39 | couv g 0.89 fp 0.90 v3 0.91
+mcq_n3000|qwen2                                         p'=0.415 | bma x1.32 graph x1.55 fp x1.55 v3 x1.48 | couv g 0.92 fp 0.91 v3 0.92
+mcq_n3000|gemma12                                       p'=0.435 | bma x1.15 graph x1.37 fp x1.39 v3 x1.33 | couv g 0.90 fp 0.91 v3 0.92
+gpqa|qwen                                               p'=0.373 | bma x1.08 graph x1.06 fp x1.05 v3 x1.06 | couv g 0.89 fp 0.89 v3 0.89
+gpqa|llama                                              p'=0.315 | bma x1.44 graph x1.52 fp x1.52 v3 x1.43 | couv g 0.90 fp 0.91 v3 0.91
+gpqa|mistral                                            p'=0.295 | bma x1.36 graph x1.34 fp x1.34 v3 x1.29 | couv g 0.90 fp 0.90 v3 0.92
+gpqa|qwen2                                              p'=0.328 | bma x1.08 graph x1.20 fp x1.20 v3 x1.20 | couv g 0.92 fp 0.91 v3 0.92
+gpqa|gemma12                                            p'=0.359 | bma x1.05 graph x1.19 fp x1.19 v3 x1.15 | couv g 0.89 fp 0.88 v3 0.90
+gsm8k|qwen                                              p'=0.938 | bma x1.39 graph x0.93 fp x0.95 v3 x1.00 | couv g 0.91 fp 0.91 v3 0.93
+gsm8k|llama                                             p'=0.842 | bma x1.14 graph x1.24 fp x1.25 v3 x1.26 | couv g 0.93 fp 0.93 v3 0.94
+gsm8k|mistral                                           p'=0.550 | bma x1.12 graph x1.29 fp x1.28 v3 x1.27 | couv g 0.92 fp 0.92 v3 0.93
+gsm8k|qwen2                                             p'=0.907 | bma x1.16 graph x1.19 fp x1.18 v3 x1.21 | couv g 0.92 fp 0.92 v3 0.93
+gsm8k|gemma12                                           p'=0.854 | bma x1.02 graph x1.26 fp x1.27 v3 x1.27 | couv g 0.92 fp 0.92 v3 0.92
+mathfull|qwen                                           p'=0.761 | bma x1.59 graph x1.54 fp x1.55 v3 x1.49 | couv g 0.85 fp 0.86 v3 0.87
+mathfull|llama                                          p'=0.435 | bma x1.17 graph x1.48 fp x1.49 v3 x1.44 | couv g 0.91 fp 0.91 v3 0.92
+mathfull|mistral                                        p'=0.109 | bma x1.26 graph x1.19 fp x1.19 v3 x1.18 | couv g 0.89 fp 0.89 v3 0.90
+mathfull|qwen2                                          p'=0.702 | bma x1.26 graph x1.41 fp x1.43 v3 x1.35 | couv g 0.83 fp 0.85 v3 0.85
+mathfull|gemma12                                        p'=0.449 | bma x1.10 graph x1.60 fp x1.60 v3 x1.51 | couv g 0.91 fp 0.91 v3 0.93
+humaneval|qwen                                          p'=0.774 | bma x1.23 graph x1.38 fp x1.39 v3 x1.36 | couv g 0.93 fp 0.91 v3 0.92
+humaneval|llama                                         p'=0.585 | bma x1.29 graph x1.46 fp x1.44 v3 x1.37 | couv g 0.92 fp 0.91 v3 0.92
+humaneval|mistral                                       p'=0.390 | bma x1.29 graph x1.59 fp x1.56 v3 x1.50 | couv g 0.92 fp 0.92 v3 0.91
+humaneval|qwen2                                         p'=0.762 | bma x1.13 graph x1.16 fp x1.15 v3 x1.11 | couv g 0.85 fp 0.84 v3 0.83
+humaneval|gemma12                                       p'=0.591 | bma x1.05 graph x1.38 fp x1.36 v3 x1.30 | couv g 0.94 fp 0.94 v3 0.94
+mbpp|qwen                                               p'=0.620 | bma x1.54 graph x1.82 fp x1.78 v3 x1.72 | couv g 0.94 fp 0.94 v3 0.94
+mbpp|llama                                              p'=0.536 | bma x2.33 graph x2.86 fp x2.84 v3 x2.67 | couv g 0.95 fp 0.97 v3 0.96
+mbpp|mistral                                            p'=0.334 | bma x1.48 graph x2.09 fp x2.09 v3 x1.97 | couv g 0.95 fp 0.95 v3 0.95
+mbpp|qwen2                                              p'=0.594 | bma x1.23 graph x1.45 fp x1.44 v3 x1.42 | couv g 0.93 fp 0.94 v3 0.95
+mbpp|gemma12                                            p'=0.522 | bma x1.43 graph x1.81 fp x1.80 v3 x1.71 | couv g 0.91 fp 0.91 v3 0.92
+
+tous (30)
+  bma       gain médian x1.259 min x1.02 >=0,95 sur 100% | couv moy 0.928 min 0.875
+  graph     gain médian x1.402 min x0.93 >=0,95 sur 97% | couv moy 0.909 min 0.835
+  graph_fp  gain médian x1.408 min x0.95 >=0,95 sur 100% | couv moy 0.908 min 0.840
+  graph_v3  gain médian x1.365 min x1.00 >=0,95 sur 100% | couv moy 0.916 min 0.835
+
+p' >= 0,10 (30)
+  bma       gain médian x1.259 min x1.02 >=0,95 sur 100% | couv moy 0.928 min 0.875
+  graph     gain médian x1.402 min x0.93 >=0,95 sur 97% | couv moy 0.909 min 0.835
+  graph_fp  gain médian x1.408 min x0.95 >=0,95 sur 100% | couv moy 0.908 min 0.840
+  graph_v3  gain médian x1.365 min x1.00 >=0,95 sur 100% | couv moy 0.916 min 0.835

@@ -159,6 +159,122 @@ def graph_logit(X: np.ndarray, probe_idx: np.ndarray, y_probe: np.ndarray, slope
                     dict(ess=float(ess), slopes=beta[1:].tolist()))
 
 
+def _logit_posterior(Z: np.ndarray, y: np.ndarray, prec: np.ndarray, draws: int, rng, mu: np.ndarray | None = None):
+    """Postérieur de la régression logistique bayésienne (prior N(0, prec⁻¹)) par échantillonnage d'importance
+    autour du mode (proposition t multivariée à 4 ddl, covariance de Laplace × 1,5).
+    Renvoie (tirages rééchantillonnés, log vraisemblance marginale estimée, ESS)."""
+    from scipy.special import gammaln
+    k = Z.shape[1]
+    mu = np.zeros(k) if mu is None else np.asarray(mu, float)
+    beta = mu.copy()
+    for _ in range(60):
+        p = 1 / (1 + np.exp(-(Z @ beta)))
+        grad = Z.T @ (y - p) - prec @ (beta - mu)
+        H = Z.T @ (Z * (p * (1 - p))[:, None]) + prec
+        step = np.linalg.solve(H, grad)
+        beta += step
+        if np.abs(step).max() < 1e-9:
+            break
+    S = np.linalg.inv(H) * 1.5
+    L = np.linalg.cholesky(S)
+    nu = 4
+    u = rng.standard_normal((draws, k)) / np.sqrt(rng.chisquare(nu, draws) / nu)[:, None]
+    B = beta + u @ L.T
+    logq = (gammaln((nu + k) / 2) - gammaln(nu / 2) - k / 2 * np.log(nu * np.pi)
+            - np.log(np.diag(L)).sum() - (nu + k) / 2 * np.log1p((u ** 2).sum(axis=1) / nu))
+    eta = B @ Z.T
+    loglik = (y * eta - np.logaddexp(0, eta)).sum(axis=1)
+    logprior = (-0.5 * np.einsum("ij,jk,ik->i", B - mu, prec, B - mu) - k / 2 * np.log(2 * np.pi)
+                + 0.5 * np.linalg.slogdet(prec)[1])
+    logw = loglik + logprior - logq
+    mx = logw.max()
+    log_ml = mx + np.log(np.mean(np.exp(logw - mx)))
+    w = np.exp(logw - mx); w /= w.sum()
+    return B[rng.choice(draws, draws, p=w)], float(log_ml), float(1 / (w ** 2).sum())
+
+
+def graph_bma_logit(X: np.ndarray, probe_idx: np.ndarray, y_probe: np.ndarray, slope_sd: float = 1.0,
+                    intercept_sd: float = 2.0, draws: int = 3000, rng=None, level: float = LEVEL,
+                    finite_population: bool = True, average: bool = True,
+                    slope_mean: np.ndarray | None = None, slope_sds: np.ndarray | None = None) -> Estimate:
+    """Estimateur graphe v3 (deux corrections de principe, fixées avant toute donnée de confirmation) :
+    1. Population finie : la cible est le taux réalisé sur les N tâches ; les probes y entrent par leur résultat
+       observé, les N − m autres tâches par un tirage de Bernoulli(p_j) (incertitude de prédiction, pas seulement
+       de paramètre).
+    2. Moyenne de modèles : tous les sous-ensembles de covariables (2^d modèles, dont « aucun lien » = reset),
+       même prior, pondérés par leur vraisemblance marginale estimée par échantillonnage d'importance ;
+       prior uniforme sur les modèles. Le graphe n'est utilisé que si les probes le soutiennent."""
+    rng = rng or np.random.default_rng()
+    N, d = X.shape
+    y = y_probe.astype(float)
+    mask = np.zeros(N, bool); mask[probe_idx] = True
+    subsets = [()] + [tuple(c for c in range(d) if (s >> c) & 1) for s in range(1, 2 ** d)] if average else [tuple(range(d))]
+    fits = []
+    for cols in subsets:
+        Z = np.column_stack([np.ones(len(y))] + [X[probe_idx, c] for c in cols])
+        sds = [slope_sd if slope_sds is None else slope_sds[c] for c in cols]
+        mus = [0.0] + [0.0 if slope_mean is None else slope_mean[c] for c in cols]
+        prec = np.diag([1 / intercept_sd ** 2] + [1 / s ** 2 for s in sds])
+        B, lml, ess = _logit_posterior(Z, y, prec, draws, rng, mu=np.array(mus))
+        fits.append((cols, B, lml, ess))
+    lml = np.array([f[2] for f in fits])
+    post = np.exp(lml - lml.max()); post /= post.sum()
+    counts = rng.multinomial(draws, post)
+    pts, tots = [], []
+    for (cols, B, _, _), cnt in zip(fits, counts):
+        if cnt == 0:
+            continue
+        Bc = B[:cnt]
+        Xc = np.column_stack([np.ones(N)] + [X[:, c] for c in cols])
+        P = 1 / (1 + np.exp(-(Bc @ Xc.T)))                                  # (cnt, N)
+        if finite_population:
+            rest = P[:, ~mask]
+            pts.append((y.sum() + rest.sum(axis=1)) / N)
+            tots.append((y.sum() + (rng.random(rest.shape) < rest).sum(axis=1)) / N)
+        else:
+            pts.append(P.mean(axis=1)); tots.append(P.mean(axis=1))
+    pt, tot = np.concatenate(pts), np.concatenate(tots)
+    a = (1 - level) / 2
+    lo, hi = np.quantile(tot, [a, 1 - a])
+    return Estimate(float(pt.mean()), float(lo), float(hi), "graph_bma_logit",
+                    dict(posterior={str(f[0]): float(p) for f, p in zip(fits, post)}))
+
+
+def _logit_map(z: np.ndarray, y: np.ndarray, sd: float = 10.0) -> np.ndarray:
+    Z = np.column_stack([np.ones(len(y)), z]); y = y.astype(float)
+    beta = np.zeros(2); prec = np.eye(2) / sd ** 2
+    for _ in range(60):
+        p = 1 / (1 + np.exp(-(Z @ beta)))
+        H = Z.T @ (Z * (p * (1 - p))[:, None]) + prec
+        step = np.linalg.solve(H, Z.T @ (y - p) - prec @ beta)
+        beta += step
+        if np.abs(step).max() < 1e-9:
+            break
+    return beta
+
+
+def ecosystem_slope_prior(aux: np.ndarray | None, min_agents: int = 3, floor_sd: float = 0.5):
+    """Prior empirique (graphe) pour la pente de difficulté : chaque agent a de l'écosystème est régressé sur la
+    difficulté vue par les AUTRES agents (logit lissé, centré-réduit), sur toutes les tâches. Le prior de v' sur
+    cette pente est N(moyenne, écart-type² + floor_sd²) des pentes observées : la façon dont les agents existants
+    dépendent de la difficulté des tâches. Moins de min_agents agents -> None (prior par défaut N(0, 1))."""
+    if aux is None or len(aux) < min_agents:
+        return None
+    k = aux.shape[0]
+    slopes = []
+    for a in range(k):
+        others = np.delete(aux, a, axis=0)
+        s = (others.sum(axis=0) + 0.5) / (k - 1 + 1)
+        z = np.log(s / (1 - s)); sd = z.std()
+        if sd == 0 or aux[a].all() or not aux[a].any():
+            continue
+        slopes.append(_logit_map((z - z.mean()) / sd, aux[a])[1])
+    if len(slopes) < min_agents:
+        return None
+    slopes = np.array(slopes)
+    return float(slopes.mean()), float(np.sqrt(slopes.var() + floor_sd ** 2))
+
+
 def r2_strata(y_new: np.ndarray, g: np.ndarray) -> float:
     """Part de la variance de y_new expliquée par les strates g (R² inter-strates)."""
     y = y_new.astype(float)
@@ -172,3 +288,21 @@ def r2_strata(y_new: np.ndarray, g: np.ndarray) -> float:
 
 def gain_law_r2(r2: float, m: int, n: int) -> float:
     return 1.0 / (1.0 - r2 + r2 * m / n)
+
+
+def graph_v3(X: np.ndarray, probe_idx: np.ndarray, y_probe: np.ndarray, y_prev: np.ndarray, draws: int = 3000,
+             rng=None, level: float = LEVEL) -> Estimate:
+    """Estimateur graphe v3 = graph_bma_logit (population finie + moyenne de modèles), avec une garde
+    d'identifiabilité : si toutes les probes ont le même résultat (0 succès ou 0 échec), aucune pente n'est
+    identifiable à partir des probes et le prior seul déciderait ; on revient alors au double échantillonnage
+    sur le seul prédécesseur (double_sampling_bma), qui n'a pas de pente à estimer."""
+    from .estimators import double_sampling_bma
+    rng = rng or np.random.default_rng()
+    s = int(y_probe.sum()); f = len(y_probe) - s
+    if min(s, f) == 0:
+        a, b = y_prev[probe_idx], y_probe.astype(bool)
+        e = double_sampling_bma(int(y_prev.sum()), int((~y_prev).sum()), int((a & b).sum()), int((a & ~b).sum()),
+                                int((~a & b).sum()), int((~a & ~b).sum()), rng=rng, draws=1500, level=level)
+        return Estimate(e.mean, e.lo, e.hi, "graph_v3", dict(fallback=True))
+    e = graph_bma_logit(X, probe_idx, y_probe, draws=draws, rng=rng, level=level)
+    return Estimate(e.mean, e.lo, e.hi, "graph_v3", dict(fallback=False, **e.extra))
