@@ -37,5 +37,11 @@ Chaque entrée : date, ce qui change, pourquoi, effet attendu sur les conclusion
   exploratoire sans elle (2 transitions en moins) : graphe ×2,03, pire cas ×0,76, H7 p = 0,022, H2 inchangée.
   Aucun verdict pré-enregistré n'est modifié ; H6 échoue dans les deux cas.
 - **Analyses descriptives v3** : `experiments/v3_descriptive.py` (prévues comme « rapportées sans critère »).
+- **7 novembre 2026, développement v4 avant le gel `prereg-v4`** (données déjà vues) : `dev_v4_design.py`
+  (plan stratifié ; deux passes, la seconde avec GREG), `dev_v4_law.py`. La variance de GREG a été corrigée une
+  fois en développement (tirage uniforme : variance du résidu moyen ; plan stratifié : strates appariées) ;
+  plancher de variance fixé à un quart de la variance binomiale de Jeffreys. Toutes les variantes sont listées
+  dans PREREGISTRATION_V4.md.
+- **Après le gel v4** : aucun écart ; tests ajoutés (`tests/test_v4_design.py`), sans effet sur l'analyse.
 - **Constat** : écart de 0,6 point entre notre taux de régression Mistral MATH (55,8 %) et celui publié par
   Sheng & Lu (55,2 %). Non expliqué ; sans effet sur les conclusions.

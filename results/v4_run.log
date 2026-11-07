@@ -1,0 +1,33 @@
+fait : rag 20231010_rag_swellama7b -> 20240402_rag_gpt4
+fait : rag 20231010_rag_swellama7b -> 20240402_rag_claude3opus
+fait : swe-agent 20240402_sweagent_gpt4 -> 20240620_sweagent_claude3.5sonnet
+fait : autocoderover 20240530_autocoderover-v20240408 -> 20240621_autocoderover-v20240620
+fait : moatless 20240617_moatless_gpt4o -> 20240623_moatless_claude35sonnet
+fait : amazon-q 20240509_amazon-q-developer-agent-20240430-dev -> 20240721_amazon-q-developer-agent-20240719-dev
+fait : swe-agent 20240620_sweagent_claude3.5sonnet -> 20240728_sweagent_gpt4o
+fait : marscode 20240723_marscode-agent-dev -> 20240912_marscode-agent-dev
+fait : ibm 20240612_IBM_Research_Agent101 -> 20241016_IBM-SWE-1.0
+fait : openhands 20240725_opendevin_codeact_v1.8_claude35sonnet -> 20241025_OpenHands-CodeAct-2.1-sonnet-20241022
+fait : agentless 20240630_agentless_gpt4o -> 20241028_agentless-1.5_gpt4o
+fait : appmap-navie 20240615_appmap-navie_gpt4o -> 20241113_navie-2-gpt4o-sonnet
+fait : moatless 20240623_moatless_claude35sonnet -> 20241117_moatless_claude-3.5-sonnet-20241022
+fait : agentless 20241028_agentless-1.5_gpt4o -> 20241202_agentless-1.5_claude-3.5-sonnet-20241022
+fait : gru 20240811_gru -> 20241208_gru
+fait : moatless 20241117_moatless_claude-3.5-sonnet-20241022 -> 20250111_moatless_deepseek_v3
+fait : opencsg 20240524_opencsg_starship_gpt4 -> 20250113_OpenCSG-Starship-Agentic-Coder_gpt4o
+fait : isoform 20240829_Isoform -> 20250114_Isoform
+fait : moatless 20250111_moatless_deepseek_v3 -> 20250114_moatless_claude-3.5-sonnet-20241022
+fait : agentless 20241202_agentless-1.5_claude-3.5-sonnet-20241022 -> 20250214_agentless_lite_o3_mini
+fait : swe-agent 20240728_sweagent_gpt4o -> 20250226_sweagent_claude-3-7-sonnet-20250219
+fait : swe-fixer 20241128_SWE-Fixer_Qwen2.5-7b-retriever_Qwen2.5-72b-editor_20241128 -> 20250306_SWE-Fixer_Qwen2.5-7b-retriever_Qwen2.5-72b-editor
+fait : codefuse 20250104_codefuse-aais -> 20250310_codefuse-cgm
+fait : swe-agent 20250226_sweagent_claude-3-7-sonnet-20250219 -> 20250526_sweagent_claude-4-sonnet-20250514
+fait : kgcompass 20250609_KGCompass_deepseek-v3 -> 20250619_KGCompass_claude-3.5-sonnet-20241022
+fait : experepair 20250613_ExpeRepair-v1.0 -> 20250625_ExpeRepair-v1_claude-4-sonnet-20250514
+fait : agentless 20250214_agentless_lite_o3_mini -> 20250627_agentless_MCTS-Refine-7B
+fait : kgcompass 20250619_KGCompass_claude-3.5-sonnet-20241022 -> 20250906_KGCompass_claude-4-sonnet-20250514
+H1-v4 — 28 transitions : erreur médiane de la loi phi² 0.039 ; soutenue (<= 0,20) : True
+H8-v4 — loi du plan stratifié : erreur médiane 0.088 (n=28), η² médian 0.539 ; soutenue (<= 0,20) : True
+H9-v4 — v3_s x2.144 vs graphe uniforme (v3) x1.953 vs prédécesseur seul x1.470 ; Wilcoxon p = 1.6e-07 ; >= 0,95 sur 96% ; couverture 0.948 (min 0.870) ; soutenue : True
+H10-v4 — 21 transitions avec |écart| >= 5 points : erreur de décision v3_s 0.065 vs reset uniforme 0.141 ; Wilcoxon p = 9.8e-05 ; soutenue (p < 0,05) : True
+H11-v4 — estimateur assisté par modèle (GREG, plan stratifié) : pire gain x1.056, médiane x1.844 ; couverture moy 0.907 (min 0.625, non testée) ; soutenue (pire gain >= 0,80) : True

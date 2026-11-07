@@ -1,0 +1,5 @@
+H1-v4 — 28 transitions : erreur médiane de la loi phi² 0.039 ; soutenue (<= 0,20) : True
+H8-v4 — loi du plan stratifié : erreur médiane 0.088 (n=28), η² médian 0.539 ; soutenue (<= 0,20) : True
+H9-v4 — v3_s x2.144 vs graphe uniforme (v3) x1.953 vs prédécesseur seul x1.470 ; Wilcoxon p = 1.6e-07 ; >= 0,95 sur 96% ; couverture 0.948 (min 0.870) ; soutenue : True
+H10-v4 — 21 transitions avec |écart| >= 5 points : erreur de décision v3_s 0.065 vs reset uniforme 0.141 ; Wilcoxon p = 9.8e-05 ; soutenue (p < 0,05) : True
+H11-v4 — estimateur assisté par modèle (GREG, plan stratifié) : pire gain x1.056, médiane x1.844 ; couverture moy 0.907 (min 0.625, non testée) ; soutenue (pire gain >= 0,80) : True
