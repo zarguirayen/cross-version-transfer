@@ -1,49 +1,64 @@
-# cross-version-transfer
+# How Much Is an Agent's History Worth?
 
-Prototype mathématique du projet Agent Wiki (nom de travail). Question : quand on remplace la version
-d'un agent (modèle, prompt, outils), combien de l'information portée par l'historique de l'ancienne
-version reste utilisable pour évaluer la nouvelle ?
+Code, pre-registrations, results and paper for
 
-Idée : l'historique de v n'est pas une preuve pour v'. C'est une **variable auxiliaire** qui partitionne
-les tâches (réussies / ratées par v). Quelques probes appariées mesurent v' dans chaque partie
-(double échantillonnage, Neyman 1938). Le gain d'efficacité attendu suit la loi finie
+> Rayen Zargui. *How Much Is an Agent's History Worth? A Law of Evaluation Transfer Across Agent Versions,
+> Tested in Six Pre-Registered Studies.* Preprint, 2026.
 
-    Gain = m_eff / m = 1 / (1 - phi² + phi² · m / n_v)
+When a new version of an AI agent ships, we organise everything already known as a **graph of agents**: nodes are
+agent (or model) versions, lineage edges link a version to its predecessor, and every node carries its outcome on
+each task of a shared suite. The history is worth `1/(1 − ρ²)` times the tasks, where `ρ²` is the share of the new
+version's task-level variance the graph already explains (`φ²` with the predecessor, `η²` with the task difficulty
+seen by earlier agents). The method: the graph **chooses** the tasks, a cross-fitted model-assisted estimator
+**estimates** the new version's success rate with calibrated intervals, and the same tasks **decide**
+keep-or-replace. See `IDEA.md` for a one-page summary and `paper/main.pdf` for the paper.
 
-où phi est la corrélation, tâche par tâche, entre les résultats de v et de v'.
+## Repository layout
 
-## Contenu
-
-| Chemin | Rôle |
+| Path | Content |
 |---|---|
-| `src/cvt/estimators.py` | reset, héritage complet, double échantillonnage (bayésien, fréquentiste), **moyenne de modèles (méthode retenue)**, information empruntée |
-| `src/cvt/simulate.py` | scénarios synthétiques, tirage des probes, évaluation appariée |
-| `tests/test_transfer_estimator.py` | suite synthétique (15 tests, ~5 s) |
-| `experiments/` | grilles et validations de la porte G1 |
-| `results/` | sorties CSV et journaux |
+| `src/cvt/estimators.py` | random testing (reset), predecessor-only Bayesian double sampling (`double_sampling_bma`), the efficiency law |
+| `src/cvt/graph.py` | graph features, model-based graph estimator (`graph_v3`, `graph_bma_logit`), GREG and cross-fitted GREG (`graph_greg_cf`) |
+| `src/cvt/kernel.py` | the agent-graph kernel: event log, slots and versions, `record`, `plan`, `estimate`, `decide`, `lint`, pages |
+| `tests/` | 22 tests (`python -m pytest -q tests`) |
+| `experiments/` | frozen analysis scripts of each study (`*_preregistered.py`), data loaders, development scripts (`dev_*`) |
+| `docs/` | protocols (`PREREGISTRATION*.md`), hashes (`PREREG*_SHA256.txt`), results (`RESULTS_*.md`), deviations log |
+| `results/` | derived results (replays, summaries) — every number of the paper is generated from these files |
+| `paper/` | LaTeX source; `make_numbers.py` writes all numbers and figures, `check_numbers.py` cross-checks them |
+| `demo/` | kernel case study on the OpenHands lineage (SWE-bench Verified) |
 
-Aucune dépendance au noyau logiciel (API, MCP, framework d'agents) : `numpy`, `scipy`, `pytest`.
+## Pre-registration chain
 
-## Lancer
+Each study was frozen by a git tag and SHA-256 hashes of its protocol and analysis script before any statistic was
+computed on its data. Check a freeze with, e.g.:
+
+    git show prereg-v6 --stat
+    git diff prereg-v6 HEAD -- experiments/v6_unified_preregistered.py experiments/v6_data.py
+    sha256sum -c <(head -5 docs/PREREG_V6_SHA256.txt)
+
+| Tag | Study | Protocol | Results |
+|---|---|---|---|
+| `prereg-v1` | pilot, model versions (Sheng & Lu) | `docs/PREREGISTRATION.md` | `docs/RESULTS_G2.md` |
+| `prereg-v2` | AppWorld agents | `docs/PREREGISTRATION_V2.md` | `docs/RESULTS_V2.md` |
+| `prereg-v3` | SWE-bench Verified | `docs/PREREGISTRATION_V3.md` | `docs/RESULTS_V3.md` |
+| `prereg-v4` | SWE-bench Lite | `docs/PREREGISTRATION_V4.md` | `docs/RESULTS_V4.md` |
+| `prereg-v5` | Multi-SWE-bench (7 languages), SWE-bench test and multilingual | `docs/PREREGISTRATION_V5.md` | `docs/RESULTS_V5.md` |
+| `prereg-v6` | LiveCodeBench, TheAgentCompany (unified method) | `docs/PREREGISTRATION_V6.md` | `docs/RESULTS_V6.md` |
+
+Git timestamps are self-reported: the order of tags and results is recorded, not certified by a third party.
+Deviations are logged in `docs/DEVIATIONS.md`. Protocols and results documents are in French; the paper is in English.
+
+## Reproduce
+
+Python 3.11+ with `numpy`, `scipy`, `matplotlib`, `pyyaml`, `pytest`. Data are not redistributed here; `DATA.md`
+lists every source, its exact commit and where the scripts expect it.
 
     python -m pytest -q tests
-    python experiments/g1_bma_check.py 20
-    python experiments/g1_heldout_validation.py 200 400 20 ds_bma proportional
+    python experiments/v6_unified_preregistered.py 400          # one study (about 40 min on 2 cores)
+    python experiments/kernel_replay_verified.py 100            # kernel validation
+    cd paper && python make_numbers.py && python check_numbers.py && latexmk -pdf main.tex
 
-## Méthode retenue (v0.3.2) : `double_sampling_bma`
+## Licence and citation
 
-Deux modèles concourent : M0 « v' ne dépend pas de v » (q1 = q0) et M1 « v' dépend de v »
-(double échantillonnage). Ils sont pondérés par leur vraisemblance marginale : l'historique n'est
-utilisé que si les probes montrent un lien. Tirage des probes proportionnel. Moyenne lue sur des
-tirages Jeffreys, intervalle à 90 % sur des tirages Clopper-Pearson.
-
-## État de la porte G1 (simulation, 7 novembre 2026)
-
-Sur 200 scénarios tirés au hasard, jamais vus pendant la mise au point (20 probes, historique de 500) :
-
-- gain mesuré / gain prédit par la loi finie : médiane 1,00, 90 % des cas entre 0,93 et 1,06 ;
-- couverture des intervalles à 90 % : moyenne 91,5 %, minimum 87,7 % (reset : 89,7 %, minimum 81,5 %) ;
-- non-dégradation : une seule perte réelle, x0,90, quand v' réussit moins de 10 % des tâches et que les
-  versions sont indépendantes (limite connue).
-
-Tout est synthétique : rien n'est encore établi sur des transitions de modèles réelles (porte G2).
+Code under the MIT licence (`LICENSE`); paper and documents under CC BY 4.0. Cite with `CITATION.cff`.
+The benchmark outputs belong to their authors and keep their own licences.
