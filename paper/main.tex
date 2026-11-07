@@ -16,9 +16,9 @@
 \newcommand{\phisq}{\varphi^2}
 
 \title{How Much Is an Agent's History Worth?\\[2pt]
-\large A Law of Evaluation Transfer Across Agent Versions,\\ Confirmed in Six Pre-Registered Studies}
+\large A Law of Evaluation Transfer Across Agent Versions,\\ Tested in Six Pre-Registered Studies}
 \author{Rayen Zargui\\
-Institut Polytechnique de Paris (\'Ecole Polytechnique, ENSTA Paris)\\
+Institut Polytechnique de Paris\\
 \texttt{rayen.zargui@polytechnique.edu}}
 \date{November 2026}
 
@@ -36,17 +36,21 @@ task-level variance already explained by the graph---$\phisq$ with the predecess
 with the task difficulty seen by all earlier agents (stratified sampling). We turn the law into a three-move
 method: the graph \emph{chooses} the tasks, a cross-fitted model-assisted estimator \emph{estimates} the new
 version's success rate with calibrated intervals, and the same tasks \emph{decide} whether to keep or replace the
-current version. Every hypothesis was pre-registered and frozen by a git tag before the data were examined. After a
+current version. Every confirmatory hypothesis was pre-registered and frozen by a git tag before the data were
+examined. After a
 pilot on model versions, five confirmations cover \NConf{} real version transitions never analysed before:
 agents on AppWorld, SWE-bench (Verified, Lite, test, multilingual), Multi-SWE-bench in seven languages, model
-versions on LiveCodeBench, and office agents on TheAgentCompany. The law predicts the observed efficiency gain
-within \LawErrPooled\% (median) across all \NConf{} transitions, and within 10\% for \LawWithinTen\% of them. With
-20 graph-chosen tasks, the cross-fitted estimator matches about \EquivProbesSix{} random tasks, never lost to random
-testing in the last two confirmations (worst case $\times\GGregMinFive$ and $\times\GGregMinSix$), and its 90\%
-intervals cover the truth \CovGregSix{} of the time; keep-or-replace decisions are wrong
-\DecRedSix--\DecRedFour\% less often than with random testing. Of
+versions on LiveCodeBench, and office agents on TheAgentCompany. Given $\rho^2$, the law predicts the observed
+efficiency gain within \LawErrPooled\% (median) across all \NConf{} transitions---the order of the simulation noise---and
+within 10\% for \LawWithinTen\% of them. Most of the gain comes from letting the graph choose the tasks: with 20
+graph-chosen tasks, estimates are as precise as with about \EquivProbesSix{} random tasks. The cross-fitted estimator
+never lost to random testing in the last two confirmations (worst case $\times\GGregMinFive$ and
+$\times\GGregMinSix$), including on versions that solve almost nothing, and its 90\% intervals covered the truth
+\CovGregSix{} of the time; keep-or-replace decisions were wrong \DecRedSix--\DecRedFour\% less often than with
+random testing. Of
 \HypTotal{} pre-registered hypotheses, \HypSupported{} were supported; we report the \HypFailed{} failures in full.
-We release a small kernel that implements the graph and reproduces these numbers on 89 real transitions.
+We release a small kernel that implements the graph and reproduces the research results when replaying 89 real
+SWE-bench transitions.
 \end{abstract}
 
 \section{Introduction}
@@ -70,12 +74,13 @@ successive versions, and each node carries its task-level results. The question 
 \item \textbf{A law of evaluation transfer} (Section~\ref{sec:law}). We show that classical results of survey
 sampling---double sampling \citep{neyman1938,cochran1977} and stratification---give a closed-form prediction of
 the efficiency gain an agent's history provides, $1/(1-\rho^2)$, with two measurable forms of $\rho^2$: the
-predecessor's $\phisq$ and the graph's $\eta^2$. The law turns ``how much history is transferable'' into a number
-that can be computed before deciding how many tasks to run.
+predecessor's $\phisq$ and the graph's $\eta^2$. The law turns ``how much history is transferable'' into a single
+measurable quantity, which can be estimated from the tested tasks themselves or anticipated from the type of change
+(Table~\ref{tab:atlas}).
 \item \textbf{A three-move method} (Section~\ref{sec:method}). The graph chooses the tasks (stratification on the
-difficulty seen by earlier agents); a cross-fitted generalised regression estimator \citep{sarndal1992,zrnic2024cross}
-with effective-sample-size intervals \citep{korn1998} estimates the new version's rate; the same tasks decide
-keep-or-replace and flag whether the decision is sure.
+difficulty seen by earlier agents), which provides most of the gain; a cross-fitted generalised regression estimator
+\citep{sarndal1992,zrnic2024cross} with effective-sample-size intervals \citep{korn1998} estimates the new version's
+rate without catastrophic losses; the same tasks decide keep-or-replace and flag whether the decision is sure.
 \item \textbf{A pre-registered evidence chain} (Section~\ref{sec:protocol}). Six studies---one pilot and five
 confirmations on data never analysed before---each frozen by a git tag and SHA-256 hashes before the first
 statistic, with every development step done on previously seen data only and every deviation logged.
@@ -96,7 +101,9 @@ lineage edge $v\to v'$ when $v'$ is the next version of the same product (the sa
 When a new version $v'$ arrives, its outcome vector is unknown. We test it on $m\ll N$ \emph{probe} tasks and must
 (i) estimate $p_{v'}$ with an interval, and (ii) decide whether $p_{v'}\ge p_v$. The baseline is \emph{random
 testing}: $m$ tasks drawn uniformly, estimated by their success rate (we use a Jeffreys-smoothed mean with
-Clopper--Pearson-type intervals). We measure every method by its \emph{gain}:
+Clopper--Pearson-type intervals; with $m=20$ the smoothing lowers the mean squared error of the plain sample mean by
+about 9\% for rates between 0.3 and 0.7, making the baseline slightly harder to beat, and raises it by about 10\% near
+5\%). We measure every method by its \emph{gain}:
 \begin{equation}
 \mathrm{Gain} = \frac{\mathrm{MSE}(\text{random testing with } m \text{ tasks})}{\mathrm{MSE}(\text{method with } m \text{ tasks})},
 \end{equation}
@@ -110,21 +117,29 @@ observed on a large first-phase sample, the expensive variable on a subsample. L
 between $y_v$ and $y_{v'}$ over tasks (the phi coefficient of their $2\times2$ flip table).
 
 \begin{proposition}[Predecessor law]\label{prop:phi}
-With the predecessor known on $N$ tasks and $m$ probes drawn at random, the double-sampling regression estimator
-has, to first order, variance $S^2(1-\phisq)/m + \phisq S^2/N$ \citep[ch.~12]{cochran1977}, where $S^2$ is
-the variance of $y_{v'}$ and tasks are viewed as draws from a population of tasks. Its gain over random testing is
-therefore
+Let the predecessor be known on all $N$ tasks and $m$ probes be drawn at random. To first order, the double-sampling
+regression estimator has variance $S^2(1-\phisq)/m + \phisq S^2/N$ when tasks are viewed as draws from a
+population of tasks \citep[ch.~12]{cochran1977}, where $S^2$ is the variance of $y_{v'}$. Its gain over random
+testing is then
 \begin{equation}\label{eq:law}
 \mathrm{Gain}_{\varphi} = \frac{1}{1-\phisq+\phisq\, m/N}.
 \end{equation}
+If instead the target is the success rate on the $N$ tasks themselves (finite population), the second term vanishes and
+the gain is $1/(1-\phisq)$.
 \end{proposition}
-The gain depends on one number, $\phisq$: how much of the new version's task-level behaviour its predecessor
-already explains. A minor model update keeps $\phisq$ high; a rewrite of the agent's orchestration can erase it.
+The two targets differ by a factor $(1-\phisq+\phisq m/N)/(1-\phisq)$, close to 1 when $m\ll N$. We pre-registered
+(\ref{eq:law}); our replays measure error against the finite-population rate, and the observed gains fall between the two
+forms (median deviation \LawBiasSuper\% from (\ref{eq:law}) and \LawBiasFinite\% from $1/(1-\phisq)$). The estimator we
+test is the Bayesian double-sampling estimator of Section~\ref{sec:method}, which behaves like post-stratification on the
+predecessor's outcome when the link is informative. Either way, the gain depends on one number, $\phisq$: how much of the
+new version's task-level behaviour its predecessor already explains. A minor model update keeps $\phisq$ high; a rewrite
+of the agent's orchestration can erase it.
 
 \paragraph{The graph.} The rest of the graph carries a different kind of information: which tasks are hard. Sort the
 $N$ tasks by the difficulty seen by all earlier agents, cut them into $m$ contiguous strata of size $N_h\approx
-N/m$, and test one task per stratum. The success rate of the probes is unbiased for $p_{v'}$ because the strata
-are built from the history only.
+N/m$ (sizes differ by at most one task), and test one task per stratum. Because the strata are built from the history
+only, the probe outcomes weighted by $N_h/N$ are unbiased for $p_{v'}$; with equal-size strata this is the plain
+probe mean.
 
 \begin{proposition}[Graph law]\label{prop:eta}
 Under this stratified design, the gain over random testing is
@@ -237,6 +252,12 @@ error) over the \NConf{} confirmation transitions; the correlation of log-gains 
 SWE-bench Lite and \EtaMedSix{} on LiveCodeBench, i.e.\ the history of other agents explains about half of a new
 version's task-level variance.
 
+\paragraph{How precise is this test?} Each observed gain is itself estimated from 400 replays; a bootstrap over replays
+puts its relative Monte Carlo error at about \MCErr\% (median over transitions). The residual error of the law is
+therefore of the order of the simulation noise. The tests above use the true $\rho^2$, measured on all $N$ tasks. In
+practice $\rho^2$ must be estimated: in the pilot, plugging the $\phisq$ estimated from the 20 probes into
+(\ref{eq:law}) predicted the gain within \LawErrPilotProbe\% (median), against \LawErrPilot\% with the true value.
+
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{fig_law.pdf}
@@ -249,9 +270,10 @@ studies (\NAll{} transitions). Right: graph law (\ref{eq:strat}) for graph-chose
 \subsection{The graph is worth more than the predecessor}
 Figure~\ref{fig:gains} summarises the gains. Using only the predecessor gives median gains of
 $\times\GPredTwo$ (AppWorld), $\times\GPredThree$ (Verified), $\times\GPredFour$ (Lite), $\times\GPredFive$ (v5)
-and $\times\GPredSix$ (v6). Using the whole graph raises them to $\times\GGraphTwo$, $\times\GGraphThree$,
-$\times\GGraphFour$, $\times\GGraphFive$ and $\times\GGraphSix$ with random tasks; on SWE-bench Verified the
-difference is significant ($p=\PvalFiveVsPredThree$, paired Wilcoxon). Letting the graph also choose the tasks gives
+and $\times\GPredSix$ (v6). With random tasks, using the whole graph raises them in four of the five
+confirmations, to $\times\GGraphTwo$, $\times\GGraphThree$, $\times\GGraphFour$ and $\times\GGraphSix$
+(on SWE-bench Verified, $p=\PvalFiveVsPredThree$, paired Wilcoxon); the exception is v5 ($\times\GGraphFive$),
+where most new versions solve almost nothing (Section~\ref{sec:robust}). Letting the graph also choose the tasks gives
 $\times\GStratFour$ on Lite and $\times\GStratSix$ on v6, where 20 graph-chosen tasks are worth about
 \EquivProbesFour{} and \EquivProbesSix{} random ones.
 
@@ -263,11 +285,11 @@ The robust estimator was introduced in v5 (its non-cross-fitted predecessor in v
 \label{fig:gains}
 \end{figure}
 
-\paragraph{What survives a version change.} The AppWorld design crosses four scaffolds with four models, so the
-type of change can be isolated (Table~\ref{tab:atlas}). A model upgrade at fixed scaffold (GPT-4 Turbo $\to$ GPT-4o)
+\paragraph{What survives a version change.} The AppWorld agents cover 14 of the 16 combinations of four scaffolds and
+four models, so the type of change can be isolated (Table~\ref{tab:atlas}). A model upgrade at fixed scaffold (GPT-4 Turbo $\to$ GPT-4o)
 keeps a median $\phisq=\AtlasModel$; a scaffold change at fixed model keeps \AtlasArch; a change of model family
-keeps \AtlasFamily. \emph{Rewriting an agent's orchestration erases almost as much transferable information as
-changing model provider.} When the predecessor carries nothing, the rest of the graph still does: for family changes
+keeps \AtlasFamily. \emph{Rewriting an agent's orchestration erases most of the transferable information---its
+effect is closer to a change of model family than to a model upgrade.} When the predecessor carries nothing, the rest of the graph still does: for family changes
 the graph gains $\times\AtlasGraphFamily$ where the predecessor gains $\times\AtlasPredFamily$.
 
 \begin{table}[t]
@@ -291,7 +313,23 @@ predecessor than with an unrelated earlier agent of the same success rate (media
 predecessor changes the median gain from $\times\GEcoOnlyThree$ to $\times\GGraphThreePrecise$: statistically detectable
 ($p=\PvalHSevenThree$) and practically negligible. The value lies in the graph, not in the lineage alone.
 
-\subsection{Robust and calibrated estimation}
+\subsection{Where the gain comes from (exploratory)}
+The following comparisons were not pre-registered. Graph-chosen tasks are the analogue of the difficulty-stratified
+subsets deployed by \citet{she2026production}; the plain mean of these tasks is therefore the natural baseline for our
+estimators. That plain mean already gains $\times\GRstratFour$, $\times\GRstratFive$ and $\times\GRstratSix$ in v4,
+v5 and v6. The model-based graph estimator improves on it significantly only in v4 ($p=\PStratVsRstratFour$; v6:
+$p=\PStratVsRstratSix$), and GREG only in v5 ($p=\PGregVsRstratFive$; v4, without cross-fitting: $p=\PGregVsRstratFour$; v6:
+$p=\PGregVsRstratSix$), where the
+plain mean's worst case was $\times\GRstratMinXFive$. \emph{Most of the efficiency therefore comes from which tasks the
+graph selects}---the quantity Proposition~\ref{prop:eta} predicts---while the estimator mainly buys robustness when
+versions solve almost nothing, and calibration: the Clopper--Pearson intervals of the plain mean ignore the
+stratification and over-cover (\CovRstratFour, \CovRstratFive, \CovRstratSix). Interval widths tell the same story. On
+the development data of v5 (Lite, Verified, AppWorld), mean 90\% interval widths were \WidthReset{} for random
+testing, \WidthStrat{} for the model-based graph estimator (\WidthStratRed\% narrower) and \WidthGreg{} for the
+cross-fitted GREG: its intervals are calibrated, but they are not narrower than random testing's, because they stay
+wide for versions with few successes.
+
+\subsection{Robust and calibrated estimation}\label{sec:robust}
 Model-based estimates can fail on versions that solve fewer than 10\% of tasks: on SWE-bench Verified the graph
 estimator's worst transition was $\times\WorstVThree$ (a submission published with zero resolved tasks), while on
 the \ThreeMidN{} transitions between 10\% and 90\% its worst case was $\times\ThreeMidMin$. Study v5 was dominated by
@@ -336,7 +374,8 @@ stratum weights), \texttt{estimate} (cross-fitted GREG on the planned probes), \
 flagged sure or not), and \texttt{lint} (lineage inconsistencies, probes outside the plan, training tasks used as
 evidence). Each slot gets a Markdown page listing its versions, estimates and intervals.
 
-\paragraph{Validation.} Criteria fixed before the run: replaying the 89 SWE-bench Verified transitions through the
+\paragraph{Validation.} Criteria fixed before the run (on data already analysed, so this tests the software, not the
+method): replaying the 89 SWE-bench Verified transitions through the
 kernel alone must reproduce the research gain within 10\%, keep coverage above 0.88, and make fewer decision errors
 than random testing. The
 kernel obtained a median gain of $\times\KernelGain$, coverage \KernelCov, and decision errors of \KernelDec\% versus
@@ -354,7 +393,7 @@ few items; active testing chooses test points adaptively \citep{kossen2021active
 predicts task-level success on coding benchmarks by separating model and scaffold abilities
 \citep{ge2026psychometrics}; \citet{ndzomga2026efficient} keeps tasks with mid-range historical pass rates;
 \citet{she2026production} study an evolving production agent and deploy difficulty-stratified fixed subsets with
-IRT-based estimates; \citet{johnson2026cached} estimate new agents' scores from cached traces of reference systems.
+IRT-based estimates---the closest design to our task selection, whose gain Proposition~\ref{prop:eta} predicts; \citet{johnson2026cached} estimate new agents' scores from cached traces of reference systems.
 These works report point accuracy (errors, rank correlations). We add a closed-form law that predicts the gain before
 testing, calibrated intervals that survive model failure, the keep-or-replace decision, and pre-registered evidence.
 
@@ -368,14 +407,28 @@ come from the graph of earlier agents rather than from a single predictor.
 after an LLM update. We do not predict individual flips; we measure how much the history reduces the cost of
 estimating and deciding, which is what a team shipping a new version needs.
 
-\section{Limitations}
-The law assumes probes drawn at random (or within strata) from a fixed task suite; it says nothing about tasks
-outside the suite. Gains depend on the graph: with fewer than 20 earlier agents the median gain on SWE-bench Verified
+\section{Limitations and threats to validity}
+\paragraph{Scope.} The law assumes probes drawn at random (or within strata) from a fixed task suite; it says nothing
+about tasks outside the suite. Gains depend on the graph: with fewer than 20 earlier agents the median gain on SWE-bench Verified
 was markedly lower. Versions that solve almost nothing remain hard for decisions. Several sources share agents or
 products (SWE-bench splits; 21 of the 33 transitions in v5 are the same model change in different scaffolds and
 languages), and tasks within a repository are correlated. Release dates in v6 were recorded from memory by the
 research assistant (Acknowledgements). LiveCodeBench evaluates models rather than agents, and TheAgentCompany
 contributes only two transitions.
+
+\paragraph{Statistics.} Paired Wilcoxon tests treat transitions as independent units, although transitions of a study
+share agents and ecosystems; their $p$-values should be read as descriptive of consistency rather than exact. Each
+study's hypotheses were tested at level 0.05 without correction across the six studies; the ledger
+(Appendix~\ref{app:ledger}) reports all \HypTotal{} tests so that readers can apply their own correction. The law is
+tested at the true $\rho^2$; with $\rho^2$ estimated from the probes, it was tested only in the pilot.
+
+\paragraph{Baselines.} We compare against random testing, a predecessor-only estimator, an IRT-like logistic model on
+ecosystem difficulty (v3), and the plain mean of graph-chosen tasks (exploratory). We did not re-implement
+multidimensional IRT or gp-IRT \citep{polo2024tiny,she2026production}; our claims concern the law, calibration and
+decisions, not point accuracy against these methods.
+
+\paragraph{Kernel.} The kernel was validated on SWE-bench Verified, which had already been analysed; this is a test of
+the software, not new evidence for the method.
 
 \section{Conclusion}
 An agent's history is worth a computable number of tasks. Across \NConf{} real version transitions in five
@@ -384,8 +437,9 @@ the graph of earlier agents chooses the tasks, estimates with calibrated interva
 of evaluating a new version. Evaluation does not have to start from zero at every release: the graph of agents remembers.
 
 \section*{Code and data availability}
-Code, protocols, frozen analysis scripts, hashes, raw replay results and the kernel are in the accompanying
-repository; every number in this paper is generated from the result files by \texttt{paper/make\_numbers.py}. The
+Code, protocols, frozen analysis scripts with their git tags and hashes, random seeds, raw replay results and the
+kernel are in the accompanying repository, which will be made public with this preprint. Every number in this paper is
+generated from the result files by a script (\texttt{make\_numbers.py}). The
 benchmark outputs are public: the AppWorld leaderboard bundles, the GitHub repositories
 \texttt{SWE-bench/\allowbreak experiments}, \texttt{multi-swe-bench/\allowbreak experiments},
 \texttt{LiveCodeBench/\allowbreak submissions} and \texttt{TheAgentCompany/\allowbreak experiments}, and the data of

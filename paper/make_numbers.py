@@ -12,6 +12,12 @@ rd = lambda p: list(csv.DictReader(open(RES / p)))
 f = lambda S, k: np.array([float(r[k]) for r in S])
 M = {}
 
+def texp(x):
+    v = float(x)
+    if v >= 1e-3:
+        return f"{v:.3f}".rstrip("0")
+    m_, e_ = f"{v:.1e}".split("e"); return f"{m_}\\times10^{{{int(e_)}}}"
+
 def put(name, val, fmt="{:.2f}"):
     M[name] = fmt.format(val) if not isinstance(val, str) else val
 
@@ -115,11 +121,6 @@ put("DetProbes", f(reg, "mean_probes").mean(), "{:.0f}"); put("DetFA", 100 * f(o
 # summaries : p-valeurs et verdicts recopiés des sorties figées
 def grab(path, pat, grp=1):
     m = re.search(pat, open(RES / path).read()); return m.group(grp)
-def texp(x):
-    v = float(x)
-    if v >= 1e-3:
-        return f"{v:.3f}".rstrip("0")
-    m_, e_ = f"{v:.1e}".split("e"); return f"{m_}\\times10^{{{int(e_)}}}"
 put("PvalFiveVsPredThree", texp(grab("v3/summary.txt", r"H5-v3.*?Wilcoxon p = ([0-9.e\-]+)")))
 put("PvalHSevenThree", grab("v3/summary.txt", r"H7-v3.*?Wilcoxon p = ([0-9.e\-]+)"))
 put("GEcoOnlyThree", float(grab("v3/summary.txt", r"écosystème seul .*?x([0-9.]+)")), "{:.3f}")
@@ -129,6 +130,41 @@ put("PhiCtrlThree", float(grab("v3/summary.txt", r"témoin de même taux ([0-9.]
 put("WorstVThree", float(grab("v3/summary.txt", r"pire gain v3 x([0-9.]+)")))
 put("HFourTwoPower", 100 * float(grab("v2/summary.txt", r"puissance ([0-9.]+)")), "{:.0f}")
 put("HFourTwoProbes", float(grab("v2/summary.txt", r"avec ([0-9.]+) probes")), "{:.0f}")
+# ---------------- relecture : analyses exploratoires (non pré-enregistrées)
+put("LawErrPilotProbe", 100 * float(re.search(r"H1 m=20 .*?loi\(phi² des probes\) ([0-9.]+)", open(RES / "g2/summary.txt").read()).group(1)), "{:.1f}")
+from collections import defaultdict
+mc = []
+for path in ("dev_v3_appworld_replays.csv", "dev_v3_sheng_replays.csv"):
+    by = defaultdict(list)
+    for r in rd(path):
+        by[r["case"]].append(r)
+    rg = np.random.default_rng(0)
+    for c, rs in by.items():
+        p_ = float(rs[0]["p_new"]); er = np.array([(float(r["reset_mean"]) - p_) ** 2 for r in rs])
+        eb = np.array([(float(r["bma_mean"]) - p_) ** 2 for r in rs]); g0 = er.mean() / eb.mean()
+        bs = [er[i].mean() / eb[i].mean() for i in (rg.integers(0, len(rs), len(rs)) for _ in range(300))]
+        mc.append(np.std(bs) / g0 / np.sqrt(400 / len(rs)))
+put("MCErr", 100 * np.median(mc), "{:.0f}")
+from scipy import stats as _st
+for nm, S, gk in (("Four", v4, "gain_greg_s"), ("Five", v5, "gain_greg_cf_s"), ("Six", v6, "gain_greg_cf_s")):
+    put(f"CovRstrat{nm}", f(S, "cov_reset_s").mean(), "{:.3f}")
+    put(f"GRstratMinX{nm}", f(S, "gain_reset_s").min())
+    pv = _st.wilcoxon(f(S, gk), f(S, "gain_reset_s"), alternative="greater").pvalue
+    put(f"PGregVsRstrat{nm}", texp(pv))
+    pv2 = _st.wilcoxon(f(S, "gain_v3_s"), f(S, "gain_reset_s"), alternative="greater").pvalue
+    put(f"PStratVsRstrat{nm}", texp(pv2))
+W = {k: np.mean([np.mean([float(r["width_" + k]) for r in rd(f"dev_v5_{d}.csv")]) for d in ("lite", "verified", "appworld")])
+     for k in ("reset_u", "v3_s", "greg_cf_s")}
+put("WidthReset", W["reset_u"], "{:.2f}"); put("WidthStrat", W["v3_s"], "{:.2f}"); put("WidthGreg", W["greg_cf_s"], "{:.2f}")
+put("WidthStratRed", 100 * (1 - W["v3_s"] / W["reset_u"]), "{:.0f}")
+# deux cibles de la loi phi² (population finie vs super-population)
+_ph, _n, _o, _l = [], [], [], []
+for S, kg, kl in ((v2, "gain_bma", "gain_law"), (v3, "gain_bma", "gain_law"), (v4, "gain_bma_u", "gain_law_phi"),
+                  (v5, "gain_bma_u", "gain_law_phi"), (v6, "gain_bma_u", "gain_law_phi")):
+    _ph += list(f(S, "phi2")); _o += list(f(S, kg)); _l += list(f(S, kl))
+_ph, _o, _l = map(np.array, (_ph, _o, _l)); _alt = 1 / (1 - _ph)
+put("LawBiasSuper", 100 * np.median(_o / _l - 1), "{:+.1f}"); put("LawBiasFinite", 100 * np.median(_o / _alt - 1), "{:+.1f}")
+put("LawErrFinite", 100 * np.median(np.abs(_o / _alt - 1)), "{:.1f}")
 # registre des hypothèses
 put("HypTotal", 29, "{}"); put("HypSupported", 25, "{}"); put("HypFailed", 4, "{}")
 # v3 : sous-groupe 10-90 %
