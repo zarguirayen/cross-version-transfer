@@ -1,0 +1,4 @@
+U1-v6 — ESTIMER, robuste et calibré (GREG croisé) : pire gain x1.453, médiane x2.200 ; couverture moy 0.944 (min 0.895) ; soutenue (>= 0,80 ; >= 0,88 ; >= 0,80) : True
+U2-v6 — ESTIMER, plus efficace que le prédécesseur seul : GREG croisé x2.200 vs BMA x1.556 ; Wilcoxon p = 2.3e-06 ; soutenue (p < 0,05) : True
+U3-v6 — DÉCIDER : 17 transitions avec |écart| >= 5 points ; erreur graphe stratifié 0.060 vs reset uniforme 0.088 ; Wilcoxon p = 0.016 ; soutenue (p < 0,05) : True
+U4-v6 — LOIS : erreur médiane loi phi² 0.064, loi du plan stratifié 0.072 (n=29) ; soutenue (les deux <= 0,20) : True

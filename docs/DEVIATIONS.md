@@ -49,5 +49,8 @@ Chaque entrée : date, ce qui change, pourquoi, effet attendu sur les conclusion
   incomplètes).
 - **Après le gel v5, analyse exploratoire** : erreurs de décision de GREG croisé selon l'écart réel (inline,
   reprise dans RESULTS_V5.md). Aucun verdict modifié.
+- **7 novembre 2026, v6** : avant le gel, normalisation des noms de tâches de TheAgentCompany (suffixe « -image »,
+  deux conventions) et exclusion de Terminal-Bench, Multi-SWE-bench Python, SWE-bench multimodal. Après le gel :
+  aucun écart ; un test ajouté (`test_greg_cf_covers_zero_rate_and_is_calibrated`), sans effet sur l'analyse.
 - **Constat** : écart de 0,6 point entre notre taux de régression Mistral MATH (55,8 %) et celui publié par
   Sheng & Lu (55,2 %). Non expliqué ; sans effet sur les conclusions.

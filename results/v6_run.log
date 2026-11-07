@@ -1,0 +1,33 @@
+fait : lcb lcb:openai-gpt4 GPT-4-Turbo-1106 -> GPT-4-Turbo-2024-04-09
+fait : lcb lcb:openai-gpt4 GPT-4-0613 -> GPT-4-Turbo-1106
+fait : lcb lcb:openai-gpt4 GPT-4O-2024-05-13 -> GPT-4O-2024-08-06
+fait : lcb lcb:openai-gpt4 GPT-4-Turbo-2024-04-09 -> GPT-4O-2024-05-13
+fait : lcb lcb:openai-o O1-2024-12-17 (High) -> O3 (High)
+fait : lcb lcb:openai-o O1-Preview-2024-09-12 -> O1-2024-12-17 (High)
+fait : lcb lcb:openai-o-mini O3-Mini-2025-01-31 (High) -> O4-Mini (High)
+fait : lcb lcb:openai-o-mini O1-Mini-2024-09-12 -> O3-Mini-2025-01-31 (High)
+fait : lcb lcb:anthropic-sonnet Claude-3.5-Sonnet-20240620 -> Claude-3.5-Sonnet-20241022
+fait : lcb lcb:anthropic-sonnet Claude-3.5-Sonnet-20241022 -> Claude-3.7-Sonnet
+fait : lcb lcb:anthropic-sonnet Claude-3.7-Sonnet -> Claude-Sonnet-4
+fait : lcb lcb:google-pro Gemini-Pro-1.5-002 -> Gemini-Exp-1206
+fait : lcb lcb:google-pro Gemini-Exp-1206 -> Gemini-2.5-Pro-03-25
+fait : lcb lcb:google-pro Gemini-2.5-Pro-03-25 -> Gemini-2.5-Pro-05-06
+fait : lcb lcb:google-pro Gemini-2.5-Pro-05-06 -> Gemini-2.5-Pro-06-05
+fait : lcb lcb:google-flash Gemini-Flash-1.5-002 -> Gemini-Flash-2.0-Exp
+fait : lcb lcb:google-flash Gemini-Flash-2.0-Exp -> Gemini-2.5-Flash-04-17
+fait : lcb lcb:google-flash Gemini-2.5-Flash-04-17 -> Gemini-2.5-Flash-05-20
+fait : lcb lcb:google-flash-thinking Gemini-Flash-2.0-Thinking-12-19 -> Gemini-Flash-2.0-Thinking-01-21
+fait : lcb lcb:deepseek-chat DSCoder-33b-Ins -> DeepSeek-V3
+fait : lcb lcb:deepseek-r1 DeepSeek-R1-Lite-Preview -> DeepSeek-R1-Preview
+fait : lcb lcb:deepseek-r1 DeepSeek-R1-Preview -> DeepSeek-R1-0528
+fait : lcb lcb:qwen-instruct Qwen2.5-Ins-72B -> Qwen3-235B-A22B
+fait : lcb lcb:qwen-instruct Qwen2-Ins-72B -> Qwen2.5-Ins-72B
+fait : lcb lcb:qwen-qwq QwQ-32B-Preview -> QwQ-Max-Preview
+fait : lcb lcb:qwen-qwq QwQ-Max-Preview -> QwQ-32B_temp
+fait : tac tac:openhands:google 20241217_OpenHands-0.14.2-gemini-2.0-flash -> 20250510_OpenHands-0.28.1-gemini-2.5-pro
+fait : tac tac:openhands:anthropic 20241217_OpenHands-0.14.2-sonnet-20241022 -> 20250510_OpenHands-0.28.1-sonnet-20250219
+fait : lcb lcb:nvidia-nemotron Llama-3_1-Nemotron-Ultra-253B-v1 -> OpenReasoning-Nemotron-32B
+U1-v6 — ESTIMER, robuste et calibré (GREG croisé) : pire gain x1.453, médiane x2.200 ; couverture moy 0.944 (min 0.895) ; soutenue (>= 0,80 ; >= 0,88 ; >= 0,80) : True
+U2-v6 — ESTIMER, plus efficace que le prédécesseur seul : GREG croisé x2.200 vs BMA x1.556 ; Wilcoxon p = 2.3e-06 ; soutenue (p < 0,05) : True
+U3-v6 — DÉCIDER : 17 transitions avec |écart| >= 5 points ; erreur graphe stratifié 0.060 vs reset uniforme 0.088 ; Wilcoxon p = 0.016 ; soutenue (p < 0,05) : True
+U4-v6 — LOIS : erreur médiane loi phi² 0.064, loi du plan stratifié 0.072 (n=29) ; soutenue (les deux <= 0,20) : True

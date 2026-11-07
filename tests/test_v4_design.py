@@ -42,3 +42,20 @@ def test_greg_unbiased_under_misspecified_model_at_low_rate():
         idx, w, _ = _strat(X[:, 0], 20, g)
         ests.append(Gr.graph_greg(X, idx, y[idx], weights=w, rng=g, draws=400).mean)
     assert abs(np.mean(ests) - y.mean()) < 0.01
+
+
+def test_greg_cf_covers_zero_rate_and_is_calibrated():
+    """GREG croisé : borne basse 0 quand aucune probe ne réussit ; couverture proche de 90 % en régime normal."""
+    g = np.random.default_rng(11)
+    d, y = _world(5, base=-0.3)
+    X = np.column_stack([d + g.normal(0, 0.5, len(d)), np.zeros(len(d))])
+    cov = []
+    for _ in range(300):
+        idx, w, _ = _strat(X[:, 0], 20, g)
+        e = Gr.graph_greg_cf(X, idx, y[idx], w, rng=g, draws=300)
+        cov.append(e.lo <= y.mean() <= e.hi)
+    assert 0.85 <= np.mean(cov) <= 0.99
+    y0 = np.zeros(len(d), bool)
+    idx, w, _ = _strat(X[:, 0], 20, g)
+    e = Gr.graph_greg_cf(X, idx, y0[idx], w, rng=g, draws=300)
+    assert e.lo == 0.0 and e.mean <= 0.05
