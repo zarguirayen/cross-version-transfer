@@ -1,0 +1,10 @@
+G2 — phi² sur 30 transitions du périmètre : médiane 0.212, min 0.049, max 0.560, étendue 0.511
+G2 franchie (étendue >= 0,20 et médiane dans [0,05 ; 0,90]) : True
+H2 — effet paire p = 0.0121, effet benchmark p = 0.0011 ; soutenue (Holm, alpha 0,05) : True
+H2 (direction, exploratoire) — phi² médian révision mineure 0.260 vs génération 0.202
+H1 m=10 — erreur relative médiane loi(phi² vrai) 0.042, loi(phi² des probes) 0.090 ; soutenue (<= 0,20, phi² vrai) : True | couverture BMA moy 0.942 min 0.903 ; reset moy 0.919
+H1 m=20 — erreur relative médiane loi(phi² vrai) 0.026, loi(phi² des probes) 0.044 ; soutenue (<= 0,20, phi² vrai) : True | couverture BMA moy 0.926 min 0.888 ; reset moy 0.917
+H1 m=40 — erreur relative médiane loi(phi² vrai) 0.034, loi(phi² des probes) 0.045 ; soutenue (<= 0,20, phi² vrai) : True | couverture BMA moy 0.925 min 0.899 ; reset moy 0.914
+H3 m=20 — regret moyen BMA 0.0092 vs reset 0.0106, Wilcoxon p = 0.0007 ; soutenue : False
+H4 m=20 — puissance BMA 0.242 (fausses alertes 0.000), héritage complet 0.000, reset 0.248 ; soutenue (puissance >= 0,80 et fausses alertes <= 0,10) : False
+H4 m=40 — puissance BMA 0.671 (fausses alertes 0.000), héritage complet 0.001, reset 0.416 ; soutenue (puissance >= 0,80 et fausses alertes <= 0,10) : False

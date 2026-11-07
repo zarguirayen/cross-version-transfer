@@ -17,4 +17,9 @@ Chaque entrée : date, ce qui change, pourquoi, effet attendu sur les conclusion
 
 ## Après le gel
 
-(aucun)
+- **7 novembre 2026, analyse exploratoire ajoutée** : courbe de puissance H4 pour m = 60 et 80
+  (`experiments/g2_exploratory_h4_power.py`, graine 20261108). Motif : H4 a échoué à m ≤ 40 ; on cherche le
+  budget nécessaire. Statut : exploratoire, à re-tester dans un nouveau pré-enregistrement avant toute
+  revendication. Les critères et l'analyse principale ne sont pas modifiés.
+- **Constat** : écart de 0,6 point entre notre taux de régression Mistral MATH (55,8 %) et celui publié par
+  Sheng & Lu (55,2 %). Non expliqué ; sans effet sur les conclusions.
