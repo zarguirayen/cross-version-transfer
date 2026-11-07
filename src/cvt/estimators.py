@@ -112,6 +112,14 @@ def full_inheritance(s_v, f_v, n11, n10, n01, n00, s_own=0, f_own=0, draws=4000,
     return _summarise(rng.beta(s + 0.5, f + 0.5, draws), "full_inheritance")
 
 
+def power_prior(s_v, f_v, n11, n10, n01, n00, a=0.5, s_own=0, f_own=0, draws=4000, rng=None) -> Estimate:
+    """Baseline : historique de v compté comme celui de v' avec un poids fixe a (power prior)."""
+    rng = rng or np.random.default_rng()
+    s = a * s_v + n11 + n01 + s_own
+    f = a * f_v + n10 + n00 + f_own
+    return _summarise(rng.beta(s + 0.5, f + 0.5, draws), f"power_prior[a={a}]")
+
+
 def double_sampling_bayes(s_v, f_v, n11, n10, n01, n00, s_own=0, f_own=0, draws=4000, rng=None,
                           prior="jeffreys", min_probes=20, guard=True, level=LEVEL) -> Estimate:
     """Méthode proposée (v0.3.1) : p' = pi*q1 + (1-pi)*q0 par tirages Monte Carlo.
