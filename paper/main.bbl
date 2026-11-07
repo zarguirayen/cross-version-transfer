@@ -1,0 +1,174 @@
+\begin{thebibliography}{26}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Angelopoulos et~al.(2023{\natexlab{a}})Angelopoulos, Bates, Fannjiang,
+  Jordan, and Zrnic]{angelopoulos2023ppi}
+Anastasios~N. Angelopoulos, Stephen Bates, Clara Fannjiang, Michael~I. Jordan,
+  and Tijana Zrnic.
+\newblock Prediction-powered inference.
+\newblock \emph{Science}, 382\penalty0 (6671):\penalty0 669--674,
+  2023{\natexlab{a}}.
+
+\bibitem[Angelopoulos et~al.(2023{\natexlab{b}})Angelopoulos, Duchi, and
+  Zrnic]{angelopoulos2023ppipp}
+Anastasios~N. Angelopoulos, John~C. Duchi, and Tijana Zrnic.
+\newblock {PPI++}: Efficient prediction-powered inference.
+\newblock \emph{arXiv preprint arXiv:2311.01453}, 2023{\natexlab{b}}.
+
+\bibitem[Brown et~al.(2001)Brown, Cai, and DasGupta]{brown2001}
+Lawrence~D. Brown, T.~Tony Cai, and Anirban DasGupta.
+\newblock Interval estimation for a binomial proportion.
+\newblock \emph{Statistical Science}, 16\penalty0 (2):\penalty0 101--133, 2001.
+
+\bibitem[Cochran(1977)]{cochran1977}
+William~G. Cochran.
+\newblock \emph{Sampling Techniques}.
+\newblock John Wiley \& Sons, 3rd edition, 1977.
+
+\bibitem[Fisch et~al.(2024)Fisch, Maynez, Hofer, Dhingra, Globerson, and
+  Cohen]{fisch2024stratified}
+Adam Fisch, Joshua Maynez, R.~Alex Hofer, Bhuwan Dhingra, Amir Globerson, and
+  William~W. Cohen.
+\newblock Stratified prediction-powered inference for hybrid language model
+  evaluation.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2024.
+
+\bibitem[Ge et~al.(2026)Ge, Kryvosheieva, Fried, Girit, and
+  Hariharan]{ge2026psychometrics}
+Chris Ge, Daria Kryvosheieva, Daniel Fried, Uzay Girit, and Kaivalya Hariharan.
+\newblock Agent psychometrics: Task-level performance prediction in agentic
+  coding benchmarks.
+\newblock \emph{arXiv preprint arXiv:2604.00594}, 2026.
+
+\bibitem[Jain et~al.(2024)Jain, Han, Gu, Li, Yan, Zhang, Wang, Solar-Lezama,
+  Sen, and Stoica]{jain2024livecodebench}
+Naman Jain, King Han, Alex Gu, Wen-Ding Li, Fanjia Yan, Tianjun Zhang, Sida
+  Wang, Armando Solar-Lezama, Koushik Sen, and Ion Stoica.
+\newblock {LiveCodeBench}: Holistic and contamination free evaluation of large
+  language models for code.
+\newblock \emph{arXiv preprint arXiv:2403.07974}, 2024.
+
+\bibitem[Jimenez et~al.(2024)Jimenez, Yang, Wettig, Yao, Pei, Press, and
+  Narasimhan]{jimenez2024swebench}
+Carlos~E. Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir
+  Press, and Karthik Narasimhan.
+\newblock {SWE-bench}: Can language models resolve real-world {GitHub} issues?
+\newblock In \emph{International Conference on Learning Representations}, 2024.
+
+\bibitem[Johnson and Helm(2026)]{johnson2026cached}
+Ben Johnson and Hayden Helm.
+\newblock Task-efficient agent evaluation using cached traces.
+\newblock \emph{arXiv preprint arXiv:2611.06803}, 2026.
+
+\bibitem[Karpathy(2026)]{karpathy2026wiki}
+Andrej Karpathy.
+\newblock {LLM Wiki} (idea file).
+\newblock GitHub gist, 2026.
+
+\bibitem[Korn and Graubard(1998)]{korn1998}
+Edward~L. Korn and Barry~I. Graubard.
+\newblock Confidence intervals for proportions with small expected number of
+  positive counts estimated from survey data.
+\newblock \emph{Survey Methodology}, 24\penalty0 (2):\penalty0 193--201, 1998.
+
+\bibitem[Kossen et~al.(2021)Kossen, Farquhar, Gal, and
+  Rainforth]{kossen2021active}
+Jannik Kossen, Sebastian Farquhar, Yarin Gal, and Tom Rainforth.
+\newblock Active testing: Sample-efficient model evaluation.
+\newblock In \emph{Proceedings of the 38th International Conference on Machine
+  Learning}, 2021.
+
+\bibitem[Maia~Polo et~al.(2024)Maia~Polo, Weber, Choshen, Sun, Xu, and
+  Yurochkin]{polo2024tiny}
+Felipe Maia~Polo, Lucas Weber, Leshem Choshen, Yuekai Sun, Gongjun Xu, and
+  Mikhail Yurochkin.
+\newblock {tinyBenchmarks}: Evaluating {LLMs} with fewer examples.
+\newblock In \emph{Proceedings of the 41st International Conference on Machine
+  Learning}, 2024.
+
+\bibitem[Mani et~al.(2026)Mani, Xu, Lipton, and Oberst]{mani2026nofreelunch}
+Pranav Mani, Peng Xu, Zachary~Chase Lipton, and Michael Oberst.
+\newblock No free lunch: Non-asymptotic analysis of prediction-powered
+  inference.
+\newblock In \emph{Proceedings of the 43rd International Conference on Machine
+  Learning}, volume 306 of \emph{PMLR}, pages 86296--86335, 2026.
+
+\bibitem[Ndzomga(2026)]{ndzomga2026efficient}
+Franck Ndzomga.
+\newblock Efficient benchmarking of {AI} agents.
+\newblock \emph{arXiv preprint arXiv:2603.23749}, 2026.
+
+\bibitem[Neyman(1938)]{neyman1938}
+Jerzy Neyman.
+\newblock Contribution to the theory of sampling human populations.
+\newblock \emph{Journal of the American Statistical Association}, 33\penalty0
+  (201):\penalty0 101--116, 1938.
+
+\bibitem[Nosek et~al.(2018)Nosek, Ebersole, DeHaven, and
+  Mellor]{nosek2018prereg}
+Brian~A. Nosek, Charles~R. Ebersole, Alexander~C. DeHaven, and David~T. Mellor.
+\newblock The preregistration revolution.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 115\penalty0
+  (11):\penalty0 2600--2606, 2018.
+
+\bibitem[Rasch(1960)]{rasch1960}
+Georg Rasch.
+\newblock \emph{Probabilistic Models for Some Intelligence and Attainment
+  Tests}.
+\newblock Danish Institute for Educational Research, 1960.
+
+\bibitem[S{\"a}rndal et~al.(1992)S{\"a}rndal, Swensson, and
+  Wretman]{sarndal1992}
+Carl-Erik S{\"a}rndal, Bengt Swensson, and Jan Wretman.
+\newblock \emph{Model Assisted Survey Sampling}.
+\newblock Springer, 1992.
+
+\bibitem[She and Lin(2026)]{she2026production}
+Yining She and Lei Lin.
+\newblock Efficient benchmarking in production: A study of an evolving {LLM}
+  agent.
+\newblock \emph{arXiv preprint arXiv:2609.21267}, 2026.
+
+\bibitem[Sheng and Lu(2026)]{sheng2026regression}
+Jia Sheng and Yiwei Lu.
+\newblock No universal signal predicts sample-level {LLM} regression under
+  version updates.
+\newblock \emph{arXiv preprint arXiv:2608.13607}, 2026.
+
+\bibitem[Trivedi et~al.(2024)Trivedi, Khot, Hartmann, Manku, Dong, Li, Gupta,
+  Sabharwal, and Balasubramanian]{trivedi2024appworld}
+Harsh Trivedi, Tushar Khot, Mareike Hartmann, Ruskin Manku, Vinty Dong, Edward
+  Li, Shashank Gupta, Ashish Sabharwal, and Niranjan Balasubramanian.
+\newblock {AppWorld}: A controllable world of apps and people for benchmarking
+  interactive coding agents.
+\newblock In \emph{Proceedings of the 62nd Annual Meeting of the Association
+  for Computational Linguistics}, 2024.
+
+\bibitem[Vivek et~al.(2024)Vivek, Ethayarajh, Yang, and Kiela]{vivek2024anchor}
+Rajan Vivek, Kawin Ethayarajh, Diyi Yang, and Douwe Kiela.
+\newblock Anchor points: Benchmarking models with much fewer examples.
+\newblock In \emph{Proceedings of the 18th Conference of the European Chapter
+  of the Association for Computational Linguistics}, 2024.
+
+\bibitem[Xu et~al.(2024)]{xu2024theagentcompany}
+Frank~F. Xu et~al.
+\newblock {TheAgentCompany}: Benchmarking {LLM} agents on consequential real
+  world tasks.
+\newblock \emph{arXiv preprint arXiv:2412.14161}, 2024.
+
+\bibitem[Zan et~al.(2025)]{zan2025multiswe}
+Daoguang Zan et~al.
+\newblock {Multi-SWE-bench}: A multilingual benchmark for issue resolving.
+\newblock \emph{arXiv preprint arXiv:2504.02605}, 2025.
+
+\bibitem[Zrnic and Cand{\`e}s(2024)]{zrnic2024cross}
+Tijana Zrnic and Emmanuel~J. Cand{\`e}s.
+\newblock Cross-prediction-powered inference.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 121\penalty0
+  (15), 2024.
+
+\end{thebibliography}
