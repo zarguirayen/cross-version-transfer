@@ -1,0 +1,38 @@
+fait : mswe-c MSWE-agent:bytedance 20250329_MSWE-agent_Doubao-1.5-pro -> 20250426_MSWE-agent_Doubao-1.5-thinking
+fait : mswe-c MagentLess:bytedance 20250329_MagentLess_Doubao-1.5-pro -> 20250426_MagentLess_Doubao-1.5-thinking
+fait : mswe-c MopenHands:bytedance 20250329_MopenHands_Doubao-1.5-pro -> 20250426_MopenHands_Doubao-1.5-thinking
+fait : mswe-c++ MSWE-agent:bytedance 20250329_MSWE-agent_Doubao-1.5-pro -> 20250426_MSWE-agent_Doubao-1.5-thinking
+fait : mswe-c++ MagentLess:bytedance 20250329_MagentLess_Doubao-1.5-pro -> 20250426_MagentLess_Doubao-1.5-thinking
+fait : mswe-c++ MopenHands:bytedance 20250329_MopenHands_Doubao-1.5-pro -> 20250426_MopenHands_Doubao-1.5-thinking
+fait : mswe-go MSWE-agent:bytedance 20250329_MSWE-agent_Doubao-1.5-pro -> 20250426_MSWE-agent_Doubao-1.5-thinking
+fait : mswe-go MagentLess:bytedance 20250329_MagentLess_Doubao-1.5-pro -> 20250426_MagentLess_Doubao-1.5-thinking
+fait : mswe-go MopenHands:bytedance 20250329_MopenHands_Doubao-1.5-pro -> 20250426_MopenHands_Doubao-1.5-thinking
+fait : mswe-java MSWE-agent:bytedance 20250329_MSWE-agent_Doubao-1.5-pro -> 20250426_MSWE-agent_Doubao-1.5-thinking
+fait : mswe-java MagentLess:bytedance 20250329_MagentLess_Doubao-1.5-pro -> 20250426_MagentLess_Doubao-1.5-thinking
+fait : mswe-java MopenHands:bytedance 20250329_MopenHands_Doubao-1.5-pro -> 20250426_MopenHands_Doubao-1.5-thinking
+fait : mswe-javascript MSWE-agent:bytedance 20250329_MSWE-agent_Doubao-1.5-pro -> 20250426_MSWE-agent_Doubao-1.5-thinking
+fait : mswe-java iswe 20251027_iSWE-OpenModels -> 20251201_iSWE_Agent
+fait : mswe-javascript MagentLess:bytedance 20250329_MagentLess_Doubao-1.5-pro -> 20250426_MagentLess_Doubao-1.5-thinking
+fait : mswe-javascript MopenHands:bytedance 20250329_MopenHands_Doubao-1.5-pro -> 20250426_MopenHands_Doubao-1.5-thinking
+fait : mswe-rust MSWE-agent:bytedance 20250329_MSWE-agent_Doubao-1.5-pro -> 20250426_MSWE-agent_Doubao-1.5-thinking
+fait : mswe-rust MagentLess:bytedance 20250329_MagentLess_Doubao-1.5-pro -> 20250426_MagentLess_Doubao-1.5-thinking
+fait : mswe-rust MopenHands:bytedance 20250329_MopenHands_Doubao-1.5-pro -> 20250426_MopenHands_Doubao-1.5-thinking
+fait : mswe-typescript MSWE-agent:bytedance 20250329_MSWE-agent_Doubao-1.5-pro -> 20250426_MSWE-agent_Doubao-1.5-thinking
+fait : mswe-typescript MagentLess:bytedance 20250329_MagentLess_Doubao-1.5-pro -> 20250426_MagentLess_Doubao-1.5-thinking
+fait : mswe-typescript MopenHands:bytedance 20250329_MopenHands_Doubao-1.5-pro -> 20250426_MopenHands_Doubao-1.5-thinking
+fait : swe-test rag 20231010_rag_swellama7b -> 20240402_rag_gpt4
+fait : swe-test rag 20231010_rag_swellama7b -> 20240402_rag_claude3opus
+fait : swe-test swe-agent 20240402_sweagent_gpt4 -> 20240620_sweagent_claude3.5sonnet
+fait : swe-test amazon-q 20240509_amazon-q-developer-agent-20240430-dev -> 20240721_amazon-q-developer-agent-20240719-dev
+fait : swe-test swe-agent 20240620_sweagent_claude3.5sonnet -> 20240728_sweagent_gpt4o
+fait : swe-test autocoderover 20240628_autocoderover-v20240620 -> 20241121_autocoderover-v2.0-claude-3-5-sonnet-20241022
+fait : swe-test amazon-q 20240721_amazon-q-developer-agent-20240719-dev -> 20250131_amazon-q-developer-agent-20241202-dev
+fait : swe-test swe-agent 20240728_sweagent_gpt4o -> 20250227_sweagent-claude-3-7-20250219
+fait : swe-multilingual mini:openai 20260213_mini-v2.0.0a0_gpt-5-mini -> 20260220_mini-v2.0.0_gpt-5-2-codex
+fait : swe-multilingual mini:google 20260213_mini-v2.0.0a0_gemini-3-pro -> 20260902_mini-v2.4.6_gemini-3-5-flash
+fait : swe-test amazon-q 20250131_amazon-q-developer-agent-20241202-dev -> 20250522_amazon-q-developer-agent-20250405-dev
+H1-v5 — 33 transitions : erreur médiane de la loi phi² 0.058 ; soutenue (<= 0,20) : True
+H8-v5 — loi du plan stratifié : erreur médiane 0.077 (n=33), η² médian 0.350 ; soutenue (<= 0,20) : True
+H9-v5 — v3_s x1.213 vs graphe uniforme (v3) x1.120 vs prédécesseur seul x1.218 ; Wilcoxon p = 0.0011 ; >= 0,95 sur 76% ; couverture 0.920 (min 0.748) ; soutenue : False
+H10-v5 — 12 transitions avec |écart| >= 5 points : erreur de décision v3_s 0.039 vs reset uniforme 0.076 ; Wilcoxon p = 0.039 ; soutenue (p < 0,05) : True
+H12-v5 — GREG croisé (plan stratifié) : pire gain x1.076, médiane x1.613 ; couverture moy 0.950 (min 0.812) ; soutenue (pire gain >= 0,80, couverture moy >= 0,88 et min >= 0,80) : True

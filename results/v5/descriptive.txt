@@ -1,0 +1,46 @@
+
+=== m = 20 ===
+toutes                         n=33 | bma_u x1.22 (min 0.88; couv 0.96/0.92) | v3_u x1.12 (min 0.71; couv 0.92/0.82) | reset_s x1.27 (min 0.73; couv 0.98/0.95) | v3_s x1.21 (min 0.58; couv 0.92/0.75) | greg_cf_s x1.61 (min 1.08; couv 0.95/0.81) |
+doubao_mswe                    n=21 | bma_u x1.17 (min 0.88; couv 0.97/0.94) | v3_u x1.08 (min 0.71; couv 0.92/0.82) | reset_s x1.20 (min 0.73; couv 0.98/0.96) | v3_s x1.11 (min 0.58; couv 0.91/0.75) | greg_cf_s x1.55 (min 1.08; couv 0.95/0.81) |
+autre                          n=12 | bma_u x1.36 (min 0.95; couv 0.95/0.92) | v3_u x1.66 (min 0.78; couv 0.93/0.86) | reset_s x1.77 (min 0.99; couv 0.99/0.95) | v3_s x1.94 (min 0.85; couv 0.94/0.87) | greg_cf_s x1.87 (min 1.21; couv 0.95/0.93) |
+mswe-c                         n= 3 | bma_u x0.99 (min 0.97; couv 0.97/0.94) | v3_u x0.95 (min 0.85; couv 0.90/0.82) | reset_s x1.07 (min 0.88; couv 0.99/0.97) | v3_s x0.89 (min 0.83; couv 0.91/0.78) | greg_cf_s x1.79 (min 1.46; couv 0.93/0.81) |
+mswe-c++                       n= 3 | bma_u x1.31 (min 0.98; couv 0.98/0.97) | v3_u x1.02 (min 0.84; couv 0.93/0.91) | reset_s x0.96 (min 0.73; couv 0.98/0.96) | v3_s x1.06 (min 0.67; couv 0.93/0.91) | greg_cf_s x1.38 (min 1.08; couv 0.96/0.94) |
+mswe-go                        n= 3 | bma_u x1.16 (min 1.16; couv 0.97/0.96) | v3_u x1.10 (min 0.99; couv 0.92/0.91) | reset_s x1.49 (min 1.06; couv 0.99/0.99) | v3_s x1.16 (min 0.90; couv 0.90/0.89) | greg_cf_s x1.74 (min 1.23; couv 0.92/0.89) |
+mswe-java                      n= 4 | bma_u x1.20 (min 1.07; couv 0.95/0.94) | v3_u x1.50 (min 1.28; couv 0.92/0.89) | reset_s x1.39 (min 1.24; couv 0.98/0.97) | v3_s x1.55 (min 1.41; couv 0.94/0.91) | greg_cf_s x1.80 (min 1.55; couv 0.95/0.94) |
+mswe-javascript                n= 3 | bma_u x1.11 (min 0.88; couv 0.97/0.96) | v3_u x1.09 (min 0.71; couv 0.89/0.84) | reset_s x1.22 (min 0.83; couv 0.98/0.97) | v3_s x1.16 (min 0.58; couv 0.86/0.75) | greg_cf_s x1.48 (min 1.29; couv 0.95/0.94) |
+mswe-rust                      n= 3 | bma_u x1.23 (min 1.18; couv 0.97/0.96) | v3_u x1.00 (min 1.00; couv 0.92/0.90) | reset_s x1.20 (min 1.08; couv 0.99/0.97) | v3_s x1.02 (min 1.02; couv 0.92/0.89) | greg_cf_s x1.74 (min 1.24; couv 0.96/0.92) |
+mswe-typescript                n= 3 | bma_u x1.22 (min 1.00; couv 0.97/0.97) | v3_u x1.12 (min 0.95; couv 0.94/0.92) | reset_s x1.15 (min 1.13; couv 0.98/0.96) | v3_s x1.04 (min 0.93; couv 0.93/0.93) | greg_cf_s x1.39 (min 1.37; couv 0.98/0.97) |
+swe-multilingual               n= 2 | bma_u x1.18 (min 1.10; couv 0.93/0.93) | v3_u x1.57 (min 1.39; couv 0.94/0.94) | reset_s x2.10 (min 1.82; couv 0.99/0.99) | v3_s x2.21 (min 1.89; couv 0.97/0.96) | greg_cf_s x1.90 (min 1.61; couv 0.96/0.96) |
+swe-test                       n= 9 | bma_u x1.36 (min 0.95; couv 0.95/0.92) | v3_u x1.64 (min 0.78; couv 0.92/0.86) | reset_s x1.62 (min 0.99; couv 0.98/0.95) | v3_s x1.82 (min 0.85; couv 0.93/0.87) | greg_cf_s x1.87 (min 1.21; couv 0.95/0.93) |
+p' < 0,10                      n=21 | bma_u x1.17 (min 0.88; couv 0.97/0.94) | v3_u x1.02 (min 0.71; couv 0.91/0.82) | reset_s x1.14 (min 0.73; couv 0.98/0.96) | v3_s x1.04 (min 0.58; couv 0.90/0.75) | greg_cf_s x1.51 (min 1.08; couv 0.95/0.81) |
+p' >= 0,10                     n=12 | bma_u x1.32 (min 1.07; couv 0.94/0.92) | v3_u x1.66 (min 1.28; couv 0.93/0.89) | reset_s x1.77 (min 1.24; couv 0.98/0.95) | v3_s x1.94 (min 1.41; couv 0.95/0.91) | greg_cf_s x1.87 (min 1.47; couv 0.95/0.93) |
+erreur de décision moyenne (toutes) : reset_u 0.130, bma_u 0.116, v3_u 0.107, reset_s 0.109, v3_s 0.101, greg_cf_s 0.240
+
+=== m = 40 ===
+toutes                         n=33 | bma_u x1.19 (min 0.87; couv 0.95/0.90) | v3_u x1.19 (min 0.68; couv 0.91/0.72) | reset_s x1.27 (min 0.74; couv 0.98/0.94) | v3_s x1.31 (min 0.62; couv 0.92/0.72) | greg_cf_s x1.70 (min 1.05; couv 0.96/0.92) |
+doubao_mswe                    n=21 | bma_u x1.12 (min 0.87; couv 0.96/0.91) | v3_u x1.12 (min 0.68; couv 0.92/0.85) | reset_s x1.18 (min 0.74; couv 0.98/0.94) | v3_s x1.23 (min 0.62; couv 0.92/0.80) | greg_cf_s x1.65 (min 1.05; couv 0.97/0.93) |
+autre                          n=12 | bma_u x1.34 (min 0.94; couv 0.94/0.90) | v3_u x1.69 (min 0.70; couv 0.91/0.72) | reset_s x1.83 (min 1.05; couv 0.98/0.95) | v3_s x1.91 (min 0.74; couv 0.91/0.72) | greg_cf_s x1.85 (min 1.36; couv 0.95/0.92) |
+mswe-c                         n= 3 | bma_u x0.98 (min 0.94; couv 0.98/0.96) | v3_u x0.93 (min 0.81; couv 0.92/0.85) | reset_s x1.05 (min 0.96; couv 1.00/0.99) | v3_s x1.06 (min 0.78; couv 0.92/0.80) | greg_cf_s x1.70 (min 1.22; couv 0.99/0.98) |
+mswe-c++                       n= 3 | bma_u x1.06 (min 0.97; couv 0.99/0.98) | v3_u x1.04 (min 0.96; couv 0.94/0.92) | reset_s x1.12 (min 0.74; couv 0.98/0.97) | v3_s x1.31 (min 0.77; couv 0.95/0.93) | greg_cf_s x1.46 (min 1.05; couv 0.98/0.97) |
+mswe-go                        n= 3 | bma_u x1.19 (min 1.19; couv 0.96/0.94) | v3_u x1.09 (min 1.00; couv 0.91/0.88) | reset_s x1.22 (min 1.16; couv 0.97/0.94) | v3_s x1.19 (min 1.12; couv 0.92/0.88) | greg_cf_s x1.54 (min 1.51; couv 0.96/0.96) |
+mswe-java                      n= 4 | bma_u x1.10 (min 1.04; couv 0.95/0.94) | v3_u x1.53 (min 1.18; couv 0.93/0.92) | reset_s x1.47 (min 1.40; couv 0.99/0.99) | v3_s x1.77 (min 1.71; couv 0.94/0.92) | greg_cf_s x1.90 (min 1.80; couv 0.97/0.96) |
+mswe-javascript                n= 3 | bma_u x1.09 (min 0.87; couv 0.96/0.95) | v3_u x1.23 (min 0.68; couv 0.91/0.90) | reset_s x1.10 (min 0.85; couv 0.96/0.94) | v3_s x1.21 (min 0.62; couv 0.89/0.82) | greg_cf_s x1.44 (min 1.24; couv 0.94/0.93) |
+mswe-rust                      n= 3 | bma_u x1.25 (min 1.08; couv 0.96/0.94) | v3_u x1.04 (min 1.04; couv 0.93/0.90) | reset_s x1.27 (min 1.15; couv 0.98/0.95) | v3_s x1.08 (min 1.06; couv 0.92/0.90) | greg_cf_s x1.71 (min 1.38; couv 0.96/0.95) |
+mswe-typescript                n= 3 | bma_u x1.12 (min 0.99; couv 0.93/0.91) | v3_u x1.19 (min 0.94; couv 0.90/0.88) | reset_s x1.16 (min 1.03; couv 0.97/0.95) | v3_s x1.36 (min 1.23; couv 0.95/0.92) | greg_cf_s x1.65 (min 1.57; couv 0.97/0.95) |
+swe-multilingual               n= 2 | bma_u x1.34 (min 1.24; couv 0.94/0.93) | v3_u x1.88 (min 1.63; couv 0.92/0.91) | reset_s x1.88 (min 1.83; couv 0.98/0.97) | v3_s x1.90 (min 1.80; couv 0.93/0.93) | greg_cf_s x1.75 (min 1.68; couv 0.94/0.93) |
+swe-test                       n= 9 | bma_u x1.32 (min 0.94; couv 0.93/0.90) | v3_u x1.60 (min 0.70; couv 0.90/0.72) | reset_s x1.83 (min 1.05; couv 0.98/0.95) | v3_s x1.84 (min 0.74; couv 0.90/0.72) | greg_cf_s x1.88 (min 1.36; couv 0.95/0.92) |
+p' < 0,10                      n=21 | bma_u x1.12 (min 0.87; couv 0.96/0.91) | v3_u x1.04 (min 0.68; couv 0.91/0.72) | reset_s x1.16 (min 0.74; couv 0.98/0.94) | v3_s x1.21 (min 0.62; couv 0.91/0.72) | greg_cf_s x1.54 (min 1.05; couv 0.97/0.93) |
+p' >= 0,10                     n=12 | bma_u x1.34 (min 1.04; couv 0.94/0.90) | v3_u x1.69 (min 1.18; couv 0.93/0.91) | reset_s x1.83 (min 1.40; couv 0.99/0.97) | v3_s x1.91 (min 1.50; couv 0.93/0.91) | greg_cf_s x1.90 (min 1.44; couv 0.95/0.92) |
+erreur de décision moyenne (toutes) : reset_u 0.115, bma_u 0.100, v3_u 0.089, reset_s 0.083, v3_s 0.077, greg_cf_s 0.131
+
+médianes par jeu de tâches (unité = jeu), m = 20 :
+  mswe-c             bma_u x0.99 v3_u x0.95 reset_s x1.07 v3_s x0.89 greg_cf_s x1.79
+  mswe-c++           bma_u x1.31 v3_u x1.02 reset_s x0.96 v3_s x1.06 greg_cf_s x1.38
+  mswe-go            bma_u x1.16 v3_u x1.10 reset_s x1.49 v3_s x1.16 greg_cf_s x1.74
+  mswe-java          bma_u x1.20 v3_u x1.50 reset_s x1.39 v3_s x1.55 greg_cf_s x1.80
+  mswe-javascript    bma_u x1.11 v3_u x1.09 reset_s x1.22 v3_s x1.16 greg_cf_s x1.48
+  mswe-rust          bma_u x1.23 v3_u x1.00 reset_s x1.20 v3_s x1.02 greg_cf_s x1.74
+  mswe-typescript    bma_u x1.22 v3_u x1.12 reset_s x1.15 v3_s x1.04 greg_cf_s x1.39
+  swe-multilingual   bma_u x1.18 v3_u x1.57 reset_s x2.10 v3_s x2.21 greg_cf_s x1.90
+  swe-test           bma_u x1.36 v3_u x1.64 reset_s x1.62 v3_s x1.82 greg_cf_s x1.87
+v3_s > v3_u dans 7/9 jeux de tâches ; greg_cf_s >= 0,95 dans 9/9

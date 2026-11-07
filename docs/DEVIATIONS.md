@@ -43,5 +43,11 @@ Chaque entrée : date, ce qui change, pourquoi, effet attendu sur les conclusion
   plancher de variance fixé à un quart de la variance binomiale de Jeffreys. Toutes les variantes sont listées
   dans PREREGISTRATION_V4.md.
 - **Après le gel v4** : aucun écart ; tests ajoutés (`tests/test_v4_design.py`), sans effet sur l'analyse.
+- **7 novembre 2026, développement v5 avant le gel `prereg-v5`** : `dev_v5_greg.py`, `dev_v5_lowrate_check.py`.
+  Une correction fixée avant le gel (convention de Jeffreys pour 0 ou m succès), décrite dans
+  PREREGISTRATION_V5.md. Terminal-Bench et SWE-bench multimodal écartés avant toute statistique (données
+  incomplètes).
+- **Après le gel v5, analyse exploratoire** : erreurs de décision de GREG croisé selon l'écart réel (inline,
+  reprise dans RESULTS_V5.md). Aucun verdict modifié.
 - **Constat** : écart de 0,6 point entre notre taux de régression Mistral MATH (55,8 %) et celui publié par
   Sheng & Lu (55,2 %). Non expliqué ; sans effet sur les conclusions.
