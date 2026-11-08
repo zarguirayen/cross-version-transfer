@@ -408,3 +408,66 @@ def graph_greg_cf(X: np.ndarray, probe_idx: np.ndarray, y_probe: np.ndarray, wei
     if s == m:
         hi = 1.0
     return Estimate(est, float(lo), float(hi), "graph_greg_cf", dict(n_eff=float(n_eff)))
+
+
+def neighbour_feature(aux: np.ndarray, idx: np.ndarray, y: np.ndarray, k: int = 5) -> np.ndarray:
+    """Arêtes apprises : les k agents antérieurs dont les résultats sur les probes idx ressemblent le plus à ceux
+    de la nouvelle version (taux d'accord ; égalité départagée par l'écart de taux global). Renvoie, pour chaque
+    tâche, le logit lissé du taux de réussite de ces voisins, centré-réduit (0 si constant)."""
+    A = aux.shape[0]
+    k = min(k, A)
+    agree = (aux[:, idx] == y.astype(bool)).mean(axis=1)
+    gap = np.abs(aux.mean(axis=1) - y.mean())
+    nb = np.lexsort((gap, -agree))[:k]
+    s = (aux[nb].sum(axis=0) + 0.5) / (k + 1)
+    z = np.log(s / (1 - s))
+    return (z - z.mean()) / z.std() if z.std() > 0 else np.zeros_like(z)
+
+
+def graph_greg_cf_knn(X: np.ndarray, aux: np.ndarray | None, probe_idx: np.ndarray, y_probe: np.ndarray,
+                      weights: np.ndarray, k: int = 5, draws: int = 1500, rng=None, level: float = LEVEL) -> Estimate:
+    """GREG croisé avec arêtes apprises : dans chaque pli, les voisins de la nouvelle version sont choisis sur les
+    probes de ce pli seulement, leur comportement devient une covariable supplémentaire, et le modèle ajusté sur ce
+    pli prédit les résidus de l'autre pli. Sans écosystème, se ramène à graph_greg_cf."""
+    if aux is None or len(aux) == 0:
+        return graph_greg_cf(X, probe_idx, y_probe, weights, draws=draws, rng=rng, level=level)
+    from scipy.stats import beta as Beta, t as student
+    rng = rng or np.random.default_rng()
+    N = X.shape[0]; m = len(probe_idx)
+    y = y_probe.astype(float); w = np.asarray(weights, float)
+    A = np.arange(0, m, 2); Bf = np.arange(1, m, 2)
+    def fit(fold):
+        nb = neighbour_feature(aux, probe_idx[fold], y[fold], k)
+        return _bma_predict(np.column_stack([X, nb]), probe_idx[fold], y[fold], draws, rng)
+    PA, PB = fit(A), fit(Bf)
+    e = np.empty(m)
+    e[A] = y[A] - PB[probe_idx[A]]
+    e[Bf] = y[Bf] - PA[probe_idx[Bf]]
+    est = float(np.clip(((PA + PB) / 2).mean() + (w * e).sum() / N, 0, 1))
+    pairs = [(i, i + 1) for i in range(0, m - 1, 2)]
+    var = sum(((w[a] + w[b]) / N) ** 2 * (e[a] - e[b]) ** 2 / 4 for a, b in pairs)
+    s = int(y.sum()); pj = (s + 0.5) / (m + 1)
+    var = max(var, pj * (1 - pj) / (4 * m))
+    pc = min(max(est, 1e-6), 1 - 1e-6); alpha = 1 - level
+    n_eff = pc * (1 - pc) / var
+    n_eff *= (student.ppf(1 - alpha / 2, m - 1) / student.ppf(1 - alpha / 2, max(len(pairs), 1))) ** 2
+    x = pc * n_eff
+    lo = Beta.ppf(alpha / 2, x + 0.5, n_eff - x + 0.5); hi = Beta.ppf(1 - alpha / 2, x + 0.5, n_eff - x + 0.5)
+    if s == 0:
+        lo = 0.0
+    if s == m:
+        hi = 1.0
+    return Estimate(est, float(lo), float(hi), "graph_greg_cf_knn", dict(n_eff=float(n_eff)))
+
+
+def graph_v3_knn(X: np.ndarray, aux: np.ndarray | None, probe_idx: np.ndarray, y_probe: np.ndarray,
+                 y_prev: np.ndarray, k: int = 5, draws: int = 2000, rng=None, level: float = LEVEL) -> Estimate:
+    """Estimateur fondé sur le modèle (graph_v3) avec la covariable des voisins appris sur toutes les probes."""
+    if aux is None or len(aux) == 0:
+        return graph_v3(X, probe_idx, y_probe, y_prev, draws=draws, rng=rng, level=level)
+    s = int(y_probe.sum())
+    if min(s, len(y_probe) - s) == 0:
+        return graph_v3(X, probe_idx, y_probe, y_prev, draws=draws, rng=rng, level=level)
+    nb = neighbour_feature(aux, probe_idx, y_probe, k)
+    e = graph_bma_logit(np.column_stack([X, nb]), probe_idx, y_probe, draws=draws, rng=rng, level=level)
+    return Estimate(e.mean, e.lo, e.hi, "graph_v3_knn", e.extra)

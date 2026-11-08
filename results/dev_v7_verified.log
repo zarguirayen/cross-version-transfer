@@ -1,0 +1,117 @@
+rag|20231010_rag_swellama7b->20240402_rag_gpt4               p'=0.028 | greg x1.28 knn5 x1.26 knn10 x1.25 | v3_s x0.92 v3_knn5 x0.90
+rag|20231010_rag_swellama7b->20240402_rag_claude3opus        p'=0.070 | greg x1.05 knn5 x1.05 knn10 x1.05 | v3_s x0.99 v3_knn5 x0.99
+swe-agent|20240402_sweagent_gpt4->20240620_sweagent_claude3. p'=0.336 | greg x1.23 knn5 x1.19 knn10 x1.23 | v3_s x1.47 v3_knn5 x1.46
+amazon-q|20240509_amazon-q-developer-agent-20240430-dev->202 p'=0.388 | greg x1.44 knn5 x1.39 knn10 x1.43 | v3_s x1.73 v3_knn5 x1.71
+swe-agent|20240620_sweagent_claude3.5sonnet->20240728_sweage p'=0.232 | greg x1.63 knn5 x1.60 knn10 x1.65 | v3_s x1.74 v3_knn5 x1.74
+solver|20240920_solver->20240924_solver                      p'=0.454 | greg x2.21 knn5 x2.07 knn10 x2.16 | v3_s x2.81 v3_knn5 x2.81
+lingma-72b|20240918_lingma-agent_lingma-swe-gpt-72b->2024100 p'=0.288 | greg x1.59 knn5 x1.55 knn10 x1.55 | v3_s x1.80 v3_knn5 x1.85
+lingma-7b|20240918_lingma-agent_lingma-swe-gpt-7b->20241002_ p'=0.182 | greg x1.16 knn5 x1.14 knn10 x1.21 | v3_s x1.27 v3_knn5 x1.15
+nfactorial|20241001_nfactorial->20241007_nfactorial          p'=0.316 | greg x1.17 knn5 x1.13 knn10 x1.20 | v3_s x1.40 v3_knn5 x1.55
+epam|20240820_epam-ai-run-gpt-4o->20241016_epam-ai-run-gpt-4 p'=0.270 | greg x1.44 knn5 x1.41 knn10 x1.43 | v3_s x1.71 v3_knn5 x1.62
+composio|20241016_composio_swekit->20241025_composio_swekit  p'=0.486 | greg x2.23 knn5 x2.13 knn10 x2.29 | v3_s x2.66 v3_knn5 x2.86
+solver|20240924_solver->20241028_solver                      p'=0.500 | greg x2.19 knn5 x2.22 knn10 x2.20 | v3_s x2.67 v3_knn5 x2.92
+epam|20241016_epam-ai-run-gpt-4o->20241029_epam-ai-run-claud p'=0.396 | greg x1.55 knn5 x1.56 knn10 x1.61 | v3_s x1.93 v3_knn5 x2.15
+nfactorial|20241007_nfactorial->20241030_nfactorial          p'=0.416 | greg x1.42 knn5 x1.35 knn10 x1.36 | v3_s x1.71 v3_knn5 x1.80
+nfactorial|20241030_nfactorial->20241105_nfactorial          p'=0.492 | greg x2.23 knn5 x2.33 knn10 x2.35 | v3_s x2.62 v3_knn5 x3.21
+appmap-navie|20240615_appmap-navie_gpt4o->20241106_navie-2-g p'=0.472 | greg x1.53 knn5 x1.39 knn10 x1.47 | v3_s x1.79 v3_knn5 x1.87
+autocoderover|20240628_autocoderover-v20240620->20241108_aut p'=0.462 | greg x1.74 knn5 x1.74 knn10 x1.77 | v3_s x2.07 v3_knn5 x2.18
+agentless|20241028_agentless-1.5_gpt4o->20241202_agentless-1 p'=0.508 | greg x2.32 knn5 x2.21 knn10 x2.27 | v3_s x2.99 v3_knn5 x3.04
+amazon-q|20240721_amazon-q-developer-agent-20240719-dev->202 p'=0.550 | greg x2.57 knn5 x3.13 knn10 x2.84 | v3_s x2.92 v3_knn5 x3.53
+gru|20240824_gru->20241208_gru                               p'=0.570 | greg x2.90 knn5 x2.96 knn10 x2.96 | v3_s x3.40 v3_knn5 x3.22
+epam|20241029_epam-ai-run-claude-3-5-sonnet->20241212_epam-a p'=0.554 | greg x2.79 knn5 x2.80 knn10 x2.84 | v3_s x3.24 v3_knn5 x3.82
+devlo|20241108_devlo->20241213_devlo                         p'=0.582 | greg x1.70 knn5 x1.64 knn10 x1.63 | v3_s x2.09 v3_knn5 x2.22
+emergent|20241023_emergent->20241223_emergent                p'=0.572 | greg x1.74 knn5 x1.76 knn10 x1.88 | v3_s x1.96 v3_knn5 x2.12
+autocoderover|20241108_autocoderover-v2.0-claude-3-5-sonnet- p'=0.516 | greg x1.59 knn5 x1.56 knn10 x1.60 | v3_s x1.98 v3_knn5 x2.76
+openhands|20241029_OpenHands-CodeAct-2.1-sonnet-20241022->20 p'=0.608 | greg x4.02 knn5 x4.30 knn10 x4.16 | v3_s x4.58 v3_knn5 x4.58
+agentless|20241202_agentless-1.5_claude-3.5-sonnet-20241022- p'=0.424 | greg x1.51 knn5 x1.44 knn10 x1.48 | v3_s x1.66 v3_knn5 x1.80
+anthropic-tools|20241022_tools_claude-3-5-sonnet-updated->20 p'=0.632 | greg x1.87 knn5 x1.81 knn10 x1.84 | v3_s x2.18 v3_knn5 x2.29
+swe-agent|20240728_sweagent_gpt4o->20250225_sweagent_claude- p'=0.624 | greg x3.07 knn5 x3.11 knn10 x3.09 | v3_s x3.53 v3_knn5 x3.82
+epam|20241212_epam-ai-run-claude-3-5-sonnet->20250228_epam-a p'=0.628 | greg x2.61 knn5 x2.65 knn10 x2.74 | v3_s x3.18 v3_knn5 x3.23
+swe-fixer|20241128_SWE-Fixer_Qwen2.5-7b-retriever_Qwen2.5-72 p'=0.328 | greg x3.41 knn5 x2.27 knn10 x2.36 | v3_s x7.48 v3_knn5 x4.53
+amazon-q|20241202_amazon-q-developer-agent-20241202-dev->202 p'=0.654 | greg x1.99 knn5 x2.11 knn10 x2.10 | v3_s x2.35 v3_knn5 x2.49
+openhands|20250203_openhands_4x_scaled->20250415_openhands   p'=0.658 | greg x2.28 knn5 x2.52 knn10 x2.53 | v3_s x2.70 v3_knn5 x3.00
+swe-agent|20250225_sweagent_claude-3-7-sonnet->20250511_swea p'=0.402 | greg x1.86 knn5 x1.68 knn10 x1.79 | v3_s x2.08 v3_knn5 x2.20
+cortexa|20250410_cortexa->20250516_cortexa_o3                p'=0.682 | greg x2.74 knn5 x2.65 knn10 x2.70 | v3_s x3.15 v3_knn5 x3.29
+devlo|20241213_devlo->20250519_devlo                         p'=0.702 | greg x2.44 knn5 x2.68 knn10 x2.63 | v3_s x2.62 v3_knn5 x2.49
+openhands|20250415_openhands->20250520_openhands_devstral_sm p'=0.468 | greg x1.82 knn5 x1.82 knn10 x1.81 | v3_s x2.13 v3_knn5 x2.61
+anthropic-tools|20250224_tools_claude-3-7-sonnet->20250522_t p'=0.732 | greg x2.12 knn5 x2.11 knn10 x2.10 | v3_s x2.49 v3_knn5 x2.01
+swe-agent|20250511_sweagent_lm_32b->20250522_sweagent_claude p'=0.666 | greg x2.42 knn5 x2.43 knn10 x2.47 | v3_s x2.70 v3_knn5 x2.92
+openhands|20250520_openhands_devstral_small->20250524_openha p'=0.704 | greg x2.63 knn5 x2.89 knn10 x2.82 | v3_s x3.10 v3_knn5 x3.49
+anthropic-tools|20250224_tools_claude-3-7-sonnet->20250522_t p'=0.724 | greg x1.73 knn5 x1.92 knn10 x1.91 | v3_s x2.13 v3_knn5 x2.27
+patchpilot|20250503_patchpilot-v1.1-o4-mini->20250528_patchp p'=0.460 | greg x2.28 knn5 x2.13 knn10 x2.14 | v3_s x2.63 v3_knn5 x2.70
+refact|20250515_Refact_Agent->20250603_Refact_Agent_claude-4 p'=0.744 | greg x1.93 knn5 x2.10 knn10 x2.02 | v3_s x2.32 v3_knn5 x2.15
+augment|20250316_augment_agent_v0->20250610_augment_agent_v1 p'=0.704 | greg x1.90 knn5 x2.05 knn10 x2.08 | v3_s x2.37 v3_knn5 x2.96
+trae|20250519_trae->20250612_trae                            p'=0.752 | greg x3.18 knn5 x3.16 knn10 x3.16 | v3_s x3.05 v3_knn5 x2.56
+openhands|20250524_openhands_claude_4_sonnet->20250716_openh p'=0.654 | greg x2.02 knn5 x1.86 knn10 x1.97 | v3_s x2.75 v3_knn5 x2.80
+swe-agent|20250522_sweagent_claude-4-sonnet-20250514->202507 p'=0.380 | greg x1.58 knn5 x1.62 knn10 x1.66 | v3_s x1.75 v3_knn5 x1.88
+mini:anthropic|20250720_mini-v0.0.0-claude-3-7-sonnet-202502 p'=0.648 | greg x2.09 knn5 x2.37 knn10 x2.37 | v3_s x2.29 v3_knn5 x2.45
+mini:anthropic|20250726_mini-v1.0.0_claude-sonnet-4-20250514 p'=0.676 | greg x2.14 knn5 x2.05 knn10 x2.04 | v3_s x2.70 v3_knn5 x2.79
+mini:qwen|20250802_mini-v1.0.0_qwen3-coder-480b-a35b-instruc p'=0.090 | greg x1.29 knn5 x1.18 knn10 x1.20 | v3_s x1.14 v3_knn5 x0.73
+epam|20250228_epam-ai-run-claude-3-5-sonnet->20250804_epam-a p'=0.768 | greg x1.87 knn5 x2.12 knn10 x2.12 | v3_s x2.04 v3_knn5 x2.03
+openhands|20250716_openhands_kimi_k2->20250805_openhands-Qwe p'=0.516 | greg x2.00 knn5 x1.93 knn10 x2.03 | v3_s x2.48 v3_knn5 x3.15
+openhands|20250716_openhands_kimi_k2->20250805_openhands-Qwe p'=0.696 | greg x1.77 knn5 x1.82 knn10 x1.83 | v3_s x2.08 v3_knn5 x2.25
+mini:openai|20250726_mini-v1.0.0_o4-mini-2025-04-16->2025080 p'=0.650 | greg x1.90 knn5 x1.90 knn10 x1.84 | v3_s x2.06 v3_knn5 x2.30
+mini:openai|20250726_mini-v1.0.0_o4-mini-2025-04-16->2025080 p'=0.598 | greg x2.04 knn5 x2.10 knn10 x2.16 | v3_s x2.40 v3_knn5 x2.38
+mini:openai|20250726_mini-v1.0.0_o4-mini-2025-04-16->2025080 p'=0.348 | greg x1.36 knn5 x1.31 knn10 x1.37 | v3_s x1.49 v3_knn5 x1.55
+mini:openai|20250726_mini-v1.0.0_o4-mini-2025-04-16->2025080 p'=0.260 | greg x1.30 knn5 x1.35 knn10 x1.34 | v3_s x1.39 v3_knn5 x1.44
+openhands|20250805_openhands-Qwen3-Coder-480B-A35B-Instruct- p'=0.718 | greg x2.17 knn5 x2.33 knn10 x2.22 | v3_s x2.94 v3_knn5 x3.44
+warp|20250623_warp->20250901_warp                            p'=0.756 | greg x2.37 knn5 x2.29 knn10 x2.40 | v3_s x2.52 v3_knn5 x2.46
+artemis|20241120_artemis_agent->20250924_artemis_agent_v2    p'=0.570 | greg x1.64 knn5 x1.61 knn10 x1.62 | v3_s x1.84 v3_knn5 x1.88
+trae|20250612_trae->20250928_trae_doubao_seed_code           p'=0.788 | greg x2.28 knn5 x2.48 knn10 x2.49 | v3_s x2.50 v3_knn5 x2.14
+mini:anthropic|20250802_mini-v1.0.0_claude-4-opus-20250514-> p'=0.706 | greg x1.49 knn5 x1.55 knn10 x1.55 | v3_s x1.69 v3_knn5 x1.86
+lingxi|20250720_Lingxi-v1.5_claude-4-sonnet-20250514->202510 p'=0.712 | greg x2.48 knn5 x2.55 knn10 x2.70 | v3_s x3.19 v3_knn5 x3.33
+zai-glm|20250728_zai_glm4-5->20250930_zai_glm4-6             p'=0.682 | greg x2.69 knn5 x2.74 knn10 x2.80 | v3_s x3.06 v3_knn5 x3.25
+prometheus|20250929_Prometheus_v1.2_gpt5->20251015_Prometheu p'=0.744 | greg x5.44 knn5 x3.84 knn10 x4.05 | v3_s x6.44 v3_knn5 x4.94
+sage|20251021_SalesforceAIResearch_SAGE_bash_only->20251103_ p'=0.738 | greg x2.49 knn5 x2.54 knn10 x2.59 | v3_s x2.72 v3_knn5 x2.53
+mini:googledeepmind|20250726_mini-v1.0.0_gemini-2.5-pro->202 p'=0.742 | greg x2.93 knn5 x3.13 knn10 x3.15 | v3_s x3.08 v3_knn5 x3.07
+mini:openai|20250807_mini-v1.7.0_gpt-oss-120b->20251120_mini p'=0.660 | greg x1.38 knn5 x1.56 knn10 x1.65 | v3_s x1.57 v3_knn5 x1.83
+mini:anthropic|20250929_mini-v1.13.3_sonnet-4-5-20250929->20 p'=0.744 | greg x2.39 knn5 x2.76 knn10 x2.87 | v3_s x2.69 v3_knn5 x2.94
+mini:openai|20251120_mini-v1.15.0_gpt-5.1-2025-11-13->202511 p'=0.660 | greg x2.42 knn5 x2.44 knn10 x2.46 | v3_s x2.94 v3_knn5 x3.74
+openhands|20250807_openhands_gpt5->20251127_openhands_claude p'=0.776 | greg x2.52 knn5 x2.53 knn10 x2.63 | v3_s x2.68 v3_knn5 x2.56
+mini:zai|20250822_mini-v1.9.1_glm-4.5->20251201_mini-v1.17.1 p'=0.554 | greg x1.55 knn5 x1.47 knn10 x1.45 | v3_s x1.83 v3_knn5 x2.05
+sonar|20251103_sonar-foundation-agent_claude-sonnet-4-5->202 p'=0.792 | greg x2.67 knn5 x3.02 knn10 x2.90 | v3_s x3.58 v3_knn5 x2.76
+mini:moonshotai|20250807_mini-v1.7.0_kimi-k2-instruct->20251 p'=0.634 | greg x2.42 knn5 x2.40 knn10 x2.63 | v3_s x2.61 v3_knn5 x3.04
+mini:openai|20251124_mini-v1.16.0_gpt-5.1-codex->20251211_mi p'=0.718 | greg x3.54 knn5 x3.41 knn10 x3.50 | v3_s x3.90 v3_knn5 x3.60
+mini:openai|20251124_mini-v1.16.0_gpt-5.1-codex->20251211_mi p'=0.690 | greg x1.35 knn5 x1.41 knn10 x1.45 | v3_s x1.51 v3_knn5 x1.42
+live-swe-agent|20251120_livesweagent_gemini-3-pro-preview->2 p'=0.792 | greg x1.99 knn5 x2.33 knn10 x2.21 | v3_s x2.25 v3_knn5 x1.99
+mini:anthropic|20251124_mini-v1.16.0_claude-opus-4-5-2025110 p'=0.666 | greg x3.07 knn5 x3.36 knn10 x3.30 | v3_s x4.05 v3_knn5 x4.29
+mini:anthropic|20251124_mini-v1.16.0_claude-opus-4-5-2025110 p'=0.768 | greg x1.74 knn5 x1.78 knn10 x1.73 | v3_s x2.08 v3_knn5 x2.09
+mini:anthropic|20251124_mini-v1.16.0_claude-opus-4-5-2025110 p'=0.714 | greg x4.22 knn5 x3.99 knn10 x4.12 | v3_s x5.86 v3_knn5 x5.01
+mini:anthropic|20251124_mini-v1.16.0_claude-opus-4-5-2025110 p'=0.756 | greg x3.59 knn5 x3.64 knn10 x3.69 | v3_s x3.95 v3_knn5 x3.89
+mini:deepseek|20251201_mini-v1.17.1_deepseek-v3.2-reasoner-> p'=0.700 | greg x2.15 knn5 x2.27 knn10 x2.37 | v3_s x2.47 v3_knn5 x2.70
+mini:googledeepmind|20251118_mini-v1.15.0_gemini-3-pro-previ p'=0.758 | greg x1.98 knn5 x2.00 knn10 x2.03 | v3_s x2.20 v3_knn5 x1.99
+mini:zai|20251201_mini-v1.17.1_glm-4.6->20260217_mini-v2.0.0 p'=0.728 | greg x1.25 knn5 x1.21 knn10 x1.24 | v3_s x1.37 v3_knn5 x1.31
+mini:openai|20251211_mini-v1.17.2_gpt-5.2-2025-12-11-high->2 p'=0.728 | greg x2.26 knn5 x2.21 knn10 x2.27 | v3_s x2.48 v3_knn5 x2.46
+mini:openai|20251211_mini-v1.17.2_gpt-5.2-2025-12-11-high->2 p'=0.562 | greg x1.93 knn5 x1.96 knn10 x1.97 | v3_s x2.23 v3_knn5 x2.18
+mini:moonshotai|20251210_mini-v1.17.2_kimi-k2-thinking->2026 p'=0.708 | greg x2.62 knn5 x2.33 knn10 x2.45 | v3_s x2.63 v3_knn5 x2.52
+/home/claude/cross-version-transfer/experiments/dev_v7_structure.py:77: RuntimeWarning: divide by zero encountered in scalar divide
+  **{f"gain_{q}": mr / np.mean(err[q]) for q in KEYS}, **{f"cov_{q}": float(np.mean(cov[q])) for q in KEYS},
+mini:googledeepmind|20260217_mini-v2.0.0_gemini-3-flash-high p'=0.000 | greg xinf knn5 xinf knn10 xinf | v3_s x0.70 v3_knn5 x0.70
+mini:minimax|20251124_mini-v1.17.0_minimax-m2->20260217_mini p'=0.758 | greg x1.81 knn5 x1.76 knn10 x1.80 | v3_s x1.99 v3_knn5 x1.86
+mini:googledeepmind|20260226_mini-v2.0.0_gemini-3-pro-high-> p'=0.718 | greg x1.45 knn5 x1.49 knn10 x1.49 | v3_s x1.71 v3_knn5 x1.76
+
+tous (89)
+  reset_u    x1.000 (min 1.00) couv 0.921/0.860 largeur 0.320 décision 0.113
+  greg_cf    x2.020 (min 1.05) couv 0.938/0.880 largeur 0.281 décision 0.065
+  greg_knn5  x2.104 (min 1.05) couv 0.934/0.860 largeur 0.280 décision 0.064
+  greg_knn10 x2.103 (min 1.05) couv 0.936/0.870 largeur 0.279 décision 0.063
+  v3_s       x2.369 (min 0.70) couv 0.955/0.890 largeur 0.246 décision 0.056
+  v3_knn5    x2.459 (min 0.70) couv 0.954/0.870 largeur 0.239 décision 0.062
+/usr/local/lib/python3.13/site-packages/scipy/stats/_wilcoxon.py:76: RuntimeWarning: invalid value encountered in subtract
+  d = x - y
+/home/claude/cross-version-transfer/experiments/dev_v7_structure.py:99: RuntimeWarning: invalid value encountered in divide
+  print(f"  {a} > {b} : {np.mean(ga > gb):.0%} ; Wilcoxon p = {stats.wilcoxon(ga, gb, alternative='greater').pvalue:.3g} ; rapport médian {np.median(ga / gb):.3f}")
+  greg_knn5 > greg_cf : 53% ; Wilcoxon p = 0.174 ; rapport médian nan
+  greg_knn10 > greg_cf : 62% ; Wilcoxon p = 0.000237 ; rapport médian nan
+  v3_knn5 > v3_s : 61% ; Wilcoxon p = 0.00839 ; rapport médian 1.030
+
+p' 10-90 % (85)
+  reset_u    x1.000 (min 1.00) couv 0.918/0.860 largeur 0.328 décision 0.119
+  greg_cf    x2.045 (min 1.16) couv 0.936/0.880 largeur 0.266 décision 0.064
+  greg_knn5  x2.106 (min 1.13) couv 0.933/0.860 largeur 0.264 décision 0.064
+  greg_knn10 x2.125 (min 1.20) couv 0.936/0.870 largeur 0.263 décision 0.063
+  v3_s       x2.471 (min 1.27) couv 0.956/0.900 largeur 0.250 décision 0.059
+  v3_knn5    x2.489 (min 1.15) couv 0.955/0.880 largeur 0.242 décision 0.065
+  greg_knn5 > greg_cf : 55% ; Wilcoxon p = 0.132 ; rapport médian 1.004
+  greg_knn10 > greg_cf : 65% ; Wilcoxon p = 0.000117 ; rapport médian 1.020
+  v3_knn5 > v3_s : 62% ; Wilcoxon p = 0.00471 ; rapport médian 1.035

@@ -1,0 +1,62 @@
+test_normal|A_modele|react_gpt4turbo->react_gpt4o            p'=0.488 | greg x1.59 knn5 x1.59 knn10 x1.59 | v3_s x1.79 v3_knn5 x1.81
+test_normal|A_modele|plan_exec_gpt4turbo->plan_exec_gpt4o    p'=0.446 | greg x1.23 knn5 x1.20 knn10 x1.20 | v3_s x1.39 v3_knn5 x1.40
+test_normal|A_modele|full_code_refl_gpt4turbo->full_code_ref p'=0.339 | greg x1.22 knn5 x1.12 knn10 x1.19 | v3_s x1.43 v3_knn5 x1.41
+test_normal|A_modele|ipfuncall_gpt4turbo->ipfuncall_gpt4o    p'=0.321 | greg x0.93 knn5 x0.89 knn10 x0.91 | v3_s x1.18 v3_knn5 x1.18
+test_normal|B_architecture|react_gpt4turbo->plan_exec_gpt4tu p'=0.327 | greg x1.10 knn5 x1.10 knn10 x1.11 | v3_s x1.14 v3_knn5 x1.20
+test_normal|B_architecture|react_gpt4turbo->full_code_refl_g p'=0.256 | greg x1.66 knn5 x1.78 knn10 x1.73 | v3_s x1.81 v3_knn5 x2.09
+test_normal|B_architecture|react_gpt4turbo->ipfuncall_gpt4tu p'=0.304 | greg x0.91 knn5 x0.93 knn10 x0.92 | v3_s x1.03 v3_knn5 x1.14
+test_normal|B_architecture|react_gpt4o->plan_exec_gpt4o      p'=0.446 | greg x0.97 knn5 x0.96 knn10 x0.98 | v3_s x1.13 v3_knn5 x1.14
+test_normal|B_architecture|react_gpt4o->full_code_refl_gpt4o p'=0.339 | greg x1.09 knn5 x1.12 knn10 x1.08 | v3_s x1.21 v3_knn5 x1.28
+test_normal|B_architecture|react_gpt4o->ipfuncall_gpt4o      p'=0.321 | greg x1.25 knn5 x1.30 knn10 x1.26 | v3_s x1.39 v3_knn5 x1.61
+test_normal|B_architecture|react_llama3->plan_exec_llama3    p'=0.089 | greg x1.18 knn5 x1.18 knn10 x1.19 | v3_s x0.85 v3_knn5 x0.77
+test_normal|B_architecture|react_deepseekcoder->plan_exec_de p'=0.018 | greg x1.81 knn5 x1.80 knn10 x1.83 | v3_s x0.74 v3_knn5 x0.69
+test_normal|B_architecture|react_llama3->full_code_refl_llam p'=0.244 | greg x2.30 knn5 x2.43 knn10 x2.39 | v3_s x2.32 v3_knn5 x2.52
+test_normal|B_architecture|react_deepseekcoder->full_code_re p'=0.131 | greg x1.10 knn5 x1.10 knn10 x1.11 | v3_s x1.03 v3_knn5 x0.96
+test_normal|C_famille|react_llama3->react_gpt4o              p'=0.488 | greg x1.13 knn5 x1.11 knn10 x1.11 | v3_s x1.29 v3_knn5 x1.36
+test_normal|C_famille|react_deepseekcoder->react_gpt4o       p'=0.488 | greg x1.43 knn5 x1.47 knn10 x1.43 | v3_s x1.71 v3_knn5 x1.85
+test_normal|C_famille|plan_exec_llama3->plan_exec_gpt4o      p'=0.446 | greg x1.43 knn5 x1.41 knn10 x1.42 | v3_s x1.63 v3_knn5 x1.76
+test_normal|C_famille|plan_exec_deepseekcoder->plan_exec_gpt p'=0.446 | greg x1.41 knn5 x1.32 knn10 x1.36 | v3_s x1.64 v3_knn5 x1.69
+test_normal|C_famille|full_code_refl_llama3->full_code_refl_ p'=0.339 | greg x1.50 knn5 x1.46 knn10 x1.47 | v3_s x1.65 v3_knn5 x1.69
+test_normal|C_famille|full_code_refl_deepseekcoder->full_cod p'=0.339 | greg x1.66 knn5 x1.62 knn10 x1.66 | v3_s x1.91 v3_knn5 x2.02
+test_challenge|A_modele|react_gpt4turbo->react_gpt4o         p'=0.302 | greg x1.91 knn5 x1.84 knn10 x1.88 | v3_s x2.45 v3_knn5 x2.44
+test_challenge|A_modele|plan_exec_gpt4turbo->plan_exec_gpt4o p'=0.197 | greg x1.26 knn5 x1.23 knn10 x1.26 | v3_s x1.39 v3_knn5 x1.34
+test_challenge|A_modele|full_code_refl_gpt4turbo->full_code_ p'=0.192 | greg x1.26 knn5 x1.32 knn10 x1.30 | v3_s x1.49 v3_knn5 x1.55
+test_challenge|A_modele|ipfuncall_gpt4turbo->ipfuncall_gpt4o p'=0.180 | greg x1.52 knn5 x1.48 knn10 x1.51 | v3_s x1.80 v3_knn5 x1.69
+test_challenge|B_architecture|react_gpt4turbo->plan_exec_gpt p'=0.110 | greg x0.90 knn5 x0.87 knn10 x0.89 | v3_s x0.92 v3_knn5 x0.83
+test_challenge|B_architecture|react_gpt4turbo->full_code_ref p'=0.125 | greg x1.88 knn5 x2.03 knn10 x2.07 | v3_s x1.55 v3_knn5 x1.45
+test_challenge|B_architecture|react_gpt4turbo->ipfuncall_gpt p'=0.146 | greg x1.09 knn5 x1.07 knn10 x1.09 | v3_s x1.26 v3_knn5 x1.17
+test_challenge|B_architecture|react_gpt4o->plan_exec_gpt4o   p'=0.197 | greg x1.44 knn5 x1.51 knn10 x1.46 | v3_s x1.47 v3_knn5 x1.60
+test_challenge|B_architecture|react_gpt4o->full_code_refl_gp p'=0.192 | greg x0.98 knn5 x1.05 knn10 x1.04 | v3_s x1.06 v3_knn5 x1.27
+test_challenge|B_architecture|react_llama3->plan_exec_llama3 p'=0.024 | greg x1.17 knn5 x1.16 knn10 x1.18 | v3_s x0.58 v3_knn5 x0.48
+test_challenge|B_architecture|react_gpt4o->ipfuncall_gpt4o   p'=0.180 | greg x1.08 knn5 x1.09 knn10 x1.10 | v3_s x1.15 v3_knn5 x1.16
+test_challenge|B_architecture|react_deepseekcoder->plan_exec p'=0.007 | greg x2.69 knn5 x2.37 knn10 x2.66 | v3_s x0.81 v3_knn5 x0.71
+test_challenge|B_architecture|react_deepseekcoder->full_code p'=0.058 | greg x1.07 knn5 x1.11 knn10 x1.09 | v3_s x0.83 v3_knn5 x0.75
+test_challenge|B_architecture|react_llama3->full_code_refl_l p'=0.070 | greg x1.78 knn5 x1.87 knn10 x1.79 | v3_s x1.21 v3_knn5 x0.91
+test_challenge|C_famille|react_llama3->react_gpt4o           p'=0.302 | greg x1.54 knn5 x1.55 knn10 x1.53 | v3_s x1.78 v3_knn5 x1.96
+test_challenge|C_famille|react_deepseekcoder->react_gpt4o    p'=0.302 | greg x1.77 knn5 x1.77 knn10 x1.78 | v3_s x1.97 v3_knn5 x2.03
+test_challenge|C_famille|plan_exec_llama3->plan_exec_gpt4o   p'=0.197 | greg x1.30 knn5 x1.27 knn10 x1.33 | v3_s x1.58 v3_knn5 x1.57
+test_challenge|C_famille|plan_exec_deepseekcoder->plan_exec_ p'=0.197 | greg x1.09 knn5 x1.08 knn10 x1.09 | v3_s x1.21 v3_knn5 x1.22
+test_challenge|C_famille|full_code_refl_llama3->full_code_re p'=0.192 | greg x1.07 knn5 x1.09 knn10 x1.07 | v3_s x1.13 v3_knn5 x1.17
+test_challenge|C_famille|full_code_refl_deepseekcoder->full_ p'=0.192 | greg x1.92 knn5 x1.84 knn10 x1.93 | v3_s x1.90 v3_knn5 x1.75
+
+tous (40)
+  reset_u    x1.000 (min 1.00) couv 0.921/0.860 largeur 0.286 décision 0.081
+  greg_cf    x1.262 (min 0.90) couv 0.948/0.880 largeur 0.356 décision 0.056
+  greg_knn5  x1.286 (min 0.87) couv 0.949/0.860 largeur 0.358 décision 0.058
+  greg_knn10 x1.285 (min 0.89) couv 0.951/0.890 largeur 0.359 décision 0.056
+  v3_s       x1.387 (min 0.58) couv 0.923/0.850 largeur 0.241 décision 0.066
+  v3_knn5    x1.381 (min 0.48) couv 0.917/0.810 largeur 0.235 décision 0.067
+  greg_knn5 > greg_cf : 42% ; Wilcoxon p = 0.618 ; rapport médian 0.995
+  greg_knn10 > greg_cf : 62% ; Wilcoxon p = 0.147 ; rapport médian 1.004
+  v3_knn5 > v3_s : 60% ; Wilcoxon p = 0.163 ; rapport médian 1.011
+
+p' 10-90 % (34)
+  reset_u    x1.000 (min 1.00) couv 0.912/0.860 largeur 0.308 décision 0.079
+  greg_cf    x1.262 (min 0.90) couv 0.949/0.880 largeur 0.318 décision 0.059
+  greg_knn5  x1.286 (min 0.87) couv 0.949/0.860 largeur 0.318 décision 0.060
+  greg_knn10 x1.285 (min 0.89) couv 0.951/0.890 largeur 0.320 décision 0.058
+  v3_s       x1.449 (min 0.92) couv 0.926/0.870 largeur 0.256 décision 0.058
+  v3_knn5    x1.501 (min 0.83) couv 0.921/0.860 largeur 0.248 décision 0.059
+  greg_knn5 > greg_cf : 41% ; Wilcoxon p = 0.639 ; rapport médian 0.995
+  greg_knn10 > greg_cf : 59% ; Wilcoxon p = 0.223 ; rapport médian 1.002
+  v3_knn5 > v3_s : 71% ; Wilcoxon p = 0.0108 ; rapport médian 1.027
