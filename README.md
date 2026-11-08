@@ -3,7 +3,7 @@
 Code, pre-registrations, results and paper for
 
 > Rayen Zargui. *How Much Is an Agent's History Worth? A Law of Evaluation Transfer Across Agent Versions,
-> Tested in Six Pre-Registered Studies.* Preprint, 2026.
+> Tested in Pre-Registered Studies.* Preprint, 2026.
 
 When a new version of an AI agent ships, we organise everything already known as a **graph of agents**: nodes are
 agent (or model) versions, lineage edges link a version to its predecessor, and every node carries its outcome on

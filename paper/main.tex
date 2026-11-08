@@ -16,7 +16,7 @@
 \newcommand{\phisq}{\varphi^2}
 
 \title{How Much Is an Agent's History Worth?\\[2pt]
-\large A Law of Evaluation Transfer Across Agent Versions,\\ Tested in Six Pre-Registered Studies}
+\large A Law of Evaluation Transfer Across Agent Versions,\\ Tested in Pre-Registered Studies}
 \author{Rayen Zargui\\
 Institut Polytechnique de Paris\\
 \texttt{rayen.zargui@polytechnique.edu}}
@@ -36,14 +36,15 @@ task-level variance already explained by the graph---$\phisq$ with the predecess
 with the task difficulty seen by all earlier agents (stratified sampling). We turn the law into a three-move
 method: the graph \emph{chooses} the tasks, a cross-fitted model-assisted estimator \emph{estimates} the new
 version's success rate with calibrated intervals, and the same tasks \emph{decide} whether to keep or replace the
-current version. Every confirmatory hypothesis was pre-registered and frozen by a git tag before the data were
-examined. After a
+current version. Every confirmatory hypothesis was pre-registered and frozen by a git tag before the corresponding statistics
+were computed. After a
 pilot on model versions, five confirmations cover \NConf{} real version transitions never analysed before:
 agents on AppWorld, SWE-bench (Verified, Lite, test, multilingual), Multi-SWE-bench in seven languages, model
 versions on LiveCodeBench, and office agents on TheAgentCompany. Given $\rho^2$, the law predicts the observed
 efficiency gain within \LawErrPooled\% (median) across all \NConf{} transitions---the order of the simulation noise---and
 within 10\% for \LawWithinTen\% of them. Most of the gain comes from letting the graph choose the tasks: with 20
-graph-chosen tasks, estimates are as precise as with about \EquivProbesSix{} random tasks. The cross-fitted estimator
+graph-chosen tasks, estimates are as precise as with about \EquivProbesFour--\EquivProbesSixStrat{} random tasks on SWE-bench Lite,
+LiveCodeBench and TheAgentCompany (\EquivProbesFive{} in the study dominated by versions that solve almost nothing). The cross-fitted estimator
 never lost to random testing in the last two confirmations (worst case $\times\GGregMinFive$ and
 $\times\GGregMinSix$), including on versions that solve almost nothing, and its 90\% intervals covered the truth
 \CovGregSix{} of the time; keep-or-replace decisions were wrong \DecRedSix--\DecRedFour\% less often than with
@@ -84,8 +85,8 @@ measurable quantity, which can be estimated from the tested tasks themselves or 
 difficulty seen by earlier agents), which provides most of the gain; a cross-fitted generalised regression estimator
 \citep{sarndal1992,zrnic2024cross} with effective-sample-size intervals \citep{korn1998} estimates the new version's
 rate without catastrophic losses; the same tasks decide keep-or-replace and flag whether the decision is sure.
-\item \textbf{A pre-registered evidence chain} (Section~\ref{sec:protocol}). Six studies---one pilot and five
-confirmations on data never analysed before---each frozen by a git tag and SHA-256 hashes before the first
+\item \textbf{A pre-registered evidence chain} (Section~\ref{sec:protocol}). Seven studies---one pilot, five
+confirmations on data never analysed before, and one secondary analysis of a new question---each frozen by a git tag and SHA-256 hashes before the first
 statistic, with every development step done on previously seen data only and every deviation logged.
 \item \textbf{Results on \NConf{} real version transitions} (Section~\ref{sec:results}), including an atlas of
 what survives a version change, evidence that the graph has structure of its own---an agent's scaffold, more than its
@@ -212,10 +213,18 @@ allowed before the freeze. Every method change was developed on data already ana
 the data of the next confirmation. All deviations---including one accidental display of a single submission's
 total during a format audit---are logged in the repository. Hashes were re-verified after each run.
 
-\paragraph{Data.} Table~\ref{tab:data} lists the sources. Transitions are defined mechanically from public
-submission names and dates: within a product lineage, each submission is paired with the latest strictly earlier
-submission of the same lineage; the graph of a new version contains only submissions released strictly before it.
-Tasks of SWE-bench test that also belong to Verified or Lite (analysed earlier) were removed before the freeze.
+\paragraph{Data.} Table~\ref{tab:data} lists the sources. Transitions were fixed before any statistic, by rules that
+differ by source. \emph{Pilot}: five pairs of successive model versions (minor revisions: Llama-3$\to$3.1, Mistral
+v0.2$\to$v0.3; new generations: Qwen2$\to$2.5, Qwen2.5$\to$3, Gemma~1.1$\to$2) on six benchmarks give the 30 primary
+transitions; Llama-2$\to$Llama-3 (six more) was pre-specified as secondary and is not counted. \emph{AppWorld}: 40
+transitions listed in advance by type of change (model upgrade, scaffold change, change of model family); the graph of a
+new version contains the other agents except those using its model. \emph{SWE-bench, Multi-SWE-bench and
+TheAgentCompany}: transitions are defined mechanically from public submission names and dates---within a product
+lineage, each submission is paired with the latest strictly earlier submission of the same lineage, and the graph of a
+new version contains only submissions released strictly before it. \emph{LiveCodeBench}: the same rule, with twelve
+product lines and release dates written down before the freeze (Section~\ref{sec:limits}); models with an uncertain date
+are excluded from the graphs. Tasks of SWE-bench test that also belong to Verified or Lite (analysed earlier) were
+removed before the freeze.
 
 \begin{table}[t]
 \centering\small
@@ -241,7 +250,7 @@ Total (confirmations v2--v6) & & \NConf & & \\
 \end{table}
 
 \paragraph{Replays.} For every transition we simulate the evaluation of the new version 400 times (1{,}000 in the
-pilot): draw the probes (uniformly, or with the graph's stratified design, independently), apply every estimator to
+pilot, 200 in v7): draw the probes (uniformly, or with the graph's stratified design, independently), apply every estimator to
 the same probes, and compare with the true rate measured on all $N$ tasks. The primary budget is $m=20$; $m=40$ is
 reported as secondary. Coverage is the fraction of replays whose 90\% interval contains the truth.
 
@@ -258,6 +267,13 @@ error) over the \NConf{} confirmation transitions; the correlation of log-gains 
 (\StratErrFour\%, \StratErrFive\%, \StratErrSix\% in v4--v6); the median $\eta^2_{\mathcal G}$ is \EtaMedFour{} on
 SWE-bench Lite and \EtaMedSix{} on LiveCodeBench, i.e.\ the history of other agents explains about half of a new
 version's task-level variance.
+
+\paragraph{Not only the easy cases.} Part of this agreement is easy: for \LawTrivShare\% of the transitions the
+predicted gain is below $\times1.1$, and predicting ``no gain'' is then nearly right. On the \LawBigN{} transitions
+where the law predicts a gain of at least $\times1.5$, its median error is \LawBigErr\%, against \LawBigConst\% for an
+oracle constant equal to the median observed gain of these same transitions; the graph law errs by \StratBigErr\% on
+the \StratBigN{} transitions where it predicts at least $\times1.5$. The law therefore tracks how large the gain is, not
+only whether there is one.
 
 \paragraph{How precise is this test?} Each observed gain is itself estimated from 400 replays; a bootstrap over replays
 puts its relative Monte Carlo error at about \MCErr\% (median over transitions). The residual error of the law is
@@ -282,7 +298,8 @@ confirmations, to $\times\GGraphTwo$, $\times\GGraphThree$, $\times\GGraphFour$ 
 (on SWE-bench Verified, $p=\PvalFiveVsPredThree$, paired Wilcoxon); the exception is v5 ($\times\GGraphFive$),
 where most new versions solve almost nothing (Section~\ref{sec:robust}). Letting the graph also choose the tasks gives
 $\times\GStratFour$ on Lite and $\times\GStratSix$ on v6, where 20 graph-chosen tasks are worth about
-\EquivProbesFour{} and \EquivProbesSix{} random ones.
+\EquivProbesFour{} and \EquivProbesSixStrat{} random ones; with the cross-fitted estimator, \EquivProbesSix{} on v6
+and \EquivProbesFive{} on v5.
 
 \begin{figure}[t]
 \centering
@@ -436,8 +453,8 @@ predicts task-level success on coding benchmarks by separating model and scaffol
 component; \citet{ndzomga2026efficient} keeps tasks with mid-range historical pass rates;
 \citet{she2026production} study an evolving production agent and deploy difficulty-stratified fixed subsets with
 IRT-based estimates---the closest design to our task selection, whose gain Proposition~\ref{prop:eta} predicts; \citet{johnson2026cached} estimate new agents' scores from cached traces of reference systems.
-These works report point accuracy (errors, rank correlations). We add a closed-form law that predicts the gain before
-testing, calibrated intervals that survive model failure, the keep-or-replace decision, and pre-registered evidence.
+These works report point accuracy (errors, rank correlations). We add a closed-form law for how much the history is worth (anticipated from the type of change or estimated from the
+probes), calibrated intervals that survive model failure, the keep-or-replace decision, and pre-registered evidence.
 
 \paragraph{Prediction-powered inference.} PPI \citep{angelopoulos2023ppi}, PPI++ \citep{angelopoulos2023ppipp},
 cross-PPI \citep{zrnic2024cross} and stratified PPI \citep{fisch2024stratified} combine model predictions with a few
@@ -449,7 +466,7 @@ come from the graph of earlier agents rather than from a single predictor.
 after an LLM update. We do not predict individual flips; we measure how much the history reduces the cost of
 estimating and deciding, which is what a team shipping a new version needs.
 
-\section{Limitations and threats to validity}
+\section{Limitations and threats to validity}\label{sec:limits}
 \paragraph{Scope.} The law assumes probes drawn at random (or within strata) from a fixed task suite; it says nothing
 about tasks outside the suite. Gains depend on the graph: with fewer than 20 earlier agents the median gain on SWE-bench Verified
 was markedly lower. Versions that solve almost nothing remain hard for decisions. Several sources share agents or
@@ -461,7 +478,7 @@ contributes only two transitions.
 \paragraph{Statistics.} Paired Wilcoxon tests treat transitions as independent units, although transitions of a study
 share agents and ecosystems; their $p$-values should be read as descriptive of consistency rather than exact. The freezes are
 recorded by git tags and hashes whose timestamps are self-reported, not certified by a third party; future studies
-should be registered on a public registry before data access. Each study's hypotheses were tested at level 0.05 without correction across the six studies; the ledger
+should be registered on a public registry before data access. Each study's hypotheses were tested at level 0.05 without correction across the seven studies; the ledger
 (Appendix~\ref{app:ledger}) reports all \HypTotal{} tests so that readers can apply their own correction. The law is
 tested at the true $\rho^2$; with $\rho^2$ estimated from the probes, it was tested only in the pilot.
 
@@ -478,9 +495,9 @@ the software, not new evidence for the method.
 
 \section{Conclusion}
 An agent's history is worth a computable number of tasks. Across \NConf{} real version transitions in five
-pre-registered confirmations, the law $1/(1-\rho^2)$ predicted that number within a few percent, and a method in which
-the graph of earlier agents chooses the tasks, estimates with calibrated intervals and decides, roughly halved the cost
-of evaluating a new version. The graph also has structure of its own---scaffolds, more than models, shape which tasks
+pre-registered confirmations, the law $1/(1-\rho^2)$, given $\rho^2$, predicted that number within a few percent, and a method in which
+the graph of earlier agents chooses the tasks, estimates with calibrated intervals and decides, divided the number of
+tasks needed for a given precision by $\GGregFive$ to $\GGregSix$ (median) in the last two confirmations. The graph also has structure of its own---scaffolds, more than models, shape which tasks
 agents fail---but for evaluation its value lies in the difficulty scale it has learned. Evaluation does not have to start
 from zero at every release: the graph of agents remembers.
 

@@ -92,6 +92,17 @@ put("GStratMinFiveLow", f(lo5, "gain_v3_s").min())
 # probes équivalentes (v6, GREG croisé)
 put("EquivProbesSix", 20 * np.median(f(v6, "gain_greg_cf_s")), "{:.0f}")
 put("EquivProbesFour", 20 * np.median(f(v4, "gain_v3_s")), "{:.0f}")
+put("EquivProbesSixStrat", 20 * np.median(f(v6, "gain_v3_s")), "{:.0f}")
+put("EquivProbesFive", 20 * np.median(f(v5, "gain_greg_cf_s")), "{:.0f}")
+# robustesse de la loi hors cas triviaux (gain prédit >= 1,5)
+_lp = np.array([[p_, o_] for t_, p_, o_ in law_pts if t_ != "pilot"]); _m = _lp[:, 0] >= 1.5
+put("LawBigN", int(_m.sum()), "{}")
+put("LawBigErr", 100 * np.median(np.abs(_lp[_m, 1] / _lp[_m, 0] - 1)), "{:.1f}")
+put("LawBigConst", 100 * np.median(np.abs(_lp[_m, 1] / np.median(_lp[_m, 1]) - 1)), "{:.1f}")
+put("LawTrivShare", 100 * np.mean(_lp[:, 0] < 1.1), "{:.0f}")
+_sp = np.array([[p_, o_] for t_, p_, o_ in strat_pts]); _ms = _sp[:, 0] >= 1.5
+put("StratBigN", int(_ms.sum()), "{}")
+put("StratBigErr", 100 * np.median(np.abs(_sp[_ms, 1] / _sp[_ms, 0] - 1)), "{:.1f}")
 # décisions (|écart| >= 5 points)
 for nm, S, k in (("Four", v4, "v3_s"), ("Five", v5, "v3_s"), ("Six", v6, "v3_s")):
     B = [r for r in S if abs(float(r["delta"])) >= 0.05]
