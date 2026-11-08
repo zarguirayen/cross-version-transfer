@@ -4,7 +4,7 @@ import re
 from pathlib import Path
 R = Path(__file__).resolve().parents[1] / "results"
 M = dict(re.findall(r"\\newcommand\{\\(\w+)\}\{([^}]*)\}", open(Path(__file__).parent / "numbers.tex").read()))
-S = {k: open(R / f"{k}/summary.txt").read() for k in ("g2", "v2", "v3", "v4", "v5", "v6")}
+S = {k: open(R / f"{k}/summary.txt").read() for k in ("g2", "v2", "v3", "v4", "v5", "v6", "v7")}
 def num(study, pat): return float(re.search(pat, S[study], re.S).group(1))
 checks = [
     ("LawErrPilot", 100 * num("g2", r"H1 m=20 — erreur relative médiane loi\(phi² vrai\) ([0-9.]+)"), 0.06),
@@ -34,7 +34,11 @@ checks = [
     ("DecGraphSix", 100 * num("v6", r"U3-v6.*?stratifié ([0-9.]+)"), 0.06), ("DecResetSix", 100 * num("v6", r"U3-v6.*?reset uniforme ([0-9.]+)"), 0.06),
     ("DetPower", 100 * num("v3", r"H4-v3.*?alerte ([0-9.]+)"), 0.6), ("DetProbes", num("v3", r"avec ([0-9.]+) probes"), 0.6),
     ("DetFA", 100 * num("v3", r"sans baisse ([0-9.]+)"), 0.06), ("AtlasModel", num("v2", r"A_modele ([0-9.]+)"), 0.006),
-    ("AtlasArch", num("v2", r"B_architecture ([0-9.]+)"), 0.006), ("AtlasFamily", num("v2", r"C_famille ([0-9.]+)"), 0.006),
+    ("AtlasArch", num("v2", r"B_architecture ([0-9.]+)"), 0.006),
+    ("SScaffMed", num("v7", r"S1 — .*?écart médian ([+\-0-9.]+)"), 0.0006), ("SScaffPos", num("v7", r"S1 — .*?positif dans ([0-9]+)/7"), 0.1),
+    ("SScaffVsModelMed", num("v7", r"S2 — .*?écart médian ([+\-0-9.]+)"), 0.0006), ("SProvGap", num("v7", r"S3 — .*?écart ([+\-0-9.]+)"), 0.0006),
+    ("GKnnSeven", num("v7", r"S4 — .*?: x([0-9.]+)"), 0.0006), ("GCfSeven", num("v7", r"S4 — .*?vs x([0-9.]+)"), 0.0006),
+    ("KnnRatioSeven", num("v7", r"S4 — .*?rapport médian ([0-9.]+)"), 0.0006), ("AtlasFamily", num("v2", r"C_famille ([0-9.]+)"), 0.006),
 ]
 bad = 0
 for name, ref, tol in checks:

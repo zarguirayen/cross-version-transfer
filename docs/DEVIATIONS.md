@@ -52,5 +52,7 @@ Chaque entrée : date, ce qui change, pourquoi, effet attendu sur les conclusion
 - **7 novembre 2026, v6** : avant le gel, normalisation des noms de tâches de TheAgentCompany (suffixe « -image »,
   deux conventions) et exclusion de Terminal-Bench, Multi-SWE-bench Python, SWE-bench multimodal. Après le gel :
   aucun écart ; un test ajouté (`test_greg_cf_covers_zero_rate_and_is_calibrated`), sans effet sur l'analyse.
+- **8 novembre 2026, v7** : avant le gel, exclusion des variantes d'effort de LiveCodeBench (un nœud par modèle),
+  décidée à l'audit des noms. Après le gel : aucun écart.
 - **Constat** : écart de 0,6 point entre notre taux de régression Mistral MATH (55,8 %) et celui publié par
   Sheng & Lu (55,2 %). Non expliqué ; sans effet sur les conclusions.

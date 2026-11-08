@@ -1,0 +1,6 @@
+S1 — même échafaudage vs sans lien (7 langages) : écart médian +0.060, positif dans 7/7 ; Wilcoxon p = 0.00781 ; permutations p par langage 0.136, 0.008, 0.000, 0.003, 0.000, 0.000, 0.000 ; soutenue (p < 0,05) : True
+S2 — même échafaudage plus semblable que même modèle : écart médian +0.064, positif dans 7/7 ; Wilcoxon p = 0.00781 ; soutenue (p < 0,05) : True
+S3 — LiveCodeBench, même fournisseur vs autres : écart +0.047, permutation p = 0.0005 ; soutenue (p < 0,05) : True
+S4 — arêtes apprises dans GREG croisé (90 transitions) : x1.937 vs x1.955, rapport médian 0.995 ; Wilcoxon p = 0.654 ; couverture 0.945 (min 0.875) ; soutenue (p < 0,05) : False
+S5 — l'apport de la structure est de second ordre : rapport médian 0.995 ; soutenue (<= 1,10) : True
+(rapporté) estimateur fondé sur le modèle : x1.793 vs x1.881, rapport médian 0.992, Wilcoxon p = 0.806

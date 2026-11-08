@@ -47,8 +47,11 @@ graph-chosen tasks, estimates are as precise as with about \EquivProbesSix{} ran
 never lost to random testing in the last two confirmations (worst case $\times\GGregMinFive$ and
 $\times\GGregMinSix$), including on versions that solve almost nothing, and its 90\% intervals covered the truth
 \CovGregSix{} of the time; keep-or-replace decisions were wrong \DecRedSix--\DecRedFour\% less often than with
-random testing. Of
-\HypTotal{} pre-registered hypotheses, \HypSupported{} were supported; we report the \HypFailed{} failures in full.
+random testing. A pre-registered secondary analysis shows that the graph also has structure of its own: beyond task
+difficulty, agents that share a scaffold fail on the same tasks in all seven languages of Multi-SWE-bench, more than
+agents that share a model; yet this structure adds nothing to the efficiency of evaluation, which comes from the
+difficulty scale the graph has learned. Of \HypTotal{} pre-registered hypotheses, \HypSupported{} were supported; we
+report the \HypFailed{} failures in full.
 We release a small kernel that implements the graph and reproduces the research results when replaying 89 real
 SWE-bench transitions.
 \end{abstract}
@@ -85,7 +88,8 @@ rate without catastrophic losses; the same tasks decide keep-or-replace and flag
 confirmations on data never analysed before---each frozen by a git tag and SHA-256 hashes before the first
 statistic, with every development step done on previously seen data only and every deviation logged.
 \item \textbf{Results on \NConf{} real version transitions} (Section~\ref{sec:results}), including an atlas of
-what survives a version change and \HypFailed{} pre-registered failures reported in full.
+what survives a version change, evidence that the graph has structure of its own---an agent's scaffold, more than its
+model, shapes which tasks it fails---and \HypFailed{} pre-registered failures reported in full.
 \item \textbf{A kernel} (Section~\ref{sec:kernel}) implementing the graph of agents---an append-only event log, a
 registry of slots and versions, and the operations \texttt{record}, \texttt{plan}, \texttt{estimate},
 \texttt{decide}, \texttt{lint}---validated by replaying 89 real transitions.
@@ -201,7 +205,9 @@ likelihoods.
 \paragraph{Pre-registration.} Each study was written as a protocol (hypotheses, thresholds, estimators, seeds,
 data rules) and an analysis script, committed together and frozen by a git tag (\texttt{prereg-v1} to
 \texttt{prereg-v6}) and SHA-256 hashes \emph{before any statistic was computed on its data}
-\citep{nosek2018prereg}. Only format audits (file keys, task identifiers, submission names and dates) were
+\citep{nosek2018prereg}. A seventh study (\texttt{prereg-v7}) is a pre-registered secondary analysis: no new
+source with enough agents was available, so it re-uses the data of v4--v6 to test a new question (the structure of the
+graph) on which no statistic had been computed before its freeze. Only format audits (file keys, task identifiers, submission names and dates) were
 allowed before the freeze. Every method change was developed on data already analysed in an earlier study, never on
 the data of the next confirmation. All deviations---including one accidental display of a single submission's
 total during a format audit---are logged in the repository. Hashes were re-verified after each run.
@@ -227,6 +233,7 @@ v5 & Multi-SWE-bench \citep{zan2025multiswe} (7 lang.), & \NFive & 128--1{,}587 
  & SWE-bench test and multilingual & & & \\
 v6 & LiveCodeBench \citep{jain2024livecodebench}, & \NSix & 713 / 175 & models; office agents\\
  & TheAgentCompany \citep{xu2024theagentcompany} & & & \\
+v7 (secondary) & data of v4--v6, re-analysed for graph structure & \NSeven & as v4--v6 & as v4--v6\\
 \midrule
 Total (confirmations v2--v6) & & \NConf & & \\
 \bottomrule
@@ -348,14 +355,48 @@ version histories, the sequential rule detected the \DetN{} SWE-bench Verified v
 10 points in \DetPower\% of replays with \DetProbes{} probes on average, with \DetFA\% false alerts on the \DetNok{}
 transitions without a drop.
 
+\subsection{The structure of the graph (pre-registered secondary analysis)}\label{sec:structure}
+So far the graph has been used as a difficulty scale. Does it have structure of its own---do its edges carry
+information? We fit a one-dimensional model (logit of success = agent ability + task easiness) to all agents of a task
+set and correlate the standardised residuals of every pair of agents. Multi-SWE-bench offers a crossed design in each
+of its seven languages: three scaffolds (MSWE-agent, MagentLess, MopenHands) times nine models, 27 agents per language.
+Development on AppWorld had suggested that the scaffold matters more than the model; the hypotheses were frozen before
+any structural statistic was computed on these data.
+
+Figure~\ref{fig:structure} shows the result. Pairs of agents that share a scaffold have more correlated residuals than
+unrelated pairs in all \SScaffPos{} languages (median difference \SScaffMed, $p=\SWilcoxP$, Wilcoxon over languages;
+label permutation significant in \SPermSig{} of 7), and more than pairs that share only the model (median difference
+\SScaffVsModelMed, 7 of 7). Sharing the model also brings agents closer, about half as much (\SModelMed). On
+LiveCodeBench, models of the same provider are closer than others (\SProvGap, permutation $p=\SProvP$). \emph{An
+agent's scaffold, more than its model, shapes which tasks it fails beyond their difficulty}---consistent with the atlas
+of Table~\ref{tab:atlas}, where a model upgrade at fixed scaffold keeps most transferable information and a scaffold
+change erases it.
+
+Does this structure help evaluate a new version? We let each new version attach to the ten earlier agents that behave
+most like it on its probes (chosen within each cross-fitting fold) and use their behaviour as an extra predictor. Over
+the \NSeven{} transitions of v4--v6, the median gain was $\times\GKnnSeven$ against $\times\GCfSeven$ without
+neighbours (ratio \KnnRatioSeven, $p=\KnnPSeven$): not supported. A small gain seen in development (+2\% on SWE-bench
+Verified) did not replicate. The graph's structure is real, but for evaluation its value lies in the difficulty scale
+it has learned.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_structure.pdf}
+\caption{Residual correlation between pairs of agents after removing agent ability and task difficulty, by type of
+link. Multi-SWE-bench, seven languages, 27 agents each (3 scaffolds $\times$ 9 models); LiveCodeBench, one node per
+model. Only differences between types of pairs are interpreted (the fit induces a common negative offset).}
+\label{fig:structure}
+\end{figure}
+
 \subsection{What failed}
 \label{sec:failures}
-Four of the \HypTotal{} pre-registered hypotheses were not supported (Appendix~\ref{app:ledger}). (i)~In the pilot,
+Five of the \HypTotal{} pre-registered hypotheses were not supported (Appendix~\ref{app:ledger}). (i)~In the pilot,
 predecessor-based estimates did not reduce decision regret significantly and (ii)~sequential detection lacked power
 at 40 probes; the detection rule was retuned on development data and later confirmed in v2 and v3. (iii)~On SWE-bench
 Verified the graph estimator lost badly on near-zero versions, so the hypothesis of no catastrophic loss failed. (iv)~In v5,
 the model-based estimator with graph-chosen tasks did not stay above random testing on 90\% of transitions, because
-most new versions solved almost nothing. Two further observations qualify our method. An unbiased estimator is not
+most new versions solved almost nothing. (v)~In v7, neighbours learned from the graph's structure did not improve
+estimation (Section~\ref{sec:structure}). Two further observations qualify our method. An unbiased estimator is not
 automatically a good decision rule: in v5, GREG's decisions were wrong in \DecGregAllFive\% of replays against
 \DecResetAllFive\% for random testing (\DecGregFive\% versus \DecResetFive\% on differences of at least 5 points). The
 gap comes from transitions where both versions solve almost nothing: in the extreme case (both below 1\%), GREG chose
@@ -391,7 +432,8 @@ was right.
 \citep{polo2024tiny} and anchor points \citep{vivek2024anchor}, which predict benchmark scores of language models from
 few items; active testing chooses test points adaptively \citep{kossen2021active}. For agents, Agent Psychometrics
 predicts task-level success on coding benchmarks by separating model and scaffold abilities
-\citep{ge2026psychometrics}; \citet{ndzomga2026efficient} keeps tasks with mid-range historical pass rates;
+\citep{ge2026psychometrics}---our residual analysis (Section~\ref{sec:structure}) is consistent with a scaffold-specific
+component; \citet{ndzomga2026efficient} keeps tasks with mid-range historical pass rates;
 \citet{she2026production} study an evolving production agent and deploy difficulty-stratified fixed subsets with
 IRT-based estimates---the closest design to our task selection, whose gain Proposition~\ref{prop:eta} predicts; \citet{johnson2026cached} estimate new agents' scores from cached traces of reference systems.
 These works report point accuracy (errors, rank correlations). We add a closed-form law that predicts the gain before
@@ -428,6 +470,9 @@ ecosystem difficulty (v3), and the plain mean of graph-chosen tasks (exploratory
 multidimensional IRT or gp-IRT \citep{polo2024tiny,she2026production}; our claims concern the law, calibration and
 decisions, not point accuracy against these methods.
 
+\paragraph{Secondary analysis.} Study v7 re-uses data already analysed for other questions; it is weaker evidence than a
+confirmation on new data. Residual correlations depend on the one-dimensional model used to remove difficulty.
+
 \paragraph{Kernel.} The kernel was validated on SWE-bench Verified, which had already been analysed; this is a test of
 the software, not new evidence for the method.
 
@@ -435,7 +480,9 @@ the software, not new evidence for the method.
 An agent's history is worth a computable number of tasks. Across \NConf{} real version transitions in five
 pre-registered confirmations, the law $1/(1-\rho^2)$ predicted that number within a few percent, and a method in which
 the graph of earlier agents chooses the tasks, estimates with calibrated intervals and decides, roughly halved the cost
-of evaluating a new version. Evaluation does not have to start from zero at every release: the graph of agents remembers.
+of evaluating a new version. The graph also has structure of its own---scaffolds, more than models, shape which tasks
+agents fail---but for evaluation its value lies in the difficulty scale it has learned. Evaluation does not have to start
+from zero at every release: the graph of agents remembers.
 
 \section*{Code and data availability}
 Code, protocols, frozen analysis scripts with their git tags and hashes, random seeds, raw replay results and the
@@ -492,6 +539,11 @@ v6 & U1 estimate: robust and calibrated & worst gain, coverage & supported\\
 v6 & U2 estimate: beats predecessor-only & Wilcoxon & supported\\
 v6 & U3 decide: beats random testing & Wilcoxon & supported\\
 v6 & U4 both forms of the law & median errors $\le 0.20$ & supported\\
+v7 & S1 structure: shared scaffold & Wilcoxon over 7 languages & supported (7/7)\\
+v7 & S2 scaffold more than model & Wilcoxon over 7 languages & supported (7/7)\\
+v7 & S3 structure: shared provider & permutation test & supported\\
+v7 & S4 learned neighbours help estimation & Wilcoxon & \textbf{not supported}\\
+v7 & S5 structure's gain is second-order & median ratio $\le 1.10$ & supported (trivially, given S4)\\
 \bottomrule
 \end{tabular}
 \end{table}

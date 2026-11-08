@@ -165,8 +165,33 @@ for S, kg, kl in ((v2, "gain_bma", "gain_law"), (v3, "gain_bma", "gain_law"), (v
 _ph, _o, _l = map(np.array, (_ph, _o, _l)); _alt = 1 / (1 - _ph)
 put("LawBiasSuper", 100 * np.median(_o / _l - 1), "{:+.1f}"); put("LawBiasFinite", 100 * np.median(_o / _alt - 1), "{:+.1f}")
 put("LawErrFinite", 100 * np.median(np.abs(_o / _alt - 1)), "{:.1f}")
+# ---------------- v7 : structure du graphe
+st = rd("v7/structure.csv"); ms = [r for r in st if r["source"].startswith("mswe")]; lc = next(r for r in st if r["source"] == "lcb")
+dsc = np.array([float(r["same_scaffold"]) - float(r["unrelated"]) for r in ms]); dmo = np.array([float(r["same_model"]) - float(r["unrelated"]) for r in ms])
+put("SScaffMed", np.median(dsc), "{:+.3f}"); put("SScaffPos", int(np.sum(dsc > 0)), "{}"); put("SModelMed", np.median(dmo), "{:+.3f}")
+put("SScaffVsModelMed", np.median(dsc - dmo), "{:+.3f}"); put("SPermSig", int(np.sum(f(ms, "perm_p") < 0.05)), "{}")
+put("SProvGap", float(lc["perm_stat"]), "{:+.3f}"); put("SProvP", texp(float(lc["perm_p"])))
+v7 = rd("v7/replays.csv"); put("NSeven", len(v7), "{}")
+put("GKnnSeven", np.median(f(v7, "gain_greg_knn10")), "{:.3f}"); put("GCfSeven", np.median(f(v7, "gain_greg_cf")), "{:.3f}")
+put("KnnRatioSeven", np.median(f(v7, "gain_greg_knn10") / f(v7, "gain_greg_cf")), "{:.3f}")
+from scipy import stats as _s7
+put("KnnPSeven", texp(_s7.wilcoxon(f(v7, "gain_greg_knn10"), f(v7, "gain_greg_cf"), alternative="greater").pvalue))
+put("SWilcoxP", texp(_s7.wilcoxon(dsc, alternative="greater").pvalue))
+# figure 3 : structure résiduelle
+fig, ax = plt.subplots(figsize=(6.8, 2.5))
+labels = [r["source"].replace("mswe-", "") for r in ms] + ["LiveCodeBench"]
+xs = np.arange(len(labels))
+ax.scatter(xs[:-1], f(ms, "same_scaffold"), marker="o", s=28, c="#d95f02", label="same scaffold, different model", zorder=3)
+ax.scatter(xs[:-1], f(ms, "same_model"), marker="s", s=24, c="#7570b3", label="same model (LCB: same provider)", zorder=3)
+ax.scatter([xs[-1]], [float(lc["same_model"])], marker="s", s=24, c="#7570b3", zorder=3)
+ax.scatter(xs, list(f(ms, "unrelated")) + [float(lc["unrelated"])], marker="x", s=28, c="#555555", label="unrelated", zorder=3)
+ax.axhline(0, color="k", lw=0.5, ls=":"); ax.set_xticks(xs); ax.set_xticklabels(labels, fontsize=8)
+ax.axvline(len(labels) - 1.5, color="#bbbbbb", lw=0.6)
+ax.set_ylabel("mean residual correlation", fontsize=8.5); ax.legend(fontsize=6.5, frameon=False, loc="upper left", ncol=3)
+ax.set_ylim(-0.13, 0.19)
+fig.tight_layout(); fig.savefig(OUT / "fig_structure.pdf"); plt.close(fig)
 # registre des hypothèses
-put("HypTotal", 29, "{}"); put("HypSupported", 25, "{}"); put("HypFailed", 4, "{}")
+put("HypTotal", 34, "{}"); put("HypSupported", 29, "{}"); put("HypFailed", 5, "{}")
 # v3 : sous-groupe 10-90 %
 mid3 = [r for r in v3 if 0.10 <= float(r["p_new"]) < 0.90]
 put("ThreeMidN", len(mid3), "{}"); put("ThreeMidMin", f(mid3, "gain_graph_v3").min())

@@ -1,0 +1,96 @@
+fait : lite rag|20240402_rag_gpt4
+fait : lite rag|20240402_rag_claude3opus
+fait : lite swe-agent|20240620_sweagent_claude3.5sonnet
+fait : lite autocoderover|20240621_autocoderover-v20240620
+fait : lite moatless|20240623_moatless_claude35sonnet
+fait : lite amazon-q|20240721_amazon-q-developer-agent-20240719-dev
+fait : lite swe-agent|20240728_sweagent_gpt4o
+fait : lite marscode|20240912_marscode-agent-dev
+fait : lite ibm|20241016_IBM-SWE-1.0
+fait : lite openhands|20241025_OpenHands-CodeAct-2.1-sonnet-20241022
+fait : lite agentless|20241028_agentless-1.5_gpt4o
+fait : lite appmap-navie|20241113_navie-2-gpt4o-sonnet
+fait : lite moatless|20241117_moatless_claude-3.5-sonnet-20241022
+fait : lite agentless|20241202_agentless-1.5_claude-3.5-sonnet-20241022
+fait : lite gru|20241208_gru
+fait : lite moatless|20250111_moatless_deepseek_v3
+fait : lite opencsg|20250113_OpenCSG-Starship-Agentic-Coder_gpt4o
+fait : lite isoform|20250114_Isoform
+fait : lite moatless|20250114_moatless_claude-3.5-sonnet-20241022
+fait : lite agentless|20250214_agentless_lite_o3_mini
+fait : lite swe-agent|20250226_sweagent_claude-3-7-sonnet-20250219
+fait : lite swe-fixer|20250306_SWE-Fixer_Qwen2.5-7b-retriever_Qwen2.5-72b-editor
+fait : lite codefuse|20250310_codefuse-cgm
+fait : lite swe-agent|20250526_sweagent_claude-4-sonnet-20250514
+fait : lite kgcompass|20250619_KGCompass_claude-3.5-sonnet-20241022
+fait : lite experepair|20250625_ExpeRepair-v1_claude-4-sonnet-20250514
+fait : lite agentless|20250627_agentless_MCTS-Refine-7B
+fait : mswe-c MSWE-agent:bytedance|20250426_MSWE-agent_Doubao-1.5-thinking
+fait : lite kgcompass|20250906_KGCompass_claude-4-sonnet-20250514
+fait : mswe-c MagentLess:bytedance|20250426_MagentLess_Doubao-1.5-thinking
+fait : mswe-c MopenHands:bytedance|20250426_MopenHands_Doubao-1.5-thinking
+fait : mswe-c++ MSWE-agent:bytedance|20250426_MSWE-agent_Doubao-1.5-thinking
+fait : mswe-c++ MagentLess:bytedance|20250426_MagentLess_Doubao-1.5-thinking
+fait : mswe-c++ MopenHands:bytedance|20250426_MopenHands_Doubao-1.5-thinking
+fait : mswe-go MSWE-agent:bytedance|20250426_MSWE-agent_Doubao-1.5-thinking
+fait : mswe-go MagentLess:bytedance|20250426_MagentLess_Doubao-1.5-thinking
+fait : mswe-go MopenHands:bytedance|20250426_MopenHands_Doubao-1.5-thinking
+fait : mswe-java MSWE-agent:bytedance|20250426_MSWE-agent_Doubao-1.5-thinking
+fait : mswe-java MopenHands:bytedance|20250426_MopenHands_Doubao-1.5-thinking
+fait : mswe-java MagentLess:bytedance|20250426_MagentLess_Doubao-1.5-thinking
+fait : mswe-javascript MSWE-agent:bytedance|20250426_MSWE-agent_Doubao-1.5-thinking
+fait : mswe-java iswe|20251201_iSWE_Agent
+fait : mswe-javascript MagentLess:bytedance|20250426_MagentLess_Doubao-1.5-thinking
+fait : mswe-rust MSWE-agent:bytedance|20250426_MSWE-agent_Doubao-1.5-thinking
+fait : mswe-javascript MopenHands:bytedance|20250426_MopenHands_Doubao-1.5-thinking
+fait : mswe-rust MopenHands:bytedance|20250426_MopenHands_Doubao-1.5-thinking
+fait : mswe-rust MagentLess:bytedance|20250426_MagentLess_Doubao-1.5-thinking
+fait : mswe-typescript MSWE-agent:bytedance|20250426_MSWE-agent_Doubao-1.5-thinking
+fait : mswe-typescript MagentLess:bytedance|20250426_MagentLess_Doubao-1.5-thinking
+fait : mswe-typescript MopenHands:bytedance|20250426_MopenHands_Doubao-1.5-thinking
+fait : swe-test rag|20240402_rag_gpt4
+fait : swe-test rag|20240402_rag_claude3opus
+fait : swe-test swe-agent|20240620_sweagent_claude3.5sonnet
+fait : swe-test amazon-q|20240721_amazon-q-developer-agent-20240719-dev
+fait : swe-test swe-agent|20240728_sweagent_gpt4o
+fait : swe-test autocoderover|20241121_autocoderover-v2.0-claude-3-5-sonnet-20241022
+fait : swe-test amazon-q|20250131_amazon-q-developer-agent-20241202-dev
+fait : swe-test swe-agent|20250227_sweagent-claude-3-7-20250219
+fait : swe-multilingual mini:openai|20260220_mini-v2.0.0_gpt-5-2-codex
+fait : swe-test amazon-q|20250522_amazon-q-developer-agent-20250405-dev
+fait : swe-multilingual mini:google|20260902_mini-v2.4.6_gemini-3-5-flash
+fait : lcb lcb:openai-gpt4|GPT-4-Turbo-1106
+fait : lcb lcb:openai-gpt4|GPT-4-Turbo-2024-04-09
+fait : lcb lcb:openai-gpt4|GPT-4O-2024-08-06
+fait : lcb lcb:openai-gpt4|GPT-4O-2024-05-13
+fait : lcb lcb:openai-o|O1-2024-12-17 (High)
+fait : lcb lcb:openai-o|O3 (High)
+fait : lcb lcb:openai-o-mini|O3-Mini-2025-01-31 (High)
+fait : lcb lcb:openai-o-mini|O4-Mini (High)
+fait : lcb lcb:anthropic-sonnet|Claude-3.5-Sonnet-20241022
+fait : lcb lcb:anthropic-sonnet|Claude-3.7-Sonnet
+fait : lcb lcb:anthropic-sonnet|Claude-Sonnet-4
+fait : lcb lcb:google-pro|Gemini-Exp-1206
+fait : lcb lcb:google-pro|Gemini-2.5-Pro-03-25
+fait : lcb lcb:google-pro|Gemini-2.5-Pro-05-06
+fait : lcb lcb:google-pro|Gemini-2.5-Pro-06-05
+fait : lcb lcb:google-flash|Gemini-Flash-2.0-Exp
+fait : lcb lcb:google-flash|Gemini-2.5-Flash-04-17
+fait : lcb lcb:google-flash|Gemini-2.5-Flash-05-20
+fait : lcb lcb:google-flash-thinking|Gemini-Flash-2.0-Thinking-01-21
+fait : lcb lcb:deepseek-chat|DeepSeek-V3
+fait : lcb lcb:deepseek-r1|DeepSeek-R1-0528
+fait : lcb lcb:deepseek-r1|DeepSeek-R1-Preview
+fait : lcb lcb:qwen-instruct|Qwen3-235B-A22B
+fait : lcb lcb:qwen-instruct|Qwen2.5-Ins-72B
+fait : lcb lcb:qwen-qwq|QwQ-Max-Preview
+fait : lcb lcb:qwen-qwq|QwQ-32B_temp
+fait : tac tac:openhands:google|20250510_OpenHands-0.28.1-gemini-2.5-pro
+fait : tac tac:openhands:anthropic|20250510_OpenHands-0.28.1-sonnet-20250219
+fait : lcb lcb:nvidia-nemotron|OpenReasoning-Nemotron-32B
+S1 — même échafaudage vs sans lien (7 langages) : écart médian +0.060, positif dans 7/7 ; Wilcoxon p = 0.00781 ; permutations p par langage 0.136, 0.008, 0.000, 0.003, 0.000, 0.000, 0.000 ; soutenue (p < 0,05) : True
+S2 — même échafaudage plus semblable que même modèle : écart médian +0.064, positif dans 7/7 ; Wilcoxon p = 0.00781 ; soutenue (p < 0,05) : True
+S3 — LiveCodeBench, même fournisseur vs autres : écart +0.047, permutation p = 0.0005 ; soutenue (p < 0,05) : True
+S4 — arêtes apprises dans GREG croisé (90 transitions) : x1.937 vs x1.955, rapport médian 0.995 ; Wilcoxon p = 0.654 ; couverture 0.945 (min 0.875) ; soutenue (p < 0,05) : False
+S5 — l'apport de la structure est de second ordre : rapport médian 0.995 ; soutenue (<= 1,10) : True
+(rapporté) estimateur fondé sur le modèle : x1.793 vs x1.881, rapport médian 0.992, Wilcoxon p = 0.806
