@@ -1,11 +1,22 @@
-"""Contrôle croisé : chaque macro clé du papier est comparée à la ligne de verdict écrite par le script
-pré-enregistré correspondant (results/*/summary.txt), produite indépendamment de make_numbers.py."""
+"""Cross-check the paper's numbers against the frozen outputs.
+
+Each key macro of ``numbers.tex`` (written by ``make_numbers.py``) is compared with the verdict line written by the
+corresponding pre-registered script in ``results/<study>/summary.txt``, which is produced independently. A macro
+differing by more than its tolerance (half a unit of its last printed digit) is reported.
+
+Usage
+-----
+    python paper/check_numbers.py     # prints "<n> contrôles, 0 écart(s)" when everything matches
+"""
 import re
 from pathlib import Path
 R = Path(__file__).resolve().parents[1] / "results"
 M = dict(re.findall(r"\\newcommand\{\\(\w+)\}\{([^}]*)\}", open(Path(__file__).parent / "numbers.tex").read()))
 S = {k: open(R / f"{k}/summary.txt").read() for k in ("g2", "v2", "v3", "v4", "v5", "v6", "v7")}
-def num(study, pat): return float(re.search(pat, S[study], re.S).group(1))
+def num(study, pat):
+    """First number captured by regex ``pat`` in the summary of ``study``."""
+    return float(re.search(pat, S[study], re.S).group(1))
+# (macro, value in the frozen output, tolerance)
 checks = [
     ("LawErrPilot", 100 * num("g2", r"H1 m=20 — erreur relative médiane loi\(phi² vrai\) ([0-9.]+)"), 0.06),
     ("LawErrTwo", 100 * num("v2", r"H1-v2.*?loi ([0-9.]+)"), 0.06),

@@ -1,5 +1,8 @@
-"""DÉVELOPPEMENT : règles de repli évaluées a posteriori sur les rejeux stockés (données déjà vues).
-Usage : python experiments/dev_v3_rules.py results/dev_v3_appworld_replays.csv [autres fichiers]"""
+"""DEVELOPMENT (data already seen): fallback rules evaluated afterwards on stored replays.
+
+Usage
+-----
+    python experiments/dev_v3_rules.py results/dev_v3_appworld_replays.csv [other files]"""
 import csv
 import sys
 from collections import defaultdict
@@ -10,6 +13,9 @@ M = 20
 
 
 def rule(r, name):
+    """Which stored estimator rule ``name`` uses on replay row ``r``, given the number of successes among the probes
+    (for example 'v3|min(s,f)<1->bma': graph_v3 unless all probes agree, then the predecessor estimator).
+    Returns ``None`` when the row lacks that estimator."""
     s = int(r["s_probe"]); f = M - s
     if name not in ("bma", "graph", "graph_fp", "graph_v3") and f"{name.split('|')[0].replace('fp','graph_fp').replace('v3','graph_v3')}_mean" not in r:
         return None

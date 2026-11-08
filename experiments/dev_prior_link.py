@@ -1,7 +1,8 @@
-"""DÉVELOPPEMENT (pas une preuve) : régler le prior P(lien) du BMA.
-- Entraînement : données Sheng & Lu (déjà vues), validation croisée en laissant une famille de côté.
-- Coût dans le pire cas : scénarios synthétiques où les versions sont indépendantes.
-La valeur retenue sera figée dans prereg-v2 puis confirmée sur AppWorld (jamais vu)."""
+"""DEVELOPMENT (not evidence): tune the prior probability P(link) of the model-averaged predecessor estimator.
+
+- Training: Sheng & Lu data (already seen), leave-one-family-out cross-validation.
+- Worst-case cost: synthetic scenarios where the two versions are independent.
+The chosen value was frozen in prereg-v2 and then confirmed on AppWorld (never seen before)."""
 import csv
 import sys
 from pathlib import Path
@@ -21,6 +22,8 @@ rng = np.random.default_rng(20261109)
 
 
 def replay(y1, y2, prior_link, m, R, rng):
+    """Gain over random testing and coverage of ``double_sampling_bma`` with ``prior_link``, over ``R`` replays of
+    ``m`` uniform probes for the transition ``y1 -> y2``."""
     n, p2 = len(y1), y2.mean()
     er, eb, cov = [], [], []
     for _ in range(R):
@@ -42,7 +45,7 @@ for pair, (label, change, in_scope) in G.PAIRS.items():
             rows.append(dict(source="sheng_lu", pair=pair, bench=bench, in_scope=in_scope, prior_link=pl, gain=g, coverage=c))
     print("fait", pair, flush=True)
 
-# pire cas synthétique : versions indépendantes, plusieurs niveaux de réussite
+# synthetic worst case: independent versions, several success levels
 for pi, p in ((0.7, 0.8), (0.7, 0.5), (0.5, 0.3), (0.9, 0.9), (0.3, 0.1)):
     sc = Scenario(f"indep_{pi}_{p}", pi, p, p)
     for pl in GRID:

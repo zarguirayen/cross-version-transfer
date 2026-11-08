@@ -1,7 +1,9 @@
-"""DÉVELOPPEMENT : loi du gain d'un plan stratifié sur la difficulté vue par le graphe (Verified, déjà vu).
-Gain exact du plan stratifié (1 probe par strate de taille N/m) sur la moyenne simple :
-  G = [(1 - m/N) S² / m] / [(1/m²) Σ_h (1 - 1/N_h) S_h²]  ≈ 1 / (1 - η²_G),  η²_G = part de variance entre strates.
-Comparé au gain observé de reset_s dans results/dev_v4_verified.csv."""
+"""DEVELOPMENT (SWE-bench Verified, already seen): gain law of a design stratified on the graph's difficulty.
+
+Exact gain of the stratified design (one probe per stratum of size N/m) over the simple mean:
+  G = [(1 - m/N) S² / m] / [(1/m²) Σ_h (1 - 1/N_h) S_h²]  ≈ 1 / (1 - η²_G),
+where η²_G is the share of variance between strata. Compared with the observed gain of reset_s in
+results/dev_v4_verified.csv."""
 import csv, sys
 from pathlib import Path
 import numpy as np

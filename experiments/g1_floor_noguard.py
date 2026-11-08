@@ -1,4 +1,4 @@
-"""Allocation avec plancher par strate + estimateur stratifié sans repli (toujours sans biais)."""
+"""Validation G1: allocation with a per-stratum floor and a stratified estimator without fallback (always unbiased)."""
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))

@@ -1,7 +1,8 @@
-"""EXPLORATOIRE (après le gel v2) : fausses alertes de la détection séquentielle sous un bruit de ré-exécution
-qui NE CHANGE PAS le taux moyen (autant de succès -> échecs que d'échecs -> succès).
-Motif : le bruit symétrique pré-enregistré fait monter le taux des agents sous 50 %, ce qui rend le contrôle
-des fausses alertes trop facile. Même règle de détection que la v2, mêmes agents (taux >= 0,20)."""
+"""EXPLORATORY (after the v2 freeze): false alerts of sequential detection under re-run noise that does NOT change
+the mean rate (as many success -> failure flips as failure -> success).
+
+Reason: the pre-registered symmetric noise raises the rate of agents below 50%, which makes the false-alert control
+too easy. Same detection rule as v2, same agents (rate >= 0.20)."""
 import json
 import sys
 from pathlib import Path
@@ -16,10 +17,12 @@ rng = np.random.default_rng(20261112)
 
 
 def flips(a, b):
+    """Contingency counts (n11, n10, n01, n00) of old outcomes ``a`` against new outcomes ``b`` on the probes."""
     return int((a & b).sum()), int((a & ~b).sum()), int((~a & b).sum()), int((~a & ~b).sum())
 
 
 def detect(y, y3):
+    """Sequential detection in batches of 10 probes (up to 80): return ``(alert, probes used)``."""
     n, order = len(y), rng.permutation(len(y))
     for m in range(10, 81, 10):
         idx = order[:m]

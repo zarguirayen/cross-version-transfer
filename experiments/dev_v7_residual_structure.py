@@ -1,9 +1,9 @@
-"""DÉVELOPPEMENT v7 (AppWorld, données de développement) : y a-t-il une structure dans le graphe une fois la
-difficulté des tâches retirée ? Pour chaque agent, résidu tâche par tâche = résultat − probabilité prédite par un
-modèle à une dimension (logit P = capacité de l'agent + facilité de la tâche, ajusté sur tous les agents).
-On compare la corrélation des résidus entre paires d'agents selon leur type de lien : même modèle, même
-échafaudage, ni l'un ni l'autre. Si le graphe n'était qu'une échelle de difficulté, toutes ces corrélations
-seraient proches de 0."""
+"""DEVELOPMENT for v7 (AppWorld, development data): is there structure in the graph once task difficulty is removed?
+
+For each agent, the task-level residual is outcome minus the probability predicted by a one-dimensional model
+(logit P = agent ability + task easiness, fitted on all agents). Residual correlations are compared across pairs of
+agents by type of link: same model, same scaffold, neither. If the graph were only a difficulty scale, all these
+correlations would be close to 0."""
 import sys
 from itertools import combinations
 from pathlib import Path
@@ -20,7 +20,20 @@ v2 = importlib.util.module_from_spec(spec); spec.loader.exec_module(v2)
 
 
 def rasch(Y, iters=300):
-    """Modèle à une dimension ajusté par maximum de vraisemblance pénalisé (descente de gradient)."""
+    """Fit the one-dimensional model by penalised maximum likelihood (gradient ascent, ridge penalty 0.01).
+
+    Parameters
+    ----------
+    Y : ndarray (agents, tasks)
+        Binary outcomes.
+    iters : int
+        Number of gradient steps.
+
+    Returns
+    -------
+    ndarray (agents, tasks)
+        Fitted success probabilities.
+    """
     A, N = Y.shape
     th, b = np.zeros(A), np.zeros(N)
     for _ in range(iters):
@@ -32,6 +45,7 @@ def rasch(Y, iters=300):
 
 
 def scaffold(a):
+    """Scaffold of AppWorld agent ``a`` (the method prefix of its name)."""
     return next(m for m in v2.METHODS if a.startswith(m))
 
 

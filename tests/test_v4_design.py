@@ -1,4 +1,4 @@
-"""Tests du plan stratifié et de l'estimateur assisté par modèle (GREG)."""
+"""Tests of the stratified design and of the model-assisted (GREG) estimators."""
 import sys
 from pathlib import Path
 
@@ -9,6 +9,7 @@ from cvt import graph as Gr  # noqa: E402
 
 
 def _world(seed, base=-0.5, N=300):
+    """Draw task difficulties ``d`` and outcomes ``y`` from a logistic model with intercept ``base``."""
     g = np.random.default_rng(seed)
     d = g.normal(0, 1.5, N)
     y = g.random(N) < 1 / (1 + np.exp(-(base + 1.2 * d)))
@@ -16,11 +17,16 @@ def _world(seed, base=-0.5, N=300):
 
 
 def _strat(score, m, rng):
+    """Stratified draw: sort by ``score``, cut into ``m`` blocks, pick one task per block.
+
+    Returns the chosen indices, the stratum sizes (the weights) and the blocks.
+    """
     blocks = np.array_split(np.argsort(score, kind="stable"), m)
     return np.array([rng.choice(b) for b in blocks]), np.array([len(b) for b in blocks], float), blocks
 
 
 def test_stratified_law_matches_monte_carlo():
+    """The exact stratified gain (Proposition 2) matches a 20,000-draw Monte Carlo estimate within 8%."""
     d, y = _world(1)
     m, N, rng = 20, len(y), np.random.default_rng(2)
     y = y.astype(float)
@@ -33,7 +39,7 @@ def test_stratified_law_matches_monte_carlo():
 
 
 def test_greg_unbiased_under_misspecified_model_at_low_rate():
-    """Écosystème trompeur (covariable sans lien) et taux bas : GREG reste sans biais sous le plan."""
+    """With a misleading covariate (unrelated to the outcome) and a low rate, GREG stays design-unbiased."""
     d, y = _world(3, base=-3.5)
     g = np.random.default_rng(4)
     X = np.column_stack([g.normal(size=len(y)), np.zeros(len(y))])
@@ -45,7 +51,7 @@ def test_greg_unbiased_under_misspecified_model_at_low_rate():
 
 
 def test_greg_cf_covers_zero_rate_and_is_calibrated():
-    """GREG croisé : borne basse 0 quand aucune probe ne réussit ; couverture proche de 90 % en régime normal."""
+    """Cross-fitted GREG: lower bound 0 when no probe succeeds; coverage close to 90% in the regular case."""
     g = np.random.default_rng(11)
     d, y = _world(5, base=-0.3)
     X = np.column_stack([d + g.normal(0, 0.5, len(d)), np.zeros(len(d))])

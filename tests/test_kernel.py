@@ -1,4 +1,4 @@
-"""Tests du noyau : journal, graphe, plan, estimate, decide, lint, pages."""
+"""Tests of the kernel: event log, graph, plan, estimate, decide, lint and pages."""
 import sys
 from pathlib import Path
 
@@ -10,6 +10,18 @@ from cvt.kernel import Kernel  # noqa: E402
 
 
 def _world(tmp_path, n_tasks=200, n_old=12, seed=0):
+    """Build a small synthetic graph in ``tmp_path``.
+
+    Twelve reference agents and a version ``v1`` of slot ``coder`` are fully measured on ``n_tasks`` tasks drawn
+    from a logistic model with a shared task difficulty; ``v2`` (parent ``v1``) is registered but not measured.
+
+    Returns
+    -------
+    K : Kernel
+    tasks : list of str
+    y1, y2 : ndarray of bool
+        True outcomes of ``v1`` and ``v2`` on every task.
+    """
     g = np.random.default_rng(seed)
     diff = g.normal(0, 1.5, n_tasks)
     tasks = [f"t{i:03d}" for i in range(n_tasks)]
@@ -33,6 +45,7 @@ def _world(tmp_path, n_tasks=200, n_old=12, seed=0):
 
 
 def test_journal_replay_restores_state(tmp_path):
+    """A new kernel opened on the same directory rebuilds the same state from the log."""
     K, tasks, _, _ = _world(tmp_path)
     K2 = Kernel(tmp_path)
     assert K2.versions.keys() == K.versions.keys()
@@ -40,6 +53,7 @@ def test_journal_replay_restores_state(tmp_path):
 
 
 def test_plan_estimate_decide(tmp_path):
+    """End-to-end: plan 20 probes, record them, estimate with an ordered interval, decide, lint and render."""
     K, tasks, y1, y2 = _world(tmp_path)
     assert K.estimate("v2")["status"] == "needs_probes"
     plan = K.plan("v2", m=20)
@@ -57,6 +71,7 @@ def test_plan_estimate_decide(tmp_path):
 
 
 def test_lint_flags_probe_outside_plan_and_bad_parent(tmp_path):
+    """Lint reports a parent in another slot (L1), a parent released later (L2) and a probe outside the plan (L3)."""
     K, tasks, _, y2 = _world(tmp_path)
     plan = K.plan("v2", m=20)
     outside = next(t for t in tasks if t not in plan)
@@ -68,6 +83,7 @@ def test_lint_flags_probe_outside_plan_and_bad_parent(tmp_path):
 
 
 def test_record_rejects_unknown_objects(tmp_path):
+    """Recording a result for an unknown version or task, or with an invalid role, raises."""
     K, tasks, _, _ = _world(tmp_path)
     with pytest.raises(KeyError):
         K.record("nope", tasks[0], True)

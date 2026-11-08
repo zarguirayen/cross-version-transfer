@@ -1,4 +1,5 @@
-"""Comparer la moyenne de modèles (BMA) aux variantes précédentes, sur les 9 scénarios de référence."""
+"""Validation G1: compare the model-averaged predecessor estimator (BMA) with earlier variants on the 9 reference
+scenarios."""
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))

@@ -1,6 +1,7 @@
-"""EXPLORATOIRE (après le gel, hors pré-enregistrement) : puissance de détection H4 selon le nombre de probes,
-pour répondre à « combien de probes faut-il pour détecter une dégradation de 10 points ? ».
-Même protocole que g2_preregistered.py (H4), budgets m = 20, 40, 60, 80, R = 300."""
+"""EXPLORATORY (after the freeze, not pre-registered): power of the H4 detection by number of probes.
+
+Answers "how many probes are needed to detect a 10-point degradation?". Same protocol as g2_preregistered.py (H4),
+budgets m = 20, 40, 60, 80, R = 300."""
 import csv
 import sys
 from pathlib import Path

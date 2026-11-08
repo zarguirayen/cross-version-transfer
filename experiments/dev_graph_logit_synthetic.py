@@ -1,5 +1,7 @@
-"""DÉVELOPPEMENT : estimateur graphe logistique, mondes synthétiques variés (niveau de la nouvelle version
-tiré au hasard pour éviter l'artefact « vrai taux proche de 50 % »)."""
+"""DEVELOPMENT (synthetic, not evidence): logistic graph estimator on varied synthetic worlds.
+
+The level of the new version is drawn at random in each world, to avoid the artefact of true rates all close to 50%.
+"""
 import sys
 from pathlib import Path
 import numpy as np
@@ -10,6 +12,8 @@ from cvt import graph as Gr
 from dev_graph_synthetic import world
 
 def run(cfg, m=20, reps=400, seed=0, slope_sd=1.0):
+    """Replay ``reps`` worlds of configuration ``cfg`` and compare random testing, the predecessor estimator and the
+    logistic graph estimator (MSE, coverage) against the law evaluated at the oracle R²."""
     rng = np.random.default_rng(seed)
     er, eb, el, cl, cr, r2 = [], [], [], [], [], []
     for rep in range(reps):
@@ -26,7 +30,7 @@ def run(cfg, m=20, reps=400, seed=0, slope_sd=1.0):
         g = Gr.graph_logit(X, idx, b, rng=rng, draws=3000, slope_sd=slope_sd)
         er.append((r.mean-p)**2); eb.append((x.mean-p)**2); el.append((g.mean-p)**2)
         cl.append(g.lo <= p <= g.hi); cr.append(r.lo <= p <= r.hi)
-        # R² « oracle » de la régression logistique sur la population (pour la loi)
+        # "oracle" R² of the logistic regression on the whole population (for the law)
         r2.append(np.corrcoef(1/(1+np.exp(-(X @ np.linalg.lstsq(X, y_new - y_new.mean(), rcond=None)[0]))), y_new)[0, 1]**2 if y_new.std() > 0 else 0)
     mr = np.mean(er)
     return mr/np.mean(eb), mr/np.mean(el), np.mean(cl), np.mean(cr)

@@ -1,6 +1,8 @@
-"""DÉVELOPPEMENT (données déjà vues, pas une preuve) : estimateur graphe logistique sur Sheng & Lu.
-Écosystème d'une nouvelle version v' = modèles sortis AVANT v' (hors v' et hors son prédécesseur v,
-qui entre séparément comme covariable). Dates de sortie approximatives, fixées avant le calcul."""
+"""DEVELOPMENT (data already seen, not evidence): logistic graph estimator on the Sheng & Lu data.
+
+The ecosystem of a new version v' is the set of models released before v', excluding v' and its predecessor v,
+which enters separately as a covariate. Release dates are approximate and were fixed before computing anything.
+"""
 import csv
 import sys
 from pathlib import Path
@@ -14,7 +16,7 @@ from cvt import graph as Gr  # noqa: E402
 DATA = Path(sys.argv[1]) / "results"
 R = int(sys.argv[2]) if len(sys.argv) > 2 else 400
 M = 20
-RELEASE = {  # date de sortie approximative (année-mois-jour)
+RELEASE = {  # approximate release date (year-month-day)
     "Llama-2-7b": "2023-07-18", "Mistral-7B-v0.2": "2023-12-11", "gemma-1.1-7b": "2024-04-05",
     "Llama-3-8B": "2024-04-18", "Mistral-7B-v0.3": "2024-05-22", "Qwen2-7B": "2024-06-07",
     "gemma-2-9b": "2024-06-27", "Llama-3.1-8B": "2024-07-23", "Qwen2.5-7B": "2024-09-19", "Qwen3-8B": "2025-04-29",
@@ -26,7 +28,7 @@ BENCHES = ["mcq_n3000", "gpqa", "gsm8k", "mathfull", "humaneval", "mbpp"]
 
 
 def outcomes(bench):
-    """Vecteur de résultats de chacun des 10 modèles sur le benchmark (questions alignées, vérifié)."""
+    """Outcome vector of each of the 10 models on ``bench`` (questions aligned across models, checked)."""
     res = {}
     for pair, (old, new) in PAIRS.items():
         rows = list(csv.DictReader((DATA / f"results_{pair}_{bench}.csv").open()))
@@ -36,6 +38,7 @@ def outcomes(bench):
 
 
 def main():
+    """Replay every pilot transition and print gains and coverages of random testing, BMA and the graph."""
     rng = np.random.default_rng(20261110)
     out = []
     for bench in BENCHES:

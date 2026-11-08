@@ -1,6 +1,7 @@
-"""Démonstration du noyau sur une vraie lignée (SWE-bench Verified, OpenHands) : l'historique des agents publiés
-avant chaque version sert de graphe ; chaque nouvelle version n'est testée que sur les 20 tâches choisies par le
-graphe ; le noyau estime, décide et écrit les pages. Sortie : demo/wiki/slots/*.md et demo/decisions.md"""
+"""Kernel case study on a real lineage (OpenHands on SWE-bench Verified).
+
+The agents published before each version form its graph; each new version is tested only on the 20 tasks chosen by
+the graph; the kernel estimates, decides and writes the pages. Output: demo/wiki/slots/*.md and demo/decisions.md."""
 import shutil, sys
 from pathlib import Path
 import numpy as np
@@ -24,13 +25,13 @@ for e in sorted(Y, key=lambda e: (DATES[e], e)):
     if e in line:
         K.register_version("openhands", e, iso(DATES[e]), parent=prev)
         if prev is None:
-            K.record_many(e, dict(zip(IDS, Y[e].tolist())))          # première version : mesurée en entier
+            K.record_many(e, dict(zip(IDS, Y[e].tolist())))          # first version: fully measured
         else:
             plan = K.plan(e, m=20, seed=1)
             K.record_many(e, {t: bool(Y[e][IDS.index(t)]) for t in plan}, role="probe")
             est, dec = K.estimate(e), K.decide(e)
             rows.append((e, prev, Y[e].mean(), est, dec))
-            K.record_many(e, dict(zip(IDS, Y[e].tolist())))          # puis mesurée en entier, pour la suite
+            K.record_many(e, dict(zip(IDS, Y[e].tolist())))          # then fully measured, for the next versions
         prev = e
     else:
         K.register_version("ecosysteme", e, iso(DATES[e]))

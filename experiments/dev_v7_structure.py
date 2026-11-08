@@ -1,8 +1,12 @@
-"""DÉVELOPPEMENT v7 (données de développement de cette question : SWE-bench Verified et AppWorld uniquement).
-Question : la STRUCTURE du graphe (qui est relié à qui) apporte-t-elle de l'information au-delà de la difficulté
-moyenne vue par tous les agents ? Arêtes apprises : les k agents antérieurs qui se comportent le plus comme la
-nouvelle version sur les probes. Plan stratifié par la difficulté du graphe, comme la méthode unifiée.
-Usage : python experiments/dev_v7_structure.py verified|appworld [R]"""
+"""DEVELOPMENT for v7 (development data for this question: SWE-bench Verified and AppWorld only).
+
+Question: does the STRUCTURE of the graph (who is linked to whom) carry information beyond the mean difficulty seen
+by all agents? Learned edges: the k earlier agents that behave most like the new version on the probes. Probes follow
+the design stratified on the graph's difficulty, as in the unified method.
+
+Usage
+-----
+    python experiments/dev_v7_structure.py verified|appworld [R]"""
 import csv
 import sys
 from multiprocessing import Pool
@@ -22,6 +26,7 @@ OUT = HERE.parent / "results" / f"dev_v7_{WHICH}.csv"
 
 
 def cases():
+    """Yield ``(name, y_old, y_new, aux)`` for every transition of the chosen source with its graph."""
     if WHICH == "verified":
         import v3_swebench_data as D
         ids, Y, dates, lin, _ = D.load("/home/claude/data/swe/experiments")
@@ -36,16 +41,18 @@ def cases():
         for split in v2.SPLITS:
             av = v2.agents_available(split); Y = {a: v2.load(a, split)[1] for a in av}
             for kind, old, new in v2.transitions():
-                aux = [a for a in av if a not in (old, new)]          # graphe complet (pas d'ordre temporel)
+                aux = [a for a in av if a not in (old, new)]          # full graph (no time order on AppWorld)
                 yield f"{split}|{kind}|{old}->{new}", Y[old], Y[new], np.array([Y[a] for a in aux])
 
 
 def stratified(score, m, rng):
+    """Stratified draw on ``score``: one probe per stratum; also returns the stratum sizes (weights)."""
     blocks = np.array_split(np.argsort(score, kind="stable"), m)
     return np.array([rng.choice(b) for b in blocks]), np.array([len(b) for b in blocks], float)
 
 
 def flips(a, b):
+    """Contingency counts (n11, n10, n01, n00) of old outcomes ``a`` against new outcomes ``b`` on the probes."""
     return int((a & b).sum()), int((a & ~b).sum()), int((~a & b).sum()), int((~a & ~b).sum())
 
 
@@ -53,6 +60,8 @@ KEYS = ("reset_u", "greg_cf", "greg_knn5", "greg_knn10", "v3_s", "v3_knn5")
 
 
 def run(arg):
+    """Replay one transition ``R`` times; return gains, coverages, widths and decision errors of cross-fitted GREG
+    and the stratified graph estimator, with and without learned neighbours (k = 5, 10)."""
     k, (name, y1, y2, aux) = arg
     rng = np.random.default_rng([20261120, k])
     X = Gr.ecosystem_features(aux, y1)

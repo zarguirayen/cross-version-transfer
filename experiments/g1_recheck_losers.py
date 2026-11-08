@@ -1,4 +1,5 @@
-"""Re-mesurer, avec 10x plus de mondes, les scénarios où le BMA semblait perdre plus de 5 % face au reset."""
+"""Validation G1: re-measure, with 10x more worlds, the scenarios where BMA seemed to lose more than 5% against
+random testing."""
 import csv, sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))

@@ -1,5 +1,5 @@
-"""Analyses descriptives v5 prévues (« rapportées sans critère ») : par jeu de tâches, par famille, m = 40,
-versions sous 10 %, largeurs. N'ajoute aucun test confirmatoire."""
+"""Descriptive analyses of v5 planned as "reported without criterion": by task suite, by family, m = 40, versions
+below 10%, interval widths. Adds no confirmatory test."""
 import csv
 from pathlib import Path
 
@@ -12,6 +12,7 @@ f = lambda S, k: np.array([float(r[k]) for r in S])
 
 
 def show(S, lab):
+    """Print median and worst gain and coverage of each method over transitions ``S``."""
     out = f"{lab:30s} n={len(S):2d} |"
     for q in K:
         g = f(S, "gain_" + q); c = f(S, "cov_" + q)

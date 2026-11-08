@@ -1,5 +1,6 @@
-"""Analyses descriptives de la v3, prévues dans PREREGISTRATION_V3.md (« rapportés sans critère »).
-Lit results/v3/*.csv ; n'ajoute aucun test confirmatoire."""
+"""Descriptive analyses of v3, planned in PREREGISTRATION_V3.md ("reported without criterion").
+
+Reads results/v3/*.csv; adds no confirmatory test."""
 import csv
 from pathlib import Path
 
@@ -14,6 +15,7 @@ KEYS = ["bma", "eco_only", "graph", "graph_v3", "graph_v3_strict"]
 
 
 def line(S, lab):
+    """One summary line for transitions ``S``: median and worst gain, share >= 0.95 and coverage of each method."""
     out = [f"{lab:32s} n={len(S):3d}"]
     for k in KEYS:
         g = np.array([f(r, f"gain_{k}") for r in S]); c = np.array([f(r, f"cov_{k}") for r in S])

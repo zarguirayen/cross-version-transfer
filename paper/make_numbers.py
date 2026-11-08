@@ -1,5 +1,13 @@
-"""Génère TOUS les chiffres (numbers.tex) et figures du papier à partir de results/. Aucun chiffre n'est
-recopié à la main dans le texte : le LaTeX n'utilise que ces macros."""
+"""Generate every number (``numbers.tex``) and figure of the paper from the result files in ``results/``.
+
+No number is typed by hand in the paper: ``main.tex`` only uses the LaTeX macros written here. Each section below
+reads the replay tables of one study and stores medians, worst cases, coverages and decision errors under a macro
+name; ``check_numbers.py`` then compares the key macros with the summaries written by the frozen scripts.
+
+Usage
+-----
+    python paper/make_numbers.py      # writes numbers.tex, fig_law.pdf, fig_gains.pdf, fig_structure.pdf
+"""
 import csv, re
 from pathlib import Path
 import numpy as np
@@ -8,20 +16,23 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parents[1]; RES = ROOT / "results"; OUT = Path(__file__).resolve().parent
+# rd(path): rows of a CSV file under results/; f(rows, key): one column of those rows as a float array.
 rd = lambda p: list(csv.DictReader(open(RES / p)))
 f = lambda S, k: np.array([float(r[k]) for r in S])
-M = {}
+M = {}   # macro name -> formatted value, written to numbers.tex at the end
 
 def texp(x):
+    """Format a p-value for LaTeX: three decimals above 1e-3, scientific notation (``7.8\\times10^{-14}``) below."""
     v = float(x)
     if v >= 1e-3:
         return f"{v:.3f}".rstrip("0")
     m_, e_ = f"{v:.1e}".split("e"); return f"{m_}\\times10^{{{int(e_)}}}"
 
 def put(name, val, fmt="{:.2f}"):
+    """Store macro ``name``; numbers are formatted with ``fmt``, strings are stored as they are."""
     M[name] = fmt.format(val) if not isinstance(val, str) else val
 
-# ---------------- pilote (Sheng & Lu), m = 20, périmètre
+# ---------------- pilot (Sheng & Lu data), m = 20, primary scope only
 g2 = [r for r in rd("g2/h1.csv") if r["m"] == "20" and r["in_scope"] in ("True", "1", "true")]
 law_pts = [("pilot", float(r["gain_pred_true"]), float(r["gain_obs"])) for r in g2]
 put("PilotN", len(g2), "{}")
@@ -45,6 +56,8 @@ put("NConf", len(v2) + len(v3) + len(v4) + len(v5) + len(v6), "{}")
 put("NAll", len(v2) + len(v3) + len(v4) + len(v5) + len(v6) + len(g2), "{}")
 
 def lawerr(pts, tag=None):
+    """Absolute relative error |observed / predicted - 1| of the law for points ``(study, predicted, observed)``,
+    optionally restricted to one study."""
     e = np.array([abs(o / p - 1) for t, p, o in pts if tag is None or t == tag])
     return e
 for tag, nm in (("pilot", "Pilot"), ("v2", "Two"), ("v3", "Three"), ("v4", "Four"), ("v5", "Five"), ("v6", "Six")):
@@ -63,8 +76,9 @@ for tag, nm in (("v4", "Four"), ("v5", "Five"), ("v6", "Six")):
     S = {"v4": v4, "v5": v5, "v6": v6}[tag]
     put(f"EtaMed{nm}", np.nanmedian(f(S, "eta2")), "{:.2f}")
 
-# ---------------- gains par confirmation (médiane, pire cas, couverture)
+# ---------------- gains per confirmation (median, worst case, coverage)
 def g(S, k):
+    """Median and minimum of column ``k`` over the transitions ``S``."""
     x = f(S, k); return np.median(x), x.min()
 rows = {
     "Two": dict(pred=g(v2, "gain_bma"), graph=g(v2, "gain_graph"), cov=f(v2, "cov_graph").mean()),
@@ -84,17 +98,17 @@ for nm, d in rows.items():
             put(f"CovGreg{nm}", v[0], "{:.3f}"); put(f"CovGregMin{nm}", v[1], "{:.3f}")
         else:
             put(f"G{k.capitalize()}{nm}", v[0]); put(f"G{k.capitalize()}Min{nm}", v[1])
-# sous-groupes faibles taux v5
+# v5 subgroups: new versions below / above a 10% success rate
 lo5 = [r for r in v5 if float(r["p_new"]) < 0.10]; hi5 = [r for r in v5 if float(r["p_new"]) >= 0.10]
 put("FiveLowN", len(lo5), "{}")
 put("GGregFiveLow", np.median(f(lo5, "gain_greg_cf_s"))); put("GStratFiveHigh", np.median(f(hi5, "gain_v3_s")))
 put("GStratMinFiveLow", f(lo5, "gain_v3_s").min())
-# probes équivalentes (v6, GREG croisé)
+# equivalent number of random tasks: 20 x median gain
 put("EquivProbesSix", 20 * np.median(f(v6, "gain_greg_cf_s")), "{:.0f}")
 put("EquivProbesFour", 20 * np.median(f(v4, "gain_v3_s")), "{:.0f}")
 put("EquivProbesSixStrat", 20 * np.median(f(v6, "gain_v3_s")), "{:.0f}")
 put("EquivProbesFive", 20 * np.median(f(v5, "gain_greg_cf_s")), "{:.0f}")
-# robustesse de la loi hors cas triviaux (gain prédit >= 1,5)
+# accuracy of the law outside trivial cases (predicted gain >= 1.5)
 _lp = np.array([[p_, o_] for t_, p_, o_ in law_pts if t_ != "pilot"]); _m = _lp[:, 0] >= 1.5
 put("LawBigN", int(_m.sum()), "{}")
 put("LawBigErr", 100 * np.median(np.abs(_lp[_m, 1] / _lp[_m, 0] - 1)), "{:.1f}")
@@ -103,20 +117,20 @@ put("LawTrivShare", 100 * np.mean(_lp[:, 0] < 1.1), "{:.0f}")
 _sp = np.array([[p_, o_] for t_, p_, o_ in strat_pts]); _ms = _sp[:, 0] >= 1.5
 put("StratBigN", int(_ms.sum()), "{}")
 put("StratBigErr", 100 * np.median(np.abs(_sp[_ms, 1] / _sp[_ms, 0] - 1)), "{:.1f}")
-# décisions (|écart| >= 5 points)
+# decision errors, transitions whose true difference is at least 5 points
 for nm, S, k in (("Four", v4, "v3_s"), ("Five", v5, "v3_s"), ("Six", v6, "v3_s")):
     B = [r for r in S if abs(float(r["delta"])) >= 0.05]
     put(f"DecN{nm}", len(B), "{}")
     put(f"DecGraph{nm}", 100 * f(B, "decerr_" + k).mean(), "{:.1f}"); put(f"DecReset{nm}", 100 * f(B, "decerr_reset_u").mean(), "{:.1f}")
     put(f"DecGreg{nm}", 100 * f(B, "decerr_greg_" + ("s" if nm == "Four" else "cf_s")).mean(), "{:.1f}")
     put(f"DecRstrat{nm}", 100 * f(B, "decerr_reset_s").mean(), "{:.1f}")
-# v5 : décisions de GREG sur l'ensemble et dans le cas extrême
+# v5: decisions of GREG on all transitions and in the extreme case (both versions below 1%)
 put("DecGregAllFive", 100 * f(v5, "decerr_greg_cf_s").mean(), "{:.1f}"); put("DecResetAllFive", 100 * f(v5, "decerr_reset_u").mean(), "{:.1f}")
 ext = [r for r in v5 if float(r["p_new"]) < 0.01 and float(r["p_old"]) < 0.01]
 put("DecGregExtFive", 100 * f(ext, "decerr_greg_cf_s").mean(), "{:.0f}"); put("DecResetExtFive", 100 * f(ext, "decerr_reset_u").mean(), "{:.0f}")
 for nm in ("Four", "Five", "Six"):
     put(f"DecRed{nm}", 100 * (1 - float(M[f"DecGraph{nm}"]) / float(M[f"DecReset{nm}"])), "{:.0f}")
-# atlas v2
+# v2 atlas of transferable information by type of change
 a2 = rd("v2/atlas.csv")
 for t, nm in (("A_modele", "Model"), ("B_architecture", "Arch"), ("C_famille", "Family")):
     v = f([r for r in a2 if r["type"] == t], "phi2"); put(f"Atlas{nm}", np.median(v), "{:.3f}"); put(f"AtlasN{nm}", len(v), "{}")
@@ -124,13 +138,14 @@ gtyp = {}
 for t, nm in (("A_modele", "Model"), ("B_architecture", "Arch"), ("C_famille", "Family")):
     S = [r for r in v2 if r["type"] == t]
     put(f"AtlasPred{nm}", np.median(f(S, "gain_bma"))); put(f"AtlasGraph{nm}", np.median(f(S, "gain_graph")))
-# détection réelle v3
+# v3: detection of real regressions
 h4 = rd("v3/h4_real.csv")
 reg = [h for h in h4 if float(h["delta"]) <= -0.10]; ok = [h for h in h4 if float(h["delta"]) >= 0]
 put("DetN", len(reg), "{}"); put("DetPower", 100 * f(reg, "alert_rate").mean(), "{:.0f}")
 put("DetProbes", f(reg, "mean_probes").mean(), "{:.0f}"); put("DetFA", 100 * f(ok, "alert_rate").mean(), "{:.1f}"); put("DetNok", len(ok), "{}")
-# summaries : p-valeurs et verdicts recopiés des sorties figées
+# p-values and verdicts read from the summaries written by the frozen scripts
 def grab(path, pat, grp=1):
+    """Return group ``grp`` of the first match of regex ``pat`` in the result file ``path``."""
     m = re.search(pat, open(RES / path).read()); return m.group(grp)
 put("PvalFiveVsPredThree", texp(grab("v3/summary.txt", r"H5-v3.*?Wilcoxon p = ([0-9.e\-]+)")))
 put("PvalHSevenThree", grab("v3/summary.txt", r"H7-v3.*?Wilcoxon p = ([0-9.e\-]+)"))
@@ -141,7 +156,7 @@ put("PhiCtrlThree", float(grab("v3/summary.txt", r"témoin de même taux ([0-9.]
 put("WorstVThree", float(grab("v3/summary.txt", r"pire gain v3 x([0-9.]+)")))
 put("HFourTwoPower", 100 * float(grab("v2/summary.txt", r"puissance ([0-9.]+)")), "{:.0f}")
 put("HFourTwoProbes", float(grab("v2/summary.txt", r"avec ([0-9.]+) probes")), "{:.0f}")
-# ---------------- relecture : analyses exploratoires (non pré-enregistrées)
+# ---------------- exploratory analyses added at review (not pre-registered)
 put("LawErrPilotProbe", 100 * float(re.search(r"H1 m=20 .*?loi\(phi² des probes\) ([0-9.]+)", open(RES / "g2/summary.txt").read()).group(1)), "{:.1f}")
 from collections import defaultdict
 mc = []
@@ -168,7 +183,7 @@ W = {k: np.mean([np.mean([float(r["width_" + k]) for r in rd(f"dev_v5_{d}.csv")]
      for k in ("reset_u", "v3_s", "greg_cf_s")}
 put("WidthReset", W["reset_u"], "{:.2f}"); put("WidthStrat", W["v3_s"], "{:.2f}"); put("WidthGreg", W["greg_cf_s"], "{:.2f}")
 put("WidthStratRed", 100 * (1 - W["v3_s"] / W["reset_u"]), "{:.0f}")
-# deux cibles de la loi phi² (population finie vs super-population)
+# two targets of the predecessor law (finite population vs super-population)
 _ph, _n, _o, _l = [], [], [], []
 for S, kg, kl in ((v2, "gain_bma", "gain_law"), (v3, "gain_bma", "gain_law"), (v4, "gain_bma_u", "gain_law_phi"),
                   (v5, "gain_bma_u", "gain_law_phi"), (v6, "gain_bma_u", "gain_law_phi")):
@@ -176,7 +191,7 @@ for S, kg, kl in ((v2, "gain_bma", "gain_law"), (v3, "gain_bma", "gain_law"), (v
 _ph, _o, _l = map(np.array, (_ph, _o, _l)); _alt = 1 / (1 - _ph)
 put("LawBiasSuper", 100 * np.median(_o / _l - 1), "{:+.1f}"); put("LawBiasFinite", 100 * np.median(_o / _alt - 1), "{:+.1f}")
 put("LawErrFinite", 100 * np.median(np.abs(_o / _alt - 1)), "{:.1f}")
-# ---------------- v7 : structure du graphe
+# ---------------- v7: structure of the graph
 st = rd("v7/structure.csv"); ms = [r for r in st if r["source"].startswith("mswe")]; lc = next(r for r in st if r["source"] == "lcb")
 dsc = np.array([float(r["same_scaffold"]) - float(r["unrelated"]) for r in ms]); dmo = np.array([float(r["same_model"]) - float(r["unrelated"]) for r in ms])
 put("SScaffMed", np.median(dsc), "{:+.3f}"); put("SScaffPos", int(np.sum(dsc > 0)), "{}"); put("SModelMed", np.median(dmo), "{:+.3f}")
@@ -188,7 +203,7 @@ put("KnnRatioSeven", np.median(f(v7, "gain_greg_knn10") / f(v7, "gain_greg_cf"))
 from scipy import stats as _s7
 put("KnnPSeven", texp(_s7.wilcoxon(f(v7, "gain_greg_knn10"), f(v7, "gain_greg_cf"), alternative="greater").pvalue))
 put("SWilcoxP", texp(_s7.wilcoxon(dsc, alternative="greater").pvalue))
-# figure 3 : structure résiduelle
+# figure 3: residual structure
 fig, ax = plt.subplots(figsize=(6.8, 2.5))
 labels = [r["source"].replace("mswe-", "") for r in ms] + ["LiveCodeBench"]
 xs = np.arange(len(labels))
@@ -201,13 +216,13 @@ ax.axvline(len(labels) - 1.5, color="#bbbbbb", lw=0.6)
 ax.set_ylabel("mean residual correlation", fontsize=8.5); ax.legend(fontsize=6.5, frameon=False, loc="upper left", ncol=3)
 ax.set_ylim(-0.13, 0.19)
 fig.tight_layout(); fig.savefig(OUT / "fig_structure.pdf"); plt.close(fig)
-# registre des hypothèses
+# ledger of pre-registered hypotheses
 put("HypTotal", 34, "{}"); put("HypSupported", 29, "{}"); put("HypFailed", 5, "{}")
-# v3 : sous-groupe 10-90 %
+# v3: subgroup of new versions between 10% and 90%
 mid3 = [r for r in v3 if 0.10 <= float(r["p_new"]) < 0.90]
 put("ThreeMidN", len(mid3), "{}"); put("ThreeMidMin", f(mid3, "gain_graph_v3").min())
 put("CovMinGraphTwo", f(v2, "cov_graph").min(), "{:.3f}")
-# noyau
+# kernel replay and case study
 kl = open(RES / "kernel_replay_verified.log").read()
 put("KernelGain", float(re.search(r"gain médian x([0-9.]+)", kl).group(1)))
 put("KernelCov", float(re.search(r"couverture moy ([0-9.]+)", kl).group(1)), "{:.3f}")
@@ -220,7 +235,7 @@ with open(OUT / "numbers.tex", "w") as fh:
     for k, v in sorted(M.items()):
         fh.write(f"\\newcommand{{\\{k}}}{{{v}}}\n")
 
-# ---------------- figure 1 : la loi
+# ---------------- figure 1: the law
 plt.rcParams.update({"font.size": 9, "font.family": "serif"})
 fig, ax = plt.subplots(1, 2, figsize=(6.8, 3.0))
 col = {"pilot": "#9a9a9a", "v2": "#1b9e77", "v3": "#d95f02", "v4": "#7570b3", "v5": "#e7298a", "v6": "#66a61e"}
@@ -245,7 +260,7 @@ ax[0].set_ylabel("observed gain (MSE ratio vs. random)")
 ax[0].legend(fontsize=6, frameon=False, loc="upper left")
 fig.tight_layout(); fig.savefig(OUT / "fig_law.pdf"); plt.close(fig)
 
-# ---------------- figure 2 : gains par confirmation et méthode (médiane + pire cas)
+# ---------------- figure 2: gains by confirmation and method (median + worst case)
 fig, ax = plt.subplots(figsize=(6.8, 2.6))
 confs = ["Two", "Three", "Four", "Five", "Six"]; names = ["AppWorld", "SWE-b. Verified", "SWE-b. Lite", "9 task sets", "LCB + TAC"]
 meth = [("pred", "predecessor only", "#999999"), ("graph", "graph, random tasks", "#1f78b4"),

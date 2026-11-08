@@ -1,6 +1,7 @@
-"""DÉVELOPPEMENT : estimateur « graphe » sur un monde synthétique de type réponse à l'item.
-Chaque tâche a une difficulté d_j ; chaque agent a une capacité theta_a ; P(succès) = sigmoïde(theta_a - d_j + bruit).
-On vérifie : gain conforme à la loi en R², couverture, absence de perte quand l'écosystème n'apporte rien."""
+"""DEVELOPMENT (synthetic, not evidence): the graph estimator on item-response-like worlds.
+
+Each task has a difficulty d_j and each agent an ability theta_a; P(success) = sigmoid(theta_a - d_j + noise).
+Checks: gain consistent with the R² law, coverage, and no loss when the ecosystem carries no information."""
 import sys
 from pathlib import Path
 
@@ -12,10 +13,28 @@ from cvt import graph as Gr  # noqa: E402
 
 
 def world(rng, n=500, n_aux=8, spread=1.5, link=1.0, noise=0.5, theta_new=0.3):
-    """spread : dispersion des difficultés (0 = tâches toutes pareilles : l'écosystème n'apporte rien).
-    link : lien entre prédécesseur et nouvelle version (interaction spécifique partagée)."""
+    """Draw one synthetic world.
+
+    Parameters
+    ----------
+    spread : float
+        Spread of task difficulties (0 = all tasks alike: the ecosystem carries no information).
+    link : float
+        Strength of the component shared by the predecessor and the new version only.
+    noise : float
+        Agent-specific noise.
+    theta_new : float
+        Ability of the new version.
+
+    Returns
+    -------
+    aux : ndarray (n_aux, n)
+        Outcomes of the other agents.
+    y_prev, y_new : ndarray (n,)
+        Outcomes of the predecessor and of the new version.
+    """
     d = rng.normal(0, spread, n)
-    inter = rng.normal(0, 1, n)  # composante propre à la lignée v -> v'
+    inter = rng.normal(0, 1, n)  # component specific to the lineage v -> v'
     sig = lambda x: 1 / (1 + np.exp(-x))
     aux = np.array([rng.random(n) < sig(rng.normal(0, 1) - d + noise * rng.normal(0, 1, n)) for _ in range(n_aux)])
     y_prev = rng.random(n) < sig(0.2 - d + link * inter + noise * rng.normal(0, 1, n))
@@ -24,6 +43,8 @@ def world(rng, n=500, n_aux=8, spread=1.5, link=1.0, noise=0.5, theta_new=0.3):
 
 
 def run(cfg, m=20, reps=400, seed=0):
+    """Replay ``reps`` worlds of configuration ``cfg``; return MSEs of random testing, BMA and the stratified graph
+    estimator, the graph's coverage, and the population and probe R²."""
     rng = np.random.default_rng(seed)
     e_reset, e_bma, e_graph, cov_g, r2s, r2p = [], [], [], [], [], []
     for rep in range(reps):

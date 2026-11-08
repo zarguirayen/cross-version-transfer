@@ -1,6 +1,10 @@
-"""G1 : quelle combinaison (prior, allocation) donne une couverture >= 88 % partout
-sans perdre le gain ? Simulations appariées (mêmes mondes pour toutes les méthodes).
-Usage : python experiments/g1_coverage_grid.py [m] [reps]   -> results/g1_coverage_grid_m{m}.csv"""
+"""Validation G1: which (prior, allocation) combination keeps coverage >= 88% everywhere without losing the gain?
+
+Paired simulations (the same worlds for every method).
+
+Usage
+-----
+    python experiments/g1_coverage_grid.py [m] [reps]   # writes results/g1_coverage_grid_m{m}.csv"""
 import csv
 import sys
 from pathlib import Path

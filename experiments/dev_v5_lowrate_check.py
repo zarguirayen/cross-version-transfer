@@ -1,5 +1,5 @@
-"""DÉVELOPPEMENT : vérifie la convention de Jeffreys de graph_greg_cf sur les transitions à faible taux de
-Verified (déjà vu), y compris la soumission publiée vide."""
+"""DEVELOPMENT: check the Jeffreys convention of graph_greg_cf on the low-rate transitions of SWE-bench Verified
+(already seen), including the submission published with no resolved task."""
 import sys
 from pathlib import Path
 import numpy as np

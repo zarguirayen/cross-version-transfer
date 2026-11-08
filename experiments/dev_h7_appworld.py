@@ -1,4 +1,4 @@
-"""DÉVELOPPEMENT (AppWorld déjà vu) : l'arête de lignée apporte-t-elle quelque chose au-delà de l'écosystème seul ?"""
+"""DEVELOPMENT (AppWorld, already seen): does the lineage edge add anything beyond the ecosystem alone?"""
 import sys, importlib.util
 from pathlib import Path
 import numpy as np

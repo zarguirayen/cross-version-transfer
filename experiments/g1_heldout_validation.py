@@ -1,6 +1,9 @@
-"""Validation hors échantillon de la règle v0.3.1 (prior hybride + allocation adaptative) sur des
-scénarios tirés au hasard, jamais vus pendant la mise au point.
-Usage : python experiments/g1_heldout_validation.py [n_scenarios] [reps] [m]"""
+"""Validation G1, held out: the v0.3.1 rule (hybrid prior + adaptive allocation) on randomly drawn scenarios never
+seen during tuning.
+
+Usage
+-----
+    python experiments/g1_heldout_validation.py [n_scenarios] [reps] [m]"""
 import csv
 import sys
 from pathlib import Path
@@ -18,7 +21,7 @@ METHOD = sys.argv[4] if len(sys.argv) > 4 else "ds_bayes"
 ALLOC = sys.argv[5] if len(sys.argv) > 5 else "adaptive"
 PRIOR = "hybrid"
 N_V = 500
-rng = np.random.default_rng(20261107)  # graine fixée avant de voir les résultats
+rng = np.random.default_rng(20261107)  # seed fixed before seeing any result
 rows = []
 for i in range(N_SC):
     sc = Scenario(f"tire_{i:03d}", float(rng.uniform(0.5, 0.98)), float(rng.uniform(0.05, 0.95)),

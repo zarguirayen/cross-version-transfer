@@ -1,11 +1,11 @@
-"""DÉVELOPPEMENT (synthétique) : détection séquentielle d'une substitution dégradée.
-v' a un historique connu (N tâches) ; une nouvelle version v'' est sondée par lots de 10 probes (jusqu'à 80).
-Arrêt dès que l'intervalle tranche :
-  - alerte  si la borne haute < p(v') - marge_alerte   (dégradation probable)
-  - feu vert si la borne basse > p(v') - delta_ok      (pas de dégradation notable)
-Scénarios : dégradation de 10 points ; aucun changement mais bruit de ré-exécution (bascules aléatoires
-symétriques à 5 %) ; aucun changement, sans bruit.
-Mesures : taux d'alerte, nombre moyen de probes. Comparé aux budgets fixes 40, 60, 80."""
+"""DEVELOPMENT (synthetic): sequential detection of a degraded replacement.
+
+v' has a known history (N tasks); a new version v'' is probed in batches of 10 (up to 80). Stop as soon as the
+interval is conclusive:
+  - alert      if the upper bound < p(v') - alert margin   (likely degradation);
+  - green light if the lower bound > p(v') - delta_ok       (no notable degradation).
+Scenarios: a 10-point degradation; no change but re-run noise (symmetric random flips on 5% of tasks); no change,
+no noise. Measures: alert rate and mean number of probes, compared with fixed budgets of 40, 60 and 80."""
 import sys
 from pathlib import Path
 
@@ -18,6 +18,7 @@ N, BATCH, MMAX = 500, 10, 80
 
 
 def make(rng, p, scenario):
+    """Outcomes of v' (rate ``p``) and of v'' under ``scenario`` ('degradee_10pts', 'bruit_5pc' or no change)."""
     y2 = rng.random(N) < p
     y3 = y2.copy()
     if scenario == "degradee_10pts":
@@ -30,12 +31,14 @@ def make(rng, p, scenario):
 
 
 def estimate(y2, y3, idx, rng, level):
+    """Predecessor-based estimate of v'' from the probes ``idx``, using the full history of v'."""
     a, b = y2[idx], y3[idx]
     f = int((a & b).sum()), int((a & ~b).sum()), int((~a & b).sum()), int((~a & ~b).sum())
     return E.double_sampling_bma(int(y2.sum()), int((~y2).sum()), *f, rng=rng, draws=1500, level=level)
 
 
 def run(scenario, policy, reps=300, seed=0, level=0.90, margin=0.0, delta_ok=0.05):
+    """Alert rate and mean number of probes of ``policy`` ('sequentiel' or a fixed budget) over ``reps`` worlds."""
     rng = np.random.default_rng(seed)
     alerts, used = [], []
     for rep in range(reps):

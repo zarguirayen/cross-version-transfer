@@ -1,9 +1,12 @@
-"""DÉVELOPPEMENT v5 : GREG à ajustement croisé (intervalles), comparé à GREG v4 et au graphe stratifié.
-Ancien en-tête v4 : (données déjà vues : SWE-bench Verified après v3, AppWorld après v2) — pas une preuve.
-Question : choisir les probes en les répartissant sur l'échelle de difficulté connue du graphe (plan stratifié,
-1 probe par strate de taille N/m) améliore-t-il l'estimation, en particulier pour les versions faibles ?
-La sélection ne dépend que de l'historique (agents antérieurs), jamais de v'.
-Usage : python experiments/dev_v4_design.py verified|appworld [R]"""
+"""DEVELOPMENT for v5 (data already seen: SWE-bench Lite after v4, Verified after v3, AppWorld after v2), not
+evidence.
+
+Cross-fitted GREG (for calibrated intervals) compared with the v4 GREG and with the stratified graph estimator,
+under the stratified design. The selection depends only on the history, never on the new version.
+
+Usage
+-----
+    python experiments/dev_v5_greg.py lite|verified|appworld [R]"""
 import csv
 import sys
 from multiprocessing import Pool
@@ -23,10 +26,12 @@ OUT = HERE.parent / "results" / f"dev_v5_{WHICH}.csv"
 
 
 def flips(a, b):
+    """Contingency counts (n11, n10, n01, n00) of old outcomes ``a`` against new outcomes ``b`` on the probes."""
     return int((a & b).sum()), int((a & ~b).sum()), int((~a & b).sum()), int((~a & ~b).sum())
 
 
 def cases():
+    """Yield ``(name, y_old, y_new, aux)`` for every transition of the chosen source with its graph."""
     if WHICH == "lite":
         import v4_lite_data as D4
         ids, Y, dates, lin = D4.load("/home/claude/data/swe/experiments")
@@ -53,13 +58,15 @@ def cases():
 
 
 def stratified(score, m, rng):
-    """1 probe par strate, dans l'ordre des strates ; renvoie aussi la taille de chaque strate."""
+    """Stratified draw on ``score``: one probe per stratum, in stratum order; also returns each stratum's size."""
     order = np.argsort(score, kind="stable")
     blocks = np.array_split(order, m)
     return np.array([rng.choice(b) for b in blocks]), np.array([len(b) for b in blocks], float)
 
 
 def run(case):
+    """Replay one transition ``R`` times; return MSE, coverage and width of random testing (uniform design) and of
+    the graph estimator, GREG and cross-fitted GREG (stratified design)."""
     k, (name, y1, y2, aux) = case
     rng = np.random.default_rng([20261117, k])
     X = Gr.ecosystem_features(aux, y1)

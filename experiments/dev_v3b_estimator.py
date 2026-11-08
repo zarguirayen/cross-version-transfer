@@ -1,9 +1,14 @@
-"""DÉVELOPPEMENT (variante b : prior empirique de pente tiré du graphe) (données déjà vues : AppWorld après v2, Sheng & Lu après v1) — pas une preuve.
-Compare l'estimateur graphe v2 (figé) à ses deux corrections de principe :
-  graph_fp  : population finie seule ;
-  graph_v3  : population finie + moyenne sur les sous-ensembles de covariables (vraisemblance marginale).
-Usage : python experiments/dev_v3_estimator.py appworld /chemin/aw_root [R]
-        python experiments/dev_v3_estimator.py sheng /chemin/llm-regression-signals [R]"""
+"""DEVELOPMENT, variant b (data already seen: AppWorld after v2, Sheng & Lu after v1), not evidence.
+
+Adds an empirical prior on the regression slopes, learned from the graph, to the finite-population graph estimator:
+  graph_eb     : finite-population prediction with the empirical slope prior;
+  graph_eb_avg : the same, averaged over covariate subsets.
+Stopped after 23 of 40 transitions for lack of a net gain and abandoned (see docs/DEVIATIONS.md).
+
+Usage
+-----
+    python experiments/dev_v3b_estimator.py appworld /path/to/aw_root [R]
+    python experiments/dev_v3b_estimator.py sheng /path/to/llm-regression-signals [R]"""
 import csv
 import json
 import sys
@@ -22,10 +27,13 @@ OUT = Path(__file__).resolve().parents[1] / "results" / f"dev_v3b_{WHICH}.csv"
 
 
 def flips(a, b):
+    """Contingency counts (n11, n10, n01, n00) of old outcomes ``a`` against new outcomes ``b`` on the probes."""
     return int((a & b).sum()), int((a & ~b).sum()), int((~a & b).sum()), int((~a & ~b).sum())
 
 
 def cases_appworld():
+    """Yield ``(name, y_old, y_new, aux)`` for the AppWorld transitions of v2; the graph holds the other agents,
+    excluding those that use the new version's model (the v2 rule)."""
     sys.argv = [sys.argv[0], str(SRC)]
     import importlib.util
     spec = importlib.util.spec_from_file_location("v2", Path(__file__).parent / "v2_appworld_preregistered.py")
@@ -39,6 +47,8 @@ def cases_appworld():
 
 
 def cases_sheng():
+    """Yield ``(name, y_old, y_new, aux)`` for the pilot transitions (Sheng & Lu data), excluding Llama-2 -> 3;
+    the graph holds the models released before the new version."""
     sys.argv = [sys.argv[0], str(SRC)]
     import importlib.util
     spec = importlib.util.spec_from_file_location("ds", Path(__file__).parent / "dev_graph_sheng.py")
@@ -53,6 +63,7 @@ def cases_sheng():
 
 
 def main():
+    """Replay every transition ``R`` times with uniform probes and print gains of each variant."""
     rng = np.random.default_rng(20261113)
     rows, reps = [], []
     for name, y1, y2, aux in (cases_appworld() if WHICH == "appworld" else cases_sheng()):

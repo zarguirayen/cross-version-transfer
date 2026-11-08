@@ -1,9 +1,12 @@
-"""VALIDATION DU NOYAU (étape 2) : rejeu de bout en bout sur SWE-bench Verified (données déjà vues, servent ici à
-valider le logiciel, pas la méthode). Pour chaque transition v -> v', on construit un noyau contenant les versions
-antérieures à v' (historique complet), v et v' ; le noyau choisit les 20 tâches (plan), on enregistre seulement
-leurs résultats, puis estimate et decide. Comparaison avec la vérité et avec le reset uniforme.
-Critères fixés avant exécution : gain médian à ±10 % de ×2,11 (valeur de recherche, dev_v5) ; couverture moyenne
->= 0,88 ; erreur de décision (écart >= 5 points) inférieure à celle du reset uniforme."""
+"""KERNEL VALIDATION (step 2): end-to-end replay on SWE-bench Verified.
+
+The data were already analysed; they validate the software here, not the method. For each transition v -> v', a
+kernel is built with the versions released before v' (full history), v and v'; the kernel chooses the 20 tasks
+(plan), only their results are recorded, then estimate and decide run. Results are compared with the truth and
+with uniform random testing.
+
+Criteria fixed before the run: median gain within ±10% of ×2.11 (research value, dev_v5); mean coverage >= 0.88;
+decision error (true difference >= 5 points) below that of uniform random testing."""
 import shutil, sys, tempfile
 from multiprocessing import Pool
 from pathlib import Path
@@ -21,6 +24,7 @@ iso = lambda d: f"{d[:4]}-{d[4:6]}-{d[6:]}"
 
 
 def run(arg):
+    """Replay one transition through a fresh kernel; return gain over random testing, coverage and decision errors."""
     k, (lin, old, new) = arg
     tmp = Path(tempfile.mkdtemp())
     K = Kernel(tmp)
@@ -37,7 +41,7 @@ def run(arg):
     err_k, err_r, cov, dk, dr = [], [], [], [], []
     for rep in range(R):
         plan = K.plan(new, m=20, seed=int(rng.integers(1 << 30)))
-        K.results[new] = {}                                   # nouvelle campagne de probes (état en mémoire)
+        K.results[new] = {}                                   # new probe campaign (in-memory state only)
         K.record_many(new, {t: truth[t] for t in plan}, role="probe")
         e = K.estimate(new); d = K.decide(new)
         iu = rng.choice(len(IDS), 20, replace=False); s = int(y2[iu].sum())

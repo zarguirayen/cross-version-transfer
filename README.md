@@ -22,7 +22,8 @@ keep-or-replace. See `IDEA.md` for a one-page summary and `paper/main.pdf` for t
 | `src/cvt/kernel.py` | the agent-graph kernel: event log, slots and versions, `record`, `plan`, `estimate`, `decide`, `lint`, pages |
 | `tests/` | 22 tests (`python -m pytest -q tests`) |
 | `experiments/` | frozen analysis scripts of each study (`*_preregistered.py`), data loaders, development scripts (`dev_*`) |
-| `docs/` | protocols (`PREREGISTRATION*.md`), hashes (`PREREG*_SHA256.txt`), results (`RESULTS_*.md`), deviations log |
+| `docs/` | protocols (`PREREGISTRATION*.md`), hashes (`PREREG*_SHA256.txt`), results (`RESULTS_*.md`), deviations log, code guide (`CODE_GUIDE.md`) |
+| `tools/` | `verify_preregistration.py`: checks every freeze against its hashes |
 | `results/` | derived results (replays, summaries) — every number of the paper is generated from these files |
 | `paper/` | LaTeX source; `make_numbers.py` writes all numbers and figures, `check_numbers.py` cross-checks them |
 | `demo/` | kernel case study on the OpenHands lineage (SWE-bench Verified) |
@@ -30,11 +31,18 @@ keep-or-replace. See `IDEA.md` for a one-page summary and `paper/main.pdf` for t
 ## Pre-registration chain
 
 Each study was frozen by a git tag and SHA-256 hashes of its protocol and analysis script before any statistic was
-computed on its data. Check a freeze with, e.g.:
+computed on its data. Check every freeze at once with:
+
+    git fetch --tags
+    python tools/verify_preregistration.py
+
+It recomputes each hash on the files *as committed at the tag*, and checks that the shared library
+(`src/cvt/*.py`) was only extended afterwards: no line that existed at a freeze has been changed or removed. Hashes
+must be checked at the tag, not on the working tree, because `src/cvt/graph.py` gained new estimators from one study
+to the next. To inspect one freeze by hand:
 
     git show prereg-v6 --stat
     git diff prereg-v6 HEAD -- experiments/v6_unified_preregistered.py experiments/v6_data.py
-    sha256sum -c <(head -5 docs/PREREG_V6_SHA256.txt)
 
 | Tag | Study | Protocol | Results |
 |---|---|---|---|
@@ -50,7 +58,7 @@ Deviations are logged in `docs/DEVIATIONS.md`. Protocols and results documents a
 
 ## Reproduce
 
-Python 3.11+ with `numpy`, `scipy`, `matplotlib`, `pyyaml`, `pytest`. Data are not redistributed here; `DATA.md`
+Python 3.11+ with `numpy`, `scipy`, `matplotlib`, `pyyaml`, `pytest`. `docs/CODE_GUIDE.md` explains the code module by module and maps each estimator to the paper. Data are not redistributed here; `DATA.md`
 lists every source, its exact commit and where the scripts expect it.
 
     python -m pytest -q tests
