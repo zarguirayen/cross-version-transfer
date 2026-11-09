@@ -1,0 +1,10 @@
+# v8 freeze (prereg-v8), 2026-11-09
+c083f71165f0e1a1aedcabd07f9fc60123a4048347cebe65c953dcdad2fddd01  docs/PREREGISTRATION_V8.md
+0a07106b161b7c2b591dbb58bb3e434cc7f7835634180b23dc868f1b3406e3b7  experiments/v8_patterns_async_preregistered.py
+96e832c867425c69f46d7fe007cc1c4e746fd3253533f1c07cbd78116922f34d  experiments/v8_data.py
+a6ae1880737af4b71c18a189d0da031b4398e03156bf2662dcf42328854a7f26  src/cvt/asynchronous.py
+e830576dd736f71f82130cda63747463eaaaa50f2ffc073662998b04d4387097  src/cvt/graph.py
+758a9ff6a1b498e6bf145afa9a74ca0411bd4680532626e320dd739898f95d2c  src/cvt/estimators.py
+ec39176596683cacc37abe21b7192addb60615a103a9187d2db64a01b171bd19  experiments/v5_general_data.py
+a877a48e3541c362113abf401cf6de56c8e1c5cf1c9119d44d86b26c920fe4df  experiments/dev_v8_async.py
+# AppWorld leaderboard snapshot: stonybrooknlp/appworld-leaderboard, last commit 2026-11-04

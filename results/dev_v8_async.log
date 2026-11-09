@@ -1,0 +1,2 @@
+k=10: bias naive mean +0.100 | graph +0.001 ; median RMSE ratio naive/graph 1.95 ; coverage graph mean 0.880 (min 0.783) ; gamma mean -1.00
+k=15: bias naive mean +0.050 | graph +0.007 ; median RMSE ratio naive/graph 1.40 ; coverage graph mean 0.890 (min 0.800) ; gamma mean -1.00
