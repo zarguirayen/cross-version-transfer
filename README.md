@@ -16,7 +16,8 @@ keep-or-replace. See `IDEA.md` for a one-page summary and `paper/main.pdf` for t
 Study v8 extends the method to **agentic patterns and multi-agent systems** (13 agents submitted to AppWorld after its
 paper, including two multi-agent frameworks treated as single nodes) and to **asynchronous evaluation** (results that
 arrive out of order and an evaluation stopped at a deadline). The graph here records evaluation evidence; it is not an
-orchestration graph of agents calling one another.
+orchestration graph of agents calling one another. A prospective pre-registration (`prereg-v9`, `docs/PREREGISTRATION_V9.md`) fixes how the deadline correction will be
+tested on AppWorld agents released after 2026-11-04.
 
 ## Repository layout
 

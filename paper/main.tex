@@ -440,7 +440,10 @@ more than the naive estimate (RMSE ratio \RmseRatioEight) and covered only \CovD
 explains why: earlier agents failed more often on tasks where they were slow (slowness effect \GammaGraphEight{} on the
 logit scale), the new agents did not (median \GammaOwnEight), and the mismatch tracks the bias (Spearman
 \RhoMismatchEight). Correcting for difficulty alone (exploratory, not confirmed) cut the naive error by a factor
-\DiffOnlyRatio{} with coverage \DiffOnlyCov. Deadline bias is real; correcting it across agent generations is open.
+\DiffOnlyRatio{} with coverage \DiffOnlyCov. Deadline bias is real; correcting it across agent generations is open. To test the simpler correction without
+choosing it on data already seen, we froze it in a prospective pre-registration (\texttt{prereg-v9}) before any
+eligible agent existed: it will be run once on the agents released on AppWorld after November 4, 2026, as soon as at
+least five are available.
 
 \paragraph{Relation to asynchronous agents.} The deadline setting is the evaluation-side instance of a pattern now
 common in agent architectures: an orchestrator launches background workers (asynchronous subagents) and acts on those
@@ -552,7 +555,7 @@ the graph of earlier agents chooses the tasks, estimates with calibrated interva
 tasks needed for a given precision by $\GGregFive$ to $\GGregSix$ (median) in the last two confirmations. The graph also has structure of its own---scaffolds, more than models, shape which tasks
 agents fail---but for evaluation its value lies in the difficulty scale it has learned. The method held across
 agentic patterns, including multi-agent systems; evaluations stopped at a deadline remain biased, and correcting
-them across agent generations is the next problem. Evaluation does not have to start
+them across agent generations is the next problem, pre-registered prospectively for agents not yet released. Evaluation does not have to start
 from zero at every release: the graph of agents remembers.
 
 \section*{Code and data availability}
