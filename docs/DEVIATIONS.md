@@ -61,5 +61,10 @@ Chaque entrée : date, ce qui change, pourquoi, effet attendu sur les conclusion
   la capacité, couvrait 0,84 ; corrigée avant le gel. Après le gel : analyse exploratoire
   `experiments/v8_exploratory_async.py` (diagnostic de l'échec d'A2–A3 et variante « difficulté seule ») ; aucun
   verdict modifié.
+- **9 novembre 2026, après v8, développement pour une v9 prospective** (`experiments/dev_v9_deadline.py`, données v8
+  déjà vues, non rapporté comme preuve) : à l'échéance, imputer par la difficulté seule (γ = 0) fait mieux que la
+  correction v8 (rapport RMSE 1,30 contre 0,88 ; couverture 0,856 contre 0,767, min 0,26) ; un γ appris sur les 5
+  agents les plus récents fait moins bien (1,04 ; 0,798). À confirmer seulement sur des agents publiés après le
+  2026-11-04.
 - **Constat** : écart de 0,6 point entre notre taux de régression Mistral MATH (55,8 %) et celui publié par
   Sheng & Lu (55,2 %). Non expliqué ; sans effet sur les conclusions.

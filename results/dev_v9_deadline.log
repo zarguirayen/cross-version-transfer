@@ -1,0 +1,6 @@
+  f"{np.median(f('rmse_naive') / f(f'rmse_{c}')):.2f} | coverage mean {np.nanmean(cv):.3f} min {np.nanmin(cv) if c != 'naive' else float('nan'):.3f}")
+naive   bias mean +0.071 | RMSE ratio naive/naive median 1.00 | coverage mean nan min nan
+v8      bias mean -0.087 | RMSE ratio naive/v8 median 0.88 | coverage mean 0.767 min 0.190
+zero    bias mean -0.033 | RMSE ratio naive/zero median 1.30 | coverage mean 0.856 min 0.260
+recent  bias mean -0.065 | RMSE ratio naive/recent median 1.04 | coverage mean 0.798 min 0.220
+hedge   bias mean -0.065 | RMSE ratio naive/hedge median 1.04 | coverage mean 0.865 min 0.260
