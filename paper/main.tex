@@ -29,21 +29,17 @@ Institut Polytechnique de Paris\\
 \maketitle
 
 \begin{abstract}
-Every new version of an AI agent is evaluated as if nothing had been learned before, although the outcomes of
-earlier agents on the same tasks are known. We organise this history as a \emph{graph of agents}---nodes are agent
-versions carrying their task-level outcomes, edges link versions---and ask how many tasks it is worth. A closed-form
+Each new version of an AI agent is evaluated from scratch, although earlier agents' outcomes on the same tasks are
+known. We organise this history as a \emph{graph of agents}---nodes are agent
+versions with their task-level outcomes---and ask how many tasks it is worth. A closed-form
 law answers: testing $m$ tasks with the graph is as precise as testing $m/(1-\rho^2)$ at random, where $\rho^2$ is
 the share of the new version's task-level variance the graph explains ($\phisq$ with the predecessor, $\eta^2$ with the
 difficulty seen by earlier agents). We turn it into a method: the graph \emph{chooses} the tasks, a cross-fitted
-estimator \emph{estimates} with calibrated intervals, and the same tasks \emph{decide} keep-or-replace. In eight
-studies, each pre-registered by a git tag, the law, given the true $\rho^2$, matched the observed gain within
-\LawErrPooled\% (median) over \NConf{} real version transitions from five agent benchmarks; with $\phisq$ estimated from the 20 tested tasks it still matched on average (\PhiHatErr\%,
-exploratory), but a single evaluation's estimate erred by \PhiHatSingle\%. Choosing the tasks gives most of the gain:
+estimator \emph{estimates} with calibrated intervals, and the same tasks \emph{decide} keep-or-replace. In eight studies, each pre-registered by a git tag, the predecessor law, given the true $\phisq$, matched the observed gain within \LawErrPooled\% (median) over \NConf{} real version transitions from five benchmarks, and the graph law, given the true $\eta^2$, within \StratErrPooled\% over \StratN; with $\phisq$ estimated from 20 tested tasks the median per-transition error, over simulated draws, was \PhiHatErr\% (exploratory), but a single evaluation erred by \PhiHatSingle\%. Choosing the tasks gives most of the gain:
 with the cross-fitted estimator, 20 graph-chosen tasks were worth \EquivProbesFive--\EquivProbesSix{} random ones in
-two confirmations and 90\% intervals covered the truth \CovGregSix--\CovEight{} of the time; decisions taken on the same tasks
-erred \DecRedSix--\DecRedFour\% less often. On \NEightAgents{} agents submitted to AppWorld after its paper, four of them
-multi-agent systems, the method beat random testing in \GEightWins{} of \NEight{} evaluations ($\times\GEight$). Agents
-sharing a scaffold or an agentic pattern fail on the same tasks, though this adds nothing to evaluation efficiency.
+two confirmations and 90\% intervals covered the truth \CovGregSix--\CovEight{} of the time; decisions taken on the same tasks erred \DecRedSix--\DecRedFour\% less often when the versions differ by at least
+5 points. On \NEightAgents{} newer AppWorld agents, four of them multi-agent systems, the method beat random testing in \GEightWins{} of \NEight{} evaluations ($\times\GEight$). Agents
+sharing a scaffold or an agentic pattern fail on the same tasks, without making evaluation more efficient.
 When results arrive asynchronously and evaluation stops at a deadline, naive estimates overshoot by \BiasNaiveEight{}
 points; a correction learned from older agents did not transfer. Of \HypTotal{} pre-registered hypotheses,
 \HypSupported{} were supported; all failures are reported.
@@ -505,7 +501,8 @@ flagged sure or not), and \texttt{lint} (lineage inconsistencies, probes outside
 evidence). Each slot gets a Markdown page listing its versions, estimates and intervals. The decision takes its point
 from the model-based estimator, which decided best in v3, and its interval from cross-fitted GREG; since version 0.2 a
 decision is flagged sure only when that interval excludes the threshold on the side of the action. Version 0.2 also
-binds each plan to a hash of the task suite (a plan made on another suite is refused), parses outcomes strictly, keeps
+binds each plan to a hash of the task identifiers (a plan made on another suite is refused; a task edited under the
+same identifier is not detected), parses outcomes strictly, keeps
 every repeated run with its origin and verifier, and requires an even probe budget, since the variance pairs adjacent
 strata.
 
@@ -514,7 +511,9 @@ method): replaying the 89 SWE-bench Verified transitions through the
 kernel alone must reproduce the research gain within 10\%, keep coverage above 0.88, and make fewer decision errors
 than random testing. The
 kernel (versions 0.1 and 0.2 alike) obtained a median gain of $\times\KernelGain$, coverage \KernelCov, and decision errors of \KernelDec\% versus
-\KernelDecReset\% for random testing, with no lint finding.
+\KernelDecReset\% for random testing, with no lint finding (the check for probes outside the plan is excluded by
+design, since each replay draws a new plan for the same version). On one transition the kernel's estimate was exact in
+every replay (zero error, infinite gain); it is counted as such in the median.
 
 \paragraph{Case study.} On the nine real OpenHands versions in SWE-bench Verified, the kernel tested 180 tasks instead
 of 4{,}500. Its intervals contained the true rate for \DemoCov\% of versions and \DemoGood\% of its decisions were
@@ -608,6 +607,15 @@ manuscript. In line with arXiv policy, it is not listed as an author.
 \bibliography{references}
 
 \appendix
+\section{Development history}
+Between studies, methods were changed only on data already analysed: the Bayesian model average of the
+predecessor-only estimator (synthetic worlds, before v1); the graph estimator and the sequential rule (pilot data,
+before v2); finite-population prediction, model averaging and an identifiability guard (AppWorld and pilot data,
+before v3); the stratified design and GREG (SWE-bench Verified and AppWorld, before v4); cross-fitting, the
+Korn--Graubard interval and the Jeffreys boundary convention (Verified, Lite, AppWorld, before v5). Before v8, the deadline correction (the 14 agents of the AppWorld paper, whose step counts had never been analysed). Variants tried and
+abandoned (an empirical-Bayes slope prior; fallback rules on the number of successes) are listed in the
+pre-registration documents.
+
 \clearpage
 \section{Ledger of pre-registered hypotheses}
 \label{app:ledger}
@@ -663,14 +671,5 @@ v8 & P2 pattern change loses information & Wilcoxon over 7 languages & \textbf{n
 \bottomrule
 \end{tabular}
 \end{table}
-
-\section{Development history}
-Between studies, methods were changed only on data already analysed: the Bayesian model average of the
-predecessor-only estimator (synthetic worlds, before v1); the graph estimator and the sequential rule (pilot data,
-before v2); finite-population prediction, model averaging and an identifiability guard (AppWorld and pilot data,
-before v3); the stratified design and GREG (SWE-bench Verified and AppWorld, before v4); cross-fitting, the
-Korn--Graubard interval and the Jeffreys boundary convention (Verified, Lite, AppWorld, before v5). Before v8, the deadline correction (the 14 agents of the AppWorld paper, whose step counts had never been analysed). Variants tried and
-abandoned (an empirical-Bayes slope prior; fallback rules on the number of successes) are listed in the
-pre-registration documents.
 
 \end{document}

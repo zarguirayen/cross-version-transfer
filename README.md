@@ -26,7 +26,7 @@ tested on AppWorld agents released after 2026-11-04.
 | `src/cvt/estimators.py` | random testing (reset), predecessor-only Bayesian double sampling (`double_sampling_bma`), the efficiency law |
 | `src/cvt/graph.py` | graph features, model-based graph estimator (`graph_v3`, `graph_bma_logit`), GREG and cross-fitted GREG (`graph_greg_cf`) |
 | `src/cvt/kernel.py` | the agent-graph kernel: event log, slots and versions, `record`, `plan`, `estimate`, `decide`, `lint`, pages |
-| `tests/` | 22 tests (`python -m pytest -q tests`) |
+| `tests/` | 30 tests (`python -m pytest -q tests`) |
 | `experiments/` | frozen analysis scripts of each study (`*_preregistered.py`), data loaders, development scripts (`dev_*`) |
 | `docs/` | protocols (`PREREGISTRATION*.md`), hashes (`PREREG*_SHA256.txt`), results (`RESULTS_*.md`), deviations log, code guide (`CODE_GUIDE.md`) |
 | `tools/` | `verify_preregistration.py`: checks every freeze against its hashes |

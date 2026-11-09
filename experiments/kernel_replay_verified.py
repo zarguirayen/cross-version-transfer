@@ -51,7 +51,12 @@ def run(arg):
     shutil.rmtree(tmp)
     lint = K.lint()
     print(f"fait : {new[:50]}", flush=True)
-    return dict(new=new, p=p, delta=p - pv, gain=np.mean(err_r) / np.mean(err_k), cov=np.mean(cov),
+    mk, mr = np.mean(err_k), np.mean(err_r)
+    # The kernel can be exact in every replay (e.g. a version that solves nothing, estimated at exactly 0): its MSE is
+    # then 0 and the gain is infinite (or undefined if random testing is exact too). Such cases are counted and reported.
+    gain = 1.0 if mk == 0 and mr == 0 else (np.inf if mk == 0 else mr / mk)
+    # L3 (probes outside the plan) is excluded by design: each replay draws a new plan for the same version.
+    return dict(new=new, p=p, delta=p - pv, gain=gain, exact=bool(mk == 0), cov=np.mean(cov),
                 dec_k=np.mean(dk), dec_r=np.mean(dr), lint=len([f for f in lint if f["code"] != "L3"]))
 
 
@@ -62,6 +67,7 @@ if __name__ == "__main__":
     big = [r for r in rows if abs(r["delta"]) >= 0.05]
     dk = np.mean([r["dec_k"] for r in big]); dr = np.mean([r["dec_r"] for r in big])
     print(f"\n{len(rows)} transitions, R={R} : gain médian x{np.median(g):.3f} (min x{g.min():.2f}) ; couverture moy {c.mean():.3f} "
-          f"(min {c.min():.3f}) ; erreur de décision {dk:.3f} vs reset {dr:.3f} ({len(big)} transitions) ; anomalies lint {sum(r['lint'] for r in rows)}")
+          f"(min {c.min():.3f}) ; erreur de décision {dk:.3f} vs reset {dr:.3f} ({len(big)} transitions) ; anomalies lint {sum(r['lint'] for r in rows)} "
+          f"(L3 exclu par construction) ; transitions où le noyau est exact à chaque rejeu : {sum(r['exact'] for r in rows)}")
     ok = abs(np.median(g) / 2.11 - 1) <= 0.10 and c.mean() >= 0.88 and dk < dr
     print(f"VALIDATION DU NOYAU : {'réussie' if ok else 'échouée'}")

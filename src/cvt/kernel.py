@@ -75,7 +75,11 @@ def as_outcome(v) -> bool:
 
 
 def suite_hash(ids) -> str:
-    """SHA-256 of the sorted task ids: the identity of the task suite a plan was made on."""
+    """SHA-256 of the sorted task ids: the identity of the task suite a plan was made on.
+
+    It detects tasks added or removed, not a task whose content or verifier changed under the same id; version the
+    task ids (or the suite name) when tasks are edited.
+    """
     return hashlib.sha256("\n".join(sorted(ids)).encode()).hexdigest()
 
 
@@ -150,11 +154,21 @@ class Kernel:
         self._apply(ev)
 
     def _replay(self):
-        """Rebuild the state by applying every event of the log in order."""
+        """Rebuild the state by applying every event of the log in order.
+
+        Raises
+        ------
+        ValueError
+            If a line is not valid JSON or carries an invalid outcome; the message gives the line number, so a
+            corrupted or hand-edited log is detected instead of being silently misread.
+        """
         if self.log.exists():
-            for line in self.log.open():
+            for no, line in enumerate(self.log.open(), 1):
                 if line.strip():
-                    self._apply(json.loads(line))
+                    try:
+                        self._apply(json.loads(line))
+                    except (ValueError, KeyError) as exc:
+                        raise ValueError(f"journal invalide, ligne {no} : {exc}") from exc
 
     def _apply(self, ev: dict):
         """Apply one event to the in-memory state (no validation: events were validated when written)."""
@@ -169,16 +183,16 @@ class Kernel:
             self.tasks.add(ev["task"])
         elif k == "results":
             # Bulk import: one event carries a whole evaluation.
-            self.results.setdefault(ev["version"], {}).update({t: bool(v) for t, v in ev["outcomes"].items()})
+            self.results.setdefault(ev["version"], {}).update({t: as_outcome(v) for t, v in ev["outcomes"].items()})
             for t, v in ev["outcomes"].items():
                 self.roles[(ev["version"], t)] = ev.get("role", "full")
                 self.runs.setdefault((ev["version"], t), []).append(
-                    {"success": bool(v), "role": ev.get("role", "full"), "origin": ev.get("origin"), "verifier": ev.get("verifier"), "ts": ev.get("ts")})
+                    {"success": as_outcome(v), "role": ev.get("role", "full"), "origin": ev.get("origin"), "verifier": ev.get("verifier"), "ts": ev.get("ts")})
         elif k == "result":
-            self.results.setdefault(ev["version"], {})[ev["task"]] = bool(ev["success"])
+            self.results.setdefault(ev["version"], {})[ev["task"]] = as_outcome(ev["success"])
             self.roles[(ev["version"], ev["task"])] = ev.get("role", "other")
             self.runs.setdefault((ev["version"], ev["task"]), []).append(
-                {"success": bool(ev["success"]), "role": ev.get("role", "other"), "origin": ev.get("origin"),
+                {"success": as_outcome(ev["success"]), "role": ev.get("role", "other"), "origin": ev.get("origin"),
                  "verifier": ev.get("verifier"), "ts": ev.get("ts")})
         elif k == "plan":
             self.plans[ev["version"]] = {"tasks": ev["tasks"], "weights": ev["weights"], "against": ev["against"],
@@ -461,7 +475,8 @@ class Kernel:
         dict
             ``action`` is ``"promote"``, ``"keep"``, ``"needs_probes"``, ``"stale_plan"`` or ``"undetermined"``.
             When a decision is made, ``confident`` is true only if the GREG-cf interval excludes the threshold on the
-            side of the action, and ``estimators_agree`` is false when the interval lies entirely on the other side.
+            side of the action, and ``interval_not_contrary`` is false when the interval lies entirely on the other side (an
+            interval that straddles the threshold neither contradicts nor confirms the action).
         """
         current = current or self.versions[new].parent
         ids, X, y_prev, eco = self._features(new)
@@ -489,8 +504,8 @@ class Kernel:
         # Sure only if the GREG-cf interval excludes the threshold on the side of the action; when the two estimators
         # disagree (graph_v3 point on one side, interval entirely on the other), the decision is reported as not sure.
         sure = (action == "promote" and est["lo"] > thr) or (action == "keep" and est["hi"] < thr)
-        agree = not ((action == "promote" and est["hi"] < thr) or (action == "keep" and est["lo"] > thr))
-        return dict(new=new, current=current, action=action, confident=bool(sure), estimators_agree=bool(agree),
+        not_contrary = not ((action == "promote" and est["hi"] < thr) or (action == "keep" and est["lo"] > thr))
+        return dict(new=new, current=current, action=action, confident=bool(sure), interval_not_contrary=bool(not_contrary),
                     p_current=p_cur, p_new_point=float(point), p_new_interval=(est["lo"], est["hi"]))
 
     # ------------------------------------------------------------------ lint

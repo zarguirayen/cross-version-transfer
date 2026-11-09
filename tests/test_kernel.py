@@ -137,7 +137,7 @@ def test_confidence_agrees_with_action(tmp_path):
     thr = d["p_current"]
     if d["confident"]:
         assert (d["action"] == "promote" and lo > thr) or (d["action"] == "keep" and hi < thr)
-    assert d["estimators_agree"] or not d["confident"]
+    assert d["interval_not_contrary"] or not d["confident"]
 
 
 def test_repeated_runs_are_kept_and_conflicts_flagged(tmp_path):
@@ -148,3 +148,14 @@ def test_repeated_runs_are_kept_and_conflicts_flagged(tmp_path):
     runs = K.runs[("v2", tasks[0])]
     assert [r["verifier"] for r in runs] == ["harness-a", "harness-b"] and K.results["v2"][tasks[0]] is False
     assert any(f["code"] == "L7" for f in K.lint())
+
+
+def test_corrupted_log_is_detected(tmp_path):
+    """A hand-edited outcome ("maybe") in the log is refused on replay, with the line number."""
+    K, tasks, y1, y2 = _world(tmp_path)
+    K.record("v2", tasks[0], True)
+    lines = K.log.read_text().splitlines()
+    lines[-1] = lines[-1].replace('"success": true', '"success": "maybe"')
+    K.log.write_text("\n".join(lines) + "\n")
+    with pytest.raises(ValueError, match="ligne"):
+        Kernel(tmp_path)
