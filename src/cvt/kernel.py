@@ -47,11 +47,36 @@ import numpy as np
 from . import estimators as E
 from . import graph as Gr
 
+#: Kernel version. 0.2 (after the paper's v0.4 review): strict outcome parsing, plans bound to the task suite,
+#: decisions whose confidence agrees with the action, even probe budgets, repeated runs and provenance kept.
+__version__ = "0.2.0"
+
 #: Allowed roles of a result. ``probe`` results come from a plan; ``train`` marks tasks used for training, which
 #: must never serve as evidence (lint L5).
 ROLES = {"probe", "full", "train", "other"}
 #: Allowed origins of a result.
 ORIGINS = {"production", "benchmark", "synthetic"}
+
+
+def as_outcome(v) -> bool:
+    """Parse one task outcome strictly.
+
+    Accepts booleans, the integers 0 and 1, and the strings "true"/"false" (any case, surrounding spaces ignored).
+    Anything else raises ``ValueError``: ``bool("false")`` is ``True`` in Python, so a lenient conversion would
+    silently record failures as successes.
+    """
+    if isinstance(v, (bool, np.bool_)):
+        return bool(v)
+    if isinstance(v, (int, np.integer)) and v in (0, 1):
+        return bool(v)
+    if isinstance(v, str) and v.strip().lower() in ("true", "false"):
+        return v.strip().lower() == "true"
+    raise ValueError(f"résultat invalide : {v!r} (attendu : booléen, 0/1, 'true' ou 'false')")
+
+
+def suite_hash(ids) -> str:
+    """SHA-256 of the sorted task ids: the identity of the task suite a plan was made on."""
+    return hashlib.sha256("\n".join(sorted(ids)).encode()).hexdigest()
 
 
 @dataclass
@@ -113,6 +138,7 @@ class Kernel:
         self.roles: dict[tuple[str, str], str] = {}
         self.plans: dict[str, dict] = {}
         self.tasks: set[str] = set()
+        self.runs: dict[tuple[str, str], list[dict]] = {}   # every recorded run, in log order
         self._replay()
 
     # ------------------------------------------------------------------ event log
@@ -144,14 +170,19 @@ class Kernel:
         elif k == "results":
             # Bulk import: one event carries a whole evaluation.
             self.results.setdefault(ev["version"], {}).update({t: bool(v) for t, v in ev["outcomes"].items()})
-            for t in ev["outcomes"]:
+            for t, v in ev["outcomes"].items():
                 self.roles[(ev["version"], t)] = ev.get("role", "full")
+                self.runs.setdefault((ev["version"], t), []).append(
+                    {"success": bool(v), "role": ev.get("role", "full"), "origin": ev.get("origin"), "verifier": ev.get("verifier"), "ts": ev.get("ts")})
         elif k == "result":
             self.results.setdefault(ev["version"], {})[ev["task"]] = bool(ev["success"])
             self.roles[(ev["version"], ev["task"])] = ev.get("role", "other")
+            self.runs.setdefault((ev["version"], ev["task"]), []).append(
+                {"success": bool(ev["success"]), "role": ev.get("role", "other"), "origin": ev.get("origin"),
+                 "verifier": ev.get("verifier"), "ts": ev.get("ts")})
         elif k == "plan":
             self.plans[ev["version"]] = {"tasks": ev["tasks"], "weights": ev["weights"], "against": ev["against"],
-                                         "seed": ev["seed"]}
+                                         "seed": ev["seed"], "suite_hash": ev.get("suite_hash")}
 
     # ------------------------------------------------------------------ graph
     def register_slot(self, slot: str, responsibility: str = ""):
@@ -240,7 +271,7 @@ class Kernel:
             raise KeyError(f"tâche inconnue : {task}")
         if role not in ROLES or origin not in ORIGINS:
             raise ValueError("rôle ou origine invalide")
-        self._append({"event": "result", "version": version, "task": task, "success": bool(success), "role": role,
+        self._append({"event": "result", "version": version, "task": task, "success": as_outcome(success), "role": role,
                       "origin": origin, "verifier": verifier})
 
     def record_many(self, version: str, outcomes: dict, role: str = "full", origin: str = "benchmark",
@@ -270,7 +301,7 @@ class Kernel:
             raise KeyError(f"{len(unknown)} tâches inconnues")
         if role not in ROLES or origin not in ORIGINS:
             raise ValueError("rôle ou origine invalide")
-        self._append({"event": "results", "version": version, "outcomes": {t: bool(v) for t, v in outcomes.items()},
+        self._append({"event": "results", "version": version, "outcomes": {t: as_outcome(v) for t, v in outcomes.items()},
                       "role": role, "origin": origin, "verifier": verifier})
 
     # ------------------------------------------------------------------ views
@@ -338,7 +369,7 @@ class Kernel:
         version : str
             The new version.
         m : int, default 20
-            Number of probes (and of strata).
+            Number of probes (and of strata). Must be even: the variance pairs adjacent strata.
         seed : int, optional
             Random seed. By default it is derived from a hash of the version id, so that the plan is reproducible.
 
@@ -347,6 +378,8 @@ class Kernel:
         list of str
             The tasks to run, one per stratum.
         """
+        if m < 2 or m % 2:
+            raise ValueError("m doit être pair : la variance compare des paires de strates voisines")
         ids, X, _, eco = self._features(version)
         if seed is None:
             seed = int(hashlib.sha256(version.encode()).hexdigest()[:8], 16)
@@ -357,7 +390,8 @@ class Kernel:
         pick = [int(rng.choice(b)) for b in blocks]
         tasks = [ids[i] for i in pick]
         self._append({"event": "plan", "version": version, "tasks": tasks, "weights": [len(b) for b in blocks],
-                      "against": self.versions[version].parent, "seed": seed, "n_ecosystem": len(eco)})
+                      "against": self.versions[version].parent, "seed": seed, "n_ecosystem": len(eco),
+                      "suite_hash": suite_hash(ids), "n_tasks": len(ids)})
         return tasks
 
     # ------------------------------------------------------------------ estimate
@@ -379,7 +413,8 @@ class Kernel:
             - ``"measured"``: every task has a result; ``mean`` is the exact rate (method ``"census"``);
             - ``"needs_probes"``: no plan, or some planned probes have no result yet (listed in ``missing``);
             - ``"estimated"``: ``mean``, ``lo``, ``hi`` from cross-fitted GREG on the planned probes, or from the
-              random-testing estimator when the ecosystem is empty.
+              random-testing estimator when the ecosystem is empty;
+            - ``"stale_plan"``: the task suite changed after the plan was made (its weights no longer apply).
         """
         ids, X, y_prev, eco = self._features(version)
         pl = self.plans.get(version)
@@ -387,6 +422,9 @@ class Kernel:
         if self._complete(version, ids):                       # everything is measured: nothing to estimate
             p = float(np.mean([r[t] for t in ids]))
             return dict(version=version, status="measured", mean=p, lo=p, hi=p, n_probes=len(ids), method="census")
+        if pl is not None and pl.get("suite_hash") and pl["suite_hash"] != suite_hash(ids):
+            return dict(version=version, status="stale_plan",
+                        reason="la suite de tâches a changé depuis le plan : refaire plan()")
         if pl is None or not all(t in r for t in pl["tasks"]):
             missing = [] if pl is None else [t for t in pl["tasks"] if t not in r]
             return dict(version=version, status="needs_probes", missing=missing)
@@ -421,17 +459,24 @@ class Kernel:
         Returns
         -------
         dict
-            ``action`` is ``"promote"``, ``"keep"``, ``"needs_probes"`` or ``"undetermined"``; when a decision is
-            made, ``confident`` tells whether the interval excludes the threshold.
+            ``action`` is ``"promote"``, ``"keep"``, ``"needs_probes"``, ``"stale_plan"`` or ``"undetermined"``.
+            When a decision is made, ``confident`` is true only if the GREG-cf interval excludes the threshold on the
+            side of the action, and ``estimators_agree`` is false when the interval lies entirely on the other side.
         """
         current = current or self.versions[new].parent
         ids, X, y_prev, eco = self._features(new)
+        pl = self.plans.get(new)
+        if pl is not None and pl.get("suite_hash") and pl["suite_hash"] != suite_hash(ids):
+            return dict(new=new, current=current, action="stale_plan",
+                        reason="la suite de tâches a changé depuis le plan : refaire plan()")
         if current is None or not self._complete(current, ids):
             return dict(new=new, current=current, action="undetermined", reason="version courante non mesurée")
         p_cur = float(np.mean([self.results[current][t] for t in ids]))
         est = self.estimate(new)
         if est["status"] == "needs_probes":
             return dict(new=new, current=current, action="needs_probes", missing=est["missing"])
+        if est["status"] == "stale_plan":
+            return dict(new=new, current=current, action="stale_plan", reason=est["reason"])
         if est["status"] == "measured":
             point = est["mean"]
         else:
@@ -440,9 +485,13 @@ class Kernel:
             y = np.array([self.results[new][t] for t in pl["tasks"]])
             point = Gr.graph_v3(X, idx, y, y_prev, rng=np.random.default_rng(pl["seed"] + 2)).mean
         action = "promote" if point >= p_cur - margin else "keep"
-        sure = est["lo"] > p_cur - margin or est["hi"] < p_cur - margin
-        return dict(new=new, current=current, action=action, confident=bool(sure), p_current=p_cur,
-                    p_new_point=float(point), p_new_interval=(est["lo"], est["hi"]))
+        thr = p_cur - margin
+        # Sure only if the GREG-cf interval excludes the threshold on the side of the action; when the two estimators
+        # disagree (graph_v3 point on one side, interval entirely on the other), the decision is reported as not sure.
+        sure = (action == "promote" and est["lo"] > thr) or (action == "keep" and est["hi"] < thr)
+        agree = not ((action == "promote" and est["hi"] < thr) or (action == "keep" and est["lo"] > thr))
+        return dict(new=new, current=current, action=action, confident=bool(sure), estimators_agree=bool(agree),
+                    p_current=p_cur, p_new_point=float(point), p_new_interval=(est["lo"], est["hi"]))
 
     # ------------------------------------------------------------------ lint
     def lint(self) -> list[dict]:
@@ -457,7 +506,9 @@ class Kernel:
             - L2: the parent was released at the same time as or after the version;
             - L3: probe results outside the version's plan (ignored by :meth:`estimate`);
             - L4: the plan was made against another parent than the current one;
-            - L5: a training task is stored as evidence.
+            - L5: a training task is stored as evidence;
+            - L6: the plan was made on another task suite than the current one (estimate refuses it);
+            - L7: repeated runs of the same version and task disagree (the latest run is used).
         """
         out = []
         for v, x in self.versions.items():
@@ -472,6 +523,13 @@ class Kernel:
                     out.append(dict(code="L3", version=v, msg=f"{len(extra)} probes hors plan : l'estimation les ignore"))
                 if pl["against"] != x.parent:
                     out.append(dict(code="L4", version=v, msg="plan établi contre un autre parent"))
+        ids_hash = suite_hash(self.task_list())
+        for v, pl in self.plans.items():
+            if pl.get("suite_hash") and pl["suite_hash"] != ids_hash:
+                out.append(dict(code="L6", version=v, msg="plan établi sur une autre suite de tâches"))
+        for (v, t), rs in self.runs.items():
+            if len({r["success"] for r in rs}) > 1:
+                out.append(dict(code="L7", version=v, task=t, msg=f"{len(rs)} exécutions en désaccord : la dernière est utilisée"))
         for (v, t), role in self.roles.items():
             if role == "train":
                 out.append(dict(code="L5", version=v, task=t, msg="tâche d'entraînement utilisée comme preuve"))

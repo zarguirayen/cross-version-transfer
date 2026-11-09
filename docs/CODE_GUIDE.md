@@ -126,7 +126,7 @@ cross-fitted GREG under the stratified design, `cov_reset_u` the coverage of ran
 
 | Path | Content |
 |---|---|
-| `src/cvt/kernel.py` | the kernel of the graph of agents (paper Section 7) |
+| `src/cvt/kernel.py` | the kernel of the graph of agents (paper Section 7), version 0.2: strict outcome parsing, plans bound to a hash of the task suite, every run kept with its provenance (lint L6, L7), even probe budgets, decisions sure only when the interval agrees with the action |
 | `tests/` | unit and statistical tests (`python -m pytest -q tests`) |
 | `experiments/dev_*.py` | development scripts, run only on data already analysed; each docstring says which study it prepared |
 | `experiments/g1_*.py` | synthetic validation G1 of the first estimator |
@@ -137,3 +137,9 @@ cross-fitted GREG under the stratified design, `cov_reset_u` the coverage of ran
 
 Data paths (`/home/claude/data/...`) are hard-coded in the frozen scripts as they were run; `DATA.md` lists each
 source, its commit and the expected location.
+
+## Known limitation of frozen code
+
+The paired-strata variance in `graph_greg_cf` (and in `asynchronous.deadline_estimate`) pairs strata (1,2), (3,4), …;
+with an odd number of probes the last stratum is left out of the variance. Every study uses m = 20 or 40, so no
+reported result is affected. The frozen files are not changed; kernel 0.2 refuses odd budgets instead.

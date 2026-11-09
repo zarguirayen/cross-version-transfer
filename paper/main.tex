@@ -502,13 +502,18 @@ task results with their role and origin, probe plans); five operations act on it
 whole evaluation), \texttt{plan} (the graph chooses $m$ tasks for a new version and stores the plan, which fixes the
 stratum weights), \texttt{estimate} (cross-fitted GREG on the planned probes), \texttt{decide} (keep or replace,
 flagged sure or not), and \texttt{lint} (lineage inconsistencies, probes outside the plan, training tasks used as
-evidence). Each slot gets a Markdown page listing its versions, estimates and intervals.
+evidence). Each slot gets a Markdown page listing its versions, estimates and intervals. The decision takes its point
+from the model-based estimator, which decided best in v3, and its interval from cross-fitted GREG; since version 0.2 a
+decision is flagged sure only when that interval excludes the threshold on the side of the action. Version 0.2 also
+binds each plan to a hash of the task suite (a plan made on another suite is refused), parses outcomes strictly, keeps
+every repeated run with its origin and verifier, and requires an even probe budget, since the variance pairs adjacent
+strata.
 
 \paragraph{Validation.} Criteria fixed before the run (on data already analysed, so this tests the software, not the
 method): replaying the 89 SWE-bench Verified transitions through the
 kernel alone must reproduce the research gain within 10\%, keep coverage above 0.88, and make fewer decision errors
 than random testing. The
-kernel obtained a median gain of $\times\KernelGain$, coverage \KernelCov, and decision errors of \KernelDec\% versus
+kernel (versions 0.1 and 0.2 alike) obtained a median gain of $\times\KernelGain$, coverage \KernelCov, and decision errors of \KernelDec\% versus
 \KernelDecReset\% for random testing, with no lint finding.
 
 \paragraph{Case study.} On the nine real OpenHands versions in SWE-bench Verified, the kernel tested 180 tasks instead

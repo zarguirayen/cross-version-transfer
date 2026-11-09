@@ -91,3 +91,60 @@ def test_record_rejects_unknown_objects(tmp_path):
         K.record("v1", "unknown-task", True)
     with pytest.raises(ValueError):
         K.record("v1", tasks[0], True, role="bad")
+
+
+# ---------------------------------------------------------------- kernel 0.2 (review fixes)
+from cvt.kernel import as_outcome  # noqa: E402
+
+
+def test_outcome_parsing_is_strict(tmp_path):
+    """'false' is a failure, not a success; ambiguous values are rejected."""
+    assert as_outcome("false") is False and as_outcome(" TRUE ") is True and as_outcome(1) is True
+    for bad in ("no", "", 2, None, 0.5):
+        with pytest.raises(ValueError):
+            as_outcome(bad)
+    K, tasks, y1, y2 = _world(tmp_path)
+    K.record("v2", tasks[0], "false")
+    assert K.results["v2"][tasks[0]] is False
+
+
+def test_plan_is_bound_to_the_task_suite(tmp_path):
+    """Adding tasks after a plan makes estimate refuse the plan (stale) and lint report L6."""
+    K, tasks, y1, y2 = _world(tmp_path)
+    probes = K.plan("v2", m=20)
+    K.record_many("v2", {t: bool(y2[tasks.index(t)]) for t in probes}, role="probe")
+    assert K.estimate("v2")["status"] == "estimated"
+    K.register_tasks(["new-task"])
+    assert K.estimate("v2")["status"] == "stale_plan"
+    assert K.decide("v2")["action"] == "stale_plan"
+    assert any(f["code"] == "L6" for f in K.lint())
+
+
+def test_odd_budget_is_refused(tmp_path):
+    """The paired-strata variance needs an even number of probes."""
+    K, *_ = _world(tmp_path)
+    with pytest.raises(ValueError):
+        K.plan("v2", m=21)
+
+
+def test_confidence_agrees_with_action(tmp_path):
+    """A decision is never 'sure' when the interval lies on the other side of the threshold than the action."""
+    K, tasks, y1, y2 = _world(tmp_path)
+    probes = K.plan("v2", m=20)
+    K.record_many("v2", {t: bool(y2[tasks.index(t)]) for t in probes}, role="probe")
+    d = K.decide("v2")
+    lo, hi = d["p_new_interval"]
+    thr = d["p_current"]
+    if d["confident"]:
+        assert (d["action"] == "promote" and lo > thr) or (d["action"] == "keep" and hi < thr)
+    assert d["estimators_agree"] or not d["confident"]
+
+
+def test_repeated_runs_are_kept_and_conflicts_flagged(tmp_path):
+    """Every run is kept with its provenance; disagreeing runs raise L7 and the latest run is used."""
+    K, tasks, y1, y2 = _world(tmp_path)
+    K.record("v2", tasks[0], True, origin="benchmark", verifier="harness-a")
+    K.record("v2", tasks[0], False, origin="production", verifier="harness-b")
+    runs = K.runs[("v2", tasks[0])]
+    assert [r["verifier"] for r in runs] == ["harness-a", "harness-b"] and K.results["v2"][tasks[0]] is False
+    assert any(f["code"] == "L7" for f in K.lint())
