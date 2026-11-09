@@ -442,6 +442,13 @@ logit scale), the new agents did not (median \GammaOwnEight), and the mismatch t
 \RhoMismatchEight). Correcting for difficulty alone (exploratory, not confirmed) cut the naive error by a factor
 \DiffOnlyRatio{} with coverage \DiffOnlyCov. Deadline bias is real; correcting it across agent generations is open.
 
+\paragraph{Relation to asynchronous agents.} The deadline setting is the evaluation-side instance of a pattern now
+common in agent architectures: an orchestrator launches background workers (asynchronous subagents) and acts on those
+that have reported, without waiting for the others \citep{runkle2026async}. Our evaluation harness is such an
+orchestrator, with one worker per probe. The result suggests a caution for orchestrators in general: when the workers
+that finish first are those with easier subtasks, aggregating early reports overstates progress. We did not evaluate
+agents that use asynchronous subagents internally; no public per-task outcomes exist for them yet.
+
 \subsection{What failed}
 \label{sec:failures}
 Of the \HypTotal{} pre-registered hypotheses, \HypFailed{} were not supported (Appendix~\ref{app:ledger}). (i)~In the pilot,
@@ -530,7 +537,7 @@ decisions, not point accuracy against these methods.
 method evaluates such systems, not how their inner agents interact, and only two multi-agent frameworks (four agents)
 were available. Pattern classes were assigned from the submissions' own descriptions. The number of environment
 steps stands in for completion time; asynchronous here means evaluation results that arrive out of order, not the
-internal architecture of the agents.
+internal architecture of the agents; agents built on asynchronous subagents were not available for evaluation.
 
 \paragraph{Secondary analysis.} Study v7 and the pattern analysis of v8 re-use data already analysed for other questions; it is weaker evidence than a
 confirmation on new data. Residual correlations depend on the one-dimensional model used to remove difficulty.

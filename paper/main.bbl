@@ -1,4 +1,4 @@
-\begin{thebibliography}{26}
+\begin{thebibliography}{27}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -120,6 +120,13 @@ Georg Rasch.
 \newblock \emph{Probabilistic Models for Some Intelligence and Attainment
   Tests}.
 \newblock Danish Institute for Educational Research, 1960.
+
+\bibitem[Runkle and Bengre(2026)]{runkle2026async}
+Sydney Runkle and Thushanth Bengre.
+\newblock Agents are going async.
+\newblock LangChain blog,
+  \url{https://www.langchain.com/blog/agents-are-going-async}, 2026.
+\newblock November 5, 2026.
 
 \bibitem[S{\"a}rndal et~al.(1992)S{\"a}rndal, Swensson, and
   Wretman]{sarndal1992}
