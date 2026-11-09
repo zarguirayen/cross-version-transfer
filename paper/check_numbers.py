@@ -18,6 +18,8 @@ def num(study, pat):
     return float(re.search(pat, S[study], re.S).group(1))
 # (macro, value in the frozen output, tolerance)
 checks = [
+    ("PhiHatErr", 100 * float(re.search(r"^all .*?phi-hat ([0-9.]+)", open(R / "exploratory_phihat" / "summary.txt").read(), re.M).group(1)), 0.06),
+    ("PhiTrueErrSub", 100 * float(re.search(r"^all .*?true phi ([0-9.]+)", open(R / "exploratory_phihat" / "summary.txt").read(), re.M).group(1)), 0.06),
     ("GEight", num("v8", r"N1-v8.*?median x([0-9.]+)"), 0.006),
     ("GEightMin", num("v8", r"N1-v8.*?\(min x([0-9.]+)\)"), 0.006),
     ("GEightMAS", num("v8", r"N2-v8.*?median x([0-9.]+)"), 0.006),

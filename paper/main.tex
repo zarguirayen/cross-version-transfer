@@ -36,17 +36,17 @@ law answers: testing $m$ tasks with the graph is as precise as testing $m/(1-\rh
 the share of the new version's task-level variance the graph explains ($\phisq$ with the predecessor, $\eta^2$ with the
 difficulty seen by earlier agents). We turn it into a method: the graph \emph{chooses} the tasks, a cross-fitted
 estimator \emph{estimates} with calibrated intervals, and the same tasks \emph{decide} keep-or-replace. In eight
-studies, each pre-registered by a git tag, the law predicted the observed gain within \LawErrPooled\% (median) over
-\NConf{} real version transitions on AppWorld, SWE-bench, Multi-SWE-bench, LiveCodeBench and TheAgentCompany; 20
-graph-chosen tasks were worth \EquivProbesFour--\EquivProbesSixStrat{} random ones on three benchmarks, 90\% intervals
-covered the truth \CovGregSix--\CovEight{} of the time, and decisions erred \DecRedSix--\DecRedFour\% less often. On
-\NEightAgents{} agents submitted to AppWorld after its paper, four of them multi-agent systems, the method beat random
-testing in \GEightWins{} of \NEight{} evaluations ($\times\GEight$; $\times\GEightMAS$ for multi-agent systems). The
-graph also has structure: agents sharing a scaffold or an agentic pattern fail on the same tasks, though this adds
-nothing to evaluation efficiency. When results arrive asynchronously and evaluation stops at a deadline, naive
-estimates overshoot by \BiasNaiveEight{} points; a correction learned from older agents did not transfer to newer
-ones. Of \HypTotal{} pre-registered hypotheses, \HypSupported{} were supported; all failures are reported. A small
-kernel implements the graph.
+studies, each pre-registered by a git tag, the law, given the true $\rho^2$, matched the observed gain within
+\LawErrPooled\% (median) over \NConf{} real version transitions from five agent benchmarks; with $\phisq$ estimated from the 20 tested tasks it still matched on average (\PhiHatErr\%,
+exploratory), but a single evaluation's estimate erred by \PhiHatSingle\%. Choosing the tasks gives most of the gain:
+with the cross-fitted estimator, 20 graph-chosen tasks were worth \EquivProbesFive--\EquivProbesSix{} random ones in
+v5--v6 and 90\% intervals covered the truth \CovGregSix--\CovEight{} of the time; decisions taken on the same tasks
+erred \DecRedSix--\DecRedFour\% less often. On \NEightAgents{} agents submitted to AppWorld after its paper, four of them
+multi-agent systems, the method beat random testing in \GEightWins{} of \NEight{} evaluations ($\times\GEight$). Agents
+sharing a scaffold or an agentic pattern fail on the same tasks, though this adds nothing to evaluation efficiency.
+When results arrive asynchronously and evaluation stops at a deadline, naive estimates overshoot by \BiasNaiveEight{}
+points; a correction learned from older agents did not transfer. Of \HypTotal{} pre-registered hypotheses,
+\HypSupported{} were supported; all failures are reported.
 \end{abstract}
 
 \section{Introduction}
@@ -71,7 +71,8 @@ successive versions, and each node carries its task-level results. The question 
 sampling---double sampling \citep{neyman1938,cochran1977} and stratification---give a closed-form prediction of
 the efficiency gain an agent's history provides, $1/(1-\rho^2)$, with two measurable forms of $\rho^2$: the
 predecessor's $\phisq$ and the graph's $\eta^2$. The law turns ``how much history is transferable'' into a single
-measurable quantity, which can be estimated from the tested tasks themselves or anticipated from the type of change
+measurable quantity, which can be anticipated from the type of change or estimated from the tested tasks themselves
+(accurate on average, noisy for a single evaluation; Section~\ref{sec:res-law})
 (Table~\ref{tab:atlas}).
 \item \textbf{A three-move method} (Section~\ref{sec:method}). The graph chooses the tasks (stratification on the
 difficulty seen by earlier agents), which provides most of the gain; a cross-fitted generalised regression estimator
@@ -255,9 +256,9 @@ reported as secondary. Coverage is the fraction of replays whose 90\% interval c
 \section{Results}
 \label{sec:results}
 
-\subsection{The law predicts the gain}\label{sec:res-law}
+\subsection{The law accounts for the gain}\label{sec:res-law}
 Figure~\ref{fig:law} plots predicted against observed gains. The predecessor law (\ref{eq:law}), evaluated at the
-true $\phisq$, predicts the gain of the double-sampling estimator within \LawErrPooled\% (median absolute relative
+true $\phisq$, matches the gain of the double-sampling estimator within \LawErrPooled\% (median absolute relative
 error) over the \NConf{} confirmation transitions; the correlation of log-gains is \LawCorrLog. The error is
 \LawErrTwo\%, \LawErrThree\%, \LawErrFour\%, \LawErrFive\% and \LawErrSix\% in the five confirmations, and
 \LawErrPilot\% in the pilot: six pre-registered tests of the same law, all within the 20\% threshold. The graph law
@@ -272,6 +273,19 @@ where the law predicts a gain of at least $\times1.5$, its median error is \LawB
 oracle constant equal to the median observed gain of these same transitions; the graph law errs by \StratBigErr\% on
 the \StratBigN{} transitions where it predicts at least $\times1.5$. The law therefore tracks how large the gain is, not
 only whether there is one.
+
+\paragraph{With $\phisq$ estimated from the tested tasks (exploratory).} These checks use the true $\phisq$, computed
+on every task, which is unknown when a new version is evaluated. In an exploratory, retrospective analysis whose
+protocol was committed before it was run (\texttt{docs/EXPLORATORY\_PHIHAT.md}), we re-drew 20 random tasks
+\PhiHatR{} times for each of the \PhiHatN{} transitions of v3--v6 and computed $\hat\phi^2$ from those tasks alone.
+Taking the median announced gain per transition, the law erred by \PhiHatErr\% against \PhiTrueErrSub\% with the true
+$\phisq$ on the same transitions (and \PhiNoneErr\% for ``no transfer''); $\hat\phi^2$ is nearly unbiased (median bias
+\PhiHatBias). A single evaluation is another matter: with 20 tasks $\hat\phi^2$ is noisy (median interquartile range
+\PhiHatIqr), so the gain announced by one evaluation erred by \PhiHatSingle\% (median), and \PhiHatDeg\% of draws were
+degenerate (one version all-success or all-failure on the 20 tasks; \PhiHatDegFive\% in v5, where the law erred by
+\PhiHatErrFive\%). The law is thus a reliable guide to the expected value of the history, but forecasting the budget
+from one small evaluation needs more tasks or a prior from earlier transitions of the same kind (Table~\ref{tab:atlas});
+a prospective test remains to be done.
 
 \paragraph{How precise is this test?} Each observed gain is itself estimated from 400 replays; a bootstrap over replays
 puts its relative Monte Carlo error at about \MCErr\% (median over transitions). The residual error of the law is
@@ -294,10 +308,14 @@ $\times\GPredTwo$ (AppWorld), $\times\GPredThree$ (Verified), $\times\GPredFour$
 and $\times\GPredSix$ (v6). With random tasks, using the whole graph raises them in four of the five
 confirmations, to $\times\GGraphTwo$, $\times\GGraphThree$, $\times\GGraphFour$ and $\times\GGraphSix$
 (on SWE-bench Verified, $p=\PvalFiveVsPredThree$, paired Wilcoxon); the exception is v5 ($\times\GGraphFive$),
-where most new versions solve almost nothing (Section~\ref{sec:robust}). Letting the graph also choose the tasks gives
-$\times\GStratFour$ on Lite and $\times\GStratSix$ on v6, where 20 graph-chosen tasks are worth about
-\EquivProbesFour{} and \EquivProbesSixStrat{} random ones; with the cross-fitted estimator, \EquivProbesSix{} on v6
-and \EquivProbesFive{} on v5.
+where most new versions solve almost nothing (Section~\ref{sec:robust}). Letting the graph also choose the tasks gives three gains that must be kept apart. The plain mean of the
+graph-chosen tasks already reaches $\times\GRstratFour$ on Lite, $\times\GRstratFive$ in v5 and $\times\GRstratSix$ in v6
+(Section~\ref{sec:where}). The model-based estimator \texttt{graph\_v3} reaches $\times\GStratFour$ on Lite and
+$\times\GStratSix$ in v6 (20 tasks worth about \EquivProbesFour{} and \EquivProbesSixStrat{} random ones), but it can
+lose badly on versions that solve almost nothing (Section~\ref{sec:robust}). The method's estimator, cross-fitted GREG,
+reaches $\times\GGregFive$ in v5 and $\times\GGregSix$ in v6: 20 graph-chosen tasks are worth \EquivProbesFive{} and
+\EquivProbesSix{} random ones. Study v6 is dominated by LiveCodeBench (\NLcbSix{} transitions, $\times\GGregLcbSix$
+with cross-fitted GREG); its \NTacSix{} TheAgentCompany transitions give $\times\GGregTacSix$.
 
 \begin{figure}[t]
 \centering
@@ -335,7 +353,7 @@ predecessor than with an unrelated earlier agent of the same success rate (media
 predecessor changes the median gain from $\times\GEcoOnlyThree$ to $\times\GGraphThreePrecise$: statistically detectable
 ($p=\PvalHSevenThree$) and practically negligible. The value lies in the graph, not in the lineage alone.
 
-\subsection{Where the gain comes from (exploratory)}
+\subsection{Where the gain comes from (exploratory)}\label{sec:where}
 The following comparisons were not pre-registered. Graph-chosen tasks are the analogue of the difficulty-stratified
 subsets deployed by \citet{she2026production}; the plain mean of these tasks is therefore the natural baseline for our
 estimators. That plain mean already gains $\times\GRstratFour$, $\times\GRstratFive$ and $\times\GRstratSix$ in v4,
@@ -535,7 +553,9 @@ evaluation per split; the per-agent check of Section~\ref{sec:v8} gives the same
 recorded by git tags and hashes whose timestamps are self-reported, not certified by a third party; future studies
 should be registered on a public registry before data access. Each study's hypotheses were tested at level 0.05 without correction across the eight studies; the ledger
 (Appendix~\ref{app:ledger}) reports all \HypTotal{} tests so that readers can apply their own correction. The law is
-tested at the true $\rho^2$; with $\rho^2$ estimated from the probes, it was tested only in the pilot.
+tested at the true $\rho^2$; with $\phisq$ estimated from the probes it was tested in the pilot and, exploratorily and
+retrospectively, on v3--v6 (Section~\ref{sec:res-law}); a prospective test, and an estimate of $\eta^2_{\mathcal G}$
+from the probes, remain to be done.
 
 \paragraph{Baselines.} We compare against random testing, a predecessor-only estimator, an IRT-like logistic model on
 ecosystem difficulty (v3), and the plain mean of graph-chosen tasks (exploratory). We did not re-implement
@@ -556,7 +576,7 @@ the software, not new evidence for the method.
 
 \section{Conclusion}
 An agent's history is worth a computable number of tasks. Across \NConf{} real version transitions in five
-pre-registered confirmations, the law $1/(1-\rho^2)$, given $\rho^2$, predicted that number within a few percent, and a method in which
+pre-registered confirmations, the law $1/(1-\rho^2)$, given $\rho^2$, matched that number within a few percent, and a method in which
 the graph of earlier agents chooses the tasks, estimates with calibrated intervals and decides, divided the number of
 tasks needed for a given precision by $\GGregFive$ to $\GGregSix$ (median) in v5 and v6, and by $\GEight$ on agents released after them (v8). The graph also has structure of its own---scaffolds, more than models, shape which tasks
 agents fail---but for evaluation its value lies in the difficulty scale it has learned. The method held across

@@ -1,0 +1,6 @@
+all  n=179 | per-transition error: phi-hat 0.053 (non-degenerate 0.056) vs true phi 0.044 vs no-transfer 0.314 | single-evaluation error 0.202 | phi2 bias +0.006 | phi2-hat IQR 0.273 | degenerate draws 0.143
+v3   n= 89 | per-transition error: phi-hat 0.047 (non-degenerate 0.049) vs true phi 0.038 vs no-transfer 0.348 | single-evaluation error 0.216 | phi2 bias +0.011 | phi2-hat IQR 0.277 | degenerate draws 0.048
+v4   n= 28 | per-transition error: phi-hat 0.044 (non-degenerate 0.045) vs true phi 0.038 vs no-transfer 0.320 | single-evaluation error 0.189 | phi2 bias +0.010 | phi2-hat IQR 0.272 | degenerate draws 0.068
+v5   n= 33 | per-transition error: phi-hat 0.100 (non-degenerate 0.087) vs true phi 0.055 vs no-transfer 0.179 | single-evaluation error 0.155 | phi2 bias -0.021 | phi2-hat IQR 0.003 | degenerate draws 0.552
+v6   n= 29 | per-transition error: phi-hat 0.061 (non-degenerate 0.064) vs true phi 0.061 vs no-transfer 0.357 | single-evaluation error 0.247 | phi2 bias +0.007 | phi2-hat IQR 0.285 | degenerate draws 0.042
+observed gain >= 1.5 (n=80): per-transition error phi-hat 0.057 vs true phi 0.046

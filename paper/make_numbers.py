@@ -219,6 +219,29 @@ ax.set_ylabel("mean residual correlation", fontsize=8.5); ax.legend(fontsize=6.5
 ax.set_ylim(-0.13, 0.19)
 fig.tight_layout(); fig.savefig(OUT / "fig_structure.pdf"); plt.close(fig)
 # ledger of pre-registered hypotheses
+# ---------------- exploratory: the predecessor law with phi² estimated from the 20 tested tasks
+ph = rd("exploratory_phihat/transitions.csv"); _go = f(ph, "gain_obs")
+put("PhiHatN", len(ph), "{}"); put("PhiHatR", 400, "{}")
+put("PhiHatErr", 100 * np.median(np.abs(f(ph, "gain_law_hat_median") / _go - 1)), "{:.1f}")
+put("PhiTrueErrSub", 100 * np.median(np.abs(f(ph, "gain_law_true") / _go - 1)), "{:.1f}")
+put("PhiNoneErr", 100 * np.median(np.abs(1 / _go - 1)), "{:.0f}")
+put("PhiHatSingle", 100 * np.median(f(ph, "err_single_median")), "{:.0f}")
+put("PhiHatIqr", np.median(f(ph, "phi2_hat_iqr")), "{:.2f}")
+put("PhiHatBias", np.median(f(ph, "phi2_hat_median") - f(ph, "phi2")), "{:+.3f}")
+put("PhiHatDeg", 100 * np.mean(f(ph, "share_degenerate")), "{:.0f}")
+_ph5 = [r for r in ph if r["study"] == "v5"]
+put("PhiHatDegFive", 100 * np.mean(f(_ph5, "share_degenerate")), "{:.0f}")
+put("PhiHatErrFive", 100 * np.median(np.abs(f(_ph5, "gain_law_hat_median") / f(_ph5, "gain_obs") - 1)), "{:.1f}")
+# v6 by benchmark (LiveCodeBench: 713 tasks; TheAgentCompany: 175)
+_v6m = [r for r in rd("v6/replays.csv") if r["m"] == "20"]
+for _n, _nm in (("713", "Lcb"), ("175", "Tac")):
+    _S = [r for r in _v6m if r["n"] == _n]
+    put(f"N{_nm}Six", len(_S), "{}")
+    put(f"GGreg{_nm}Six", np.median(f(_S, "gain_greg_cf_s")), "{:.2f}")
+    put(f"GStrat{_nm}Six", np.median(f(_S, "gain_v3_s")), "{:.2f}")
+    put(f"GRstrat{_nm}Six", np.median(f(_S, "gain_reset_s")), "{:.2f}")
+put("EquivRstratFour", 20 * np.median(f(v4, "gain_reset_s")), "{:.0f}")
+put("EquivRstratSix", 20 * np.median(f(v6, "gain_reset_s")), "{:.0f}")
 _v8sum = (RES / "v8" / "summary.txt").read_text()
 _v8v = re.findall(r"^[NAP]\d-v8 .*: (True|False)$", _v8sum, re.M)
 assert len(_v8v) == 9, _v8v

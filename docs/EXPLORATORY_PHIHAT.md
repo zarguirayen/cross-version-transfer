@@ -32,3 +32,20 @@ variance intra-strate n'est pas observable.
   4. instabilité : écart interquartile de φ̂² par transition, médiane sur les transitions ;
   5. part des tirages dégénérés.
 - Graine 20261109. Script : `experiments/exploratory_phihat.py`. Sorties : `results/exploratory_phihat/`.
+
+## Résultats (exécution unique, 9 novembre 2026)
+
+Une première exécution s'est arrêtée sur le contrôle d'appariement avant tout calcul de résultat : `replays.csv` de v4
+contient aussi les lignes du sous-ensemble secondaire « hors Verified ». Le script a été restreint à l'ensemble
+principal (`tasks == "toutes"`), puis exécuté une fois. Sorties : `results/exploratory_phihat/summary.txt`.
+
+| | n | erreur par transition, φ̂² | vrai φ² | « aucun transfert » | erreur d'une évaluation | biais de φ̂² | IQR de φ̂² | tirages dégénérés |
+|---|---|---|---|---|---|---|---|---|
+| tout | 179 | 5,3 % | 4,4 % | 31 % | 20 % | +0,006 | 0,27 | 14 % |
+| v3 | 89 | 4,7 % | 3,8 % | 35 % | 22 % | +0,011 | 0,28 | 5 % |
+| v4 | 28 | 4,4 % | 3,8 % | 32 % | 19 % | +0,010 | 0,27 | 7 % |
+| v5 | 33 | 10,0 % | 5,5 % | 18 % | 16 % | −0,021 | 0,003 | 55 % |
+| v6 | 29 | 6,1 % | 6,1 % | 36 % | 25 % | +0,007 | 0,29 | 4 % |
+
+Lecture : en moyenne sur les tirages, la loi avec φ̂² retrouve le gain presque aussi bien qu'avec le vrai φ² ; une seule
+évaluation de 20 tâches donne un φ̂² trop instable pour prévoir le budget à ±20 % près.
