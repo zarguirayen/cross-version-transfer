@@ -1,7 +1,7 @@
 """Verify the pre-registration chain of the repository.
 
 For every study, the file ``docs/PREREG*_SHA256.txt`` lists the SHA-256 hashes of the protocol and of the analysis
-code as they were when the study was frozen by its git tag (``prereg-v1`` ... ``prereg-v8``). This script checks
+code as they were when the study was frozen by its git tag (``prereg-v1`` ... ``prereg-v9``). This script checks
 two things:
 
 1. **Each freeze is intact**: every file listed in a hash file, read *at its tag*, has the recorded hash.
@@ -17,7 +17,7 @@ Usage
 -----
     python tools/verify_preregistration.py          # exit code 0 if every check passes
 
-Requires ``git`` and the tags ``prereg-v1`` to ``prereg-v8`` (``git fetch --tags`` after cloning).
+Requires ``git`` and the tags ``prereg-v1`` to ``prereg-v9`` (``git fetch --tags`` after cloning).
 """
 from __future__ import annotations
 
@@ -39,6 +39,7 @@ FREEZES = [
     ("prereg-v6", "docs/PREREG_V6_SHA256.txt"),
     ("prereg-v7", "docs/PREREG_V7_SHA256.txt"),
     ("prereg-v8", "docs/PREREG_V8_SHA256.txt"),
+    ("prereg-v9", "docs/PREREG_V9_SHA256.txt"),
 ]
 
 

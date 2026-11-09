@@ -1,0 +1,7 @@
+# v9 prospective freeze (prereg-v9), 2026-11-09
+15bc13d474c28fd0abaead058ef998bfa76e01768ac020964bff008b59f01860  docs/PREREGISTRATION_V9.md
+ae6c8caeb066bc1f1e520440b977ac23df4ef5f000d04e834791fa0d2c6326e7  experiments/v9_prospective_deadline.py
+a6ae1880737af4b71c18a189d0da031b4398e03156bf2662dcf42328854a7f26  src/cvt/asynchronous.py
+e830576dd736f71f82130cda63747463eaaaa50f2ffc073662998b04d4387097  src/cvt/graph.py
+758a9ff6a1b498e6bf145afa9a74ca0411bd4680532626e320dd739898f95d2c  src/cvt/estimators.py
+99b5dd4b7f3adc0163c38cd0038c6109329c56827f681c3ac8a32fa2c4e02335  experiments/dev_v9_deadline.py
