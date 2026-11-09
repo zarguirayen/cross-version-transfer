@@ -22,7 +22,9 @@ secondaire). 9 hypothèses : 6 soutenues, 3 non soutenues.
 Rapportés sans critère : gains par classe (multi-agents ×1,18 ; RL ×1,22 ; agents simples ×1,41) ; décisions
 « le nouvel agent bat-il le meilleur agent antérieur ? » sur 20 évaluations à écart ≥ 5 points : erreur 4,8 % pour la
 méthode, 3,0 % pour le tirage uniforme, 2,1 % pour la moyenne stratifiée ; k = 15 : biais naïf +5,0 points, graphe
-−2,7 points, couverture 0,866. Deux pertes : LARA (challenge) ×0,91, SynthAPI (challenge) ×0,94.
+−2,7 points, couverture 0,866. Deux pertes : LARA (challenge) ×0,91, SynthAPI (challenge) ×0,94. Contrôle ajouté après l'exécution : chaque agent
+compté une fois (moyenne géométrique de ses deux splits), les 13 agents gagnent (pire ×1,04, p = 1,2e−4), dont les
+4 multi-agents.
 
 ## Diagnostic exploratoire (après le gel, `experiments/v8_exploratory_async.py`)
 

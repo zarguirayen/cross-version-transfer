@@ -30,8 +30,14 @@ observed gain within 3–6 % (median) in every source. On the last two confirmat
 never lost to plain random testing (worst ×1.08 and ×1.45) with 94–95 % coverage of 90 % intervals. Version
 decisions made with graph-chosen tasks are wrong about half as often.
 
+**Agentic patterns, multi-agent systems, asynchronous evaluation (v8).** On 13 agents submitted to AppWorld after
+its paper (four of them multi-agent systems, each treated as one node), the method beat random testing for every
+agent (×1.31 median) with calibrated intervals. Agents of the same pattern fail on the same tasks. When results
+arrive out of order and evaluation stops at a deadline, the estimate is too high by about 6 points; a correction
+learned from older agents did not transfer to newer ones, and a simpler one is pre-registered prospectively (v9).
+
 **What did not work, kept in the record.** The predecessor alone adds almost nothing once the whole graph is
-used. A purely model-based estimator can lose badly on versions that solve < 10 % of tasks. An unbiased estimator
+used. The deadline correction of v8 did not transfer across agent generations. A purely model-based estimator can lose badly on versions that solve < 10 % of tasks. An unbiased estimator
 is not automatically a good decision rule when two versions both solve almost nothing.
 
 **The kernel.** `src/cvt/kernel.py` — an append-only event log, a registry of slots and versions, and five

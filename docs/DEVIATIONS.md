@@ -66,5 +66,10 @@ Chaque entrée : date, ce qui change, pourquoi, effet attendu sur les conclusion
   correction v8 (rapport RMSE 1,30 contre 0,88 ; couverture 0,856 contre 0,767, min 0,26) ; un γ appris sur les 5
   agents les plus récents fait moins bien (1,04 ; 0,798). À confirmer seulement sur des agents publiés après le
   2026-11-04.
+- **9 novembre 2026, relecture après v8** : contrôle ajouté après l'exécution, non pré-enregistré : chaque agent compté
+  une seule fois (moyenne géométrique des gains de ses deux splits) ; les 13 agents gagnent (pire ×1,04, p = 1,2e−4),
+  dont les 4 agents multi-agents (avec 4 unités, aucun test ne peut atteindre 5 %). Le rapport RMSE de la correction
+  « difficulté seule » vaut 1,23 dans l'analyse exploratoire v8 et 1,30 dans `dev_v9_deadline.py` : mêmes agents, autres
+  tirages aléatoires (graines différentes).
 - **Constat** : écart de 0,6 point entre notre taux de régression Mistral MATH (55,8 %) et celui publié par
   Sheng & Lu (55,2 %). Non expliqué ; sans effet sur les conclusions.

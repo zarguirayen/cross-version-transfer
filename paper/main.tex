@@ -40,7 +40,7 @@ studies, each pre-registered by a git tag, the law predicted the observed gain w
 \NConf{} real version transitions on AppWorld, SWE-bench, Multi-SWE-bench, LiveCodeBench and TheAgentCompany; 20
 graph-chosen tasks were worth \EquivProbesFour--\EquivProbesSixStrat{} random ones on three benchmarks, 90\% intervals
 covered the truth \CovGregSix--\CovEight{} of the time, and decisions erred \DecRedSix--\DecRedFour\% less often. On
-\NEightAgents{} agents submitted to AppWorld after its paper, two of them multi-agent systems, the method beat random
+\NEightAgents{} agents submitted to AppWorld after its paper, four of them multi-agent systems, the method beat random
 testing in \GEightWins{} of \NEight{} evaluations ($\times\GEight$; $\times\GEightMAS$ for multi-agent systems). The
 graph also has structure: agents sharing a scaffold or an agentic pattern fail on the same tasks, though this adds
 nothing to evaluation efficiency. When results arrive asynchronously and evaluation stops at a deadline, naive
@@ -416,7 +416,10 @@ evaluated as a new version whose graph holds every agent released strictly befor
 \paragraph{Patterns and multi-agent systems.} The method beat random testing in \GEightWins{} of \NEight{} evaluations
 (median $\times\GEight$, worst $\times\GEightMin$; $p=\PEightNOne$), including the multi-agent systems
 ($\times\GEightMAS$ over \NEightMAS{} evaluations, $p=\PEightNTwo$), RL-trained agents ($\times\GEightRL$) and prompted
-single agents ($\times\GEightSingle$). Intervals covered the truth \CovEight{} of the time (\CovEightMAS{} for
+single agents ($\times\GEightSingle$). The 26 evaluations are 13 agents on two splits; counting each agent once (geometric
+mean of its two gains, a check added after the run), every agent gained (worst $\times\GEightAgentMin$,
+$p=\PEightAgent$), including all four multi-agent systems, although four units cannot reach significance at 5\%.
+Intervals covered the truth \CovEight{} of the time (\CovEightMAS{} for
 multi-agent systems), and the stratified law predicted the gain within \LawErrEight\% (median). Gains are smaller than on
 SWE-bench because AppWorld's graph explains less of a new agent's variance (median $\eta^2=\EtaEight$), as the law
 says they should be. On the \NDecEight{} evaluations whose rate differs by at least 5 points from the best earlier agent, the question
@@ -425,21 +428,23 @@ by random testing (reported without criterion), another sign that the best decid
 
 \paragraph{Pattern structure.} On Multi-SWE-bench, after removing ability and difficulty, two agents of the same
 pattern (two agent loops) fail together more than an agent loop and a fixed Agentless-style workflow, with different
-scaffolds and different models in both cases (median difference \PatDiffEight, positive in \PatPosEight{} of 7
+scaffolds and different models in both cases (median difference $\PatDiffEight$, positive in \PatPosEight{} of 7
 languages, $p=\PEightPOne$). For the same model, keeping the pattern preserved more transferable information than
-changing it ($\phisq$ difference \PhiDiffEight, \PhiPosEight{} of 7 languages), but not significantly
+changing it ($\phisq$ difference $\PhiDiffEight$, \PhiPosEight{} of 7 languages), but not significantly
 ($p=\PEightPTwo$).
 
 \paragraph{Asynchronous evaluation.} Probes usually run in parallel and return in an order set by how many steps the
 agent takes. Replaying this with each agent's own step counts, stopping when 10 of the 20 probes have returned
-overestimates the success rate by \BiasNaiveEight{} points (median, $p=\PEightAOne$): slow tasks are hard ones. In
+overestimates the success rate by \BiasNaiveEight{} points (median, $p=\PEightAOne$): slow tasks are mostly hard ones.
+This is nonresponse bias with outcomes missing not at random \citep{little2019}: the probes still running are not a
+random subset of the probes. In
 development on the paper's 14 agents, a correction learned from the graph---how much more often earlier agents fail
-where they are slow---removed this bias (\DevBiasNaiveEight{} to \DevBiasGraphEight{} points, coverage
-\DevCovEight). It did not transfer: on the new agents it over-corrected (median bias \BiasGraphEight{} points), erred
+where they are slow---removed this bias ($\DevBiasNaiveEight$ to $\DevBiasGraphEight$ points, coverage
+\DevCovEight). It did not transfer: on the new agents it over-corrected (median bias $\BiasGraphEight$ points), erred
 more than the naive estimate (RMSE ratio \RmseRatioEight) and covered only \CovDeadlineEight. An exploratory diagnosis
-explains why: earlier agents failed more often on tasks where they were slow (slowness effect \GammaGraphEight{} on the
-logit scale), the new agents did not (median \GammaOwnEight), and the mismatch tracks the bias (Spearman
-\RhoMismatchEight). Correcting for difficulty alone (exploratory, not confirmed) cut the naive error by a factor
+explains why: earlier agents failed more often on tasks where they were slow (slowness effect $\GammaGraphEight$ on the
+logit scale), the new agents did not (median $\GammaOwnEight$), and the mismatch tracks the bias (Spearman
+$\RhoMismatchEight$). Correcting for difficulty alone (exploratory, not confirmed) cut the naive error by a factor
 \DiffOnlyRatio{} with coverage \DiffOnlyCov. Deadline bias is real; correcting it across agent generations is open. To test the simpler correction without
 choosing it on data already seen, we froze it in a prospective pre-registration (\texttt{prereg-v9}) before any
 eligible agent existed: it will be run once on the agents released on AppWorld after November 4, 2026, as soon as at
@@ -525,7 +530,8 @@ AI assistant (Acknowledgements). LiveCodeBench evaluates models rather than agen
 contributes only two transitions.
 
 \paragraph{Statistics.} Paired Wilcoxon tests treat transitions as independent units, although transitions of a study
-share agents and ecosystems; their $p$-values should be read as descriptive of consistency rather than exact. The freezes are
+share agents and ecosystems; their $p$-values should be read as descriptive of consistency rather than exact. In v8 each agent contributes one
+evaluation per split; the per-agent check of Section~\ref{sec:v8} gives the same conclusion. The freezes are
 recorded by git tags and hashes whose timestamps are self-reported, not certified by a third party; future studies
 should be registered on a public registry before data access. Each study's hypotheses were tested at level 0.05 without correction across the eight studies; the ledger
 (Appendix~\ref{app:ledger}) reports all \HypTotal{} tests so that readers can apply their own correction. The law is
@@ -542,7 +548,7 @@ were available. Pattern classes were assigned from the submissions' own descript
 steps stands in for completion time; asynchronous here means evaluation results that arrive out of order, not the
 internal architecture of the agents; agents built on asynchronous subagents were not available for evaluation.
 
-\paragraph{Secondary analysis.} Study v7 and the pattern analysis of v8 re-use data already analysed for other questions; it is weaker evidence than a
+\paragraph{Secondary analysis.} Study v7 and the pattern analysis of v8 re-use data already analysed for other questions; they are weaker evidence than a
 confirmation on new data. Residual correlations depend on the one-dimensional model used to remove difficulty.
 
 \paragraph{Kernel.} The kernel was validated on SWE-bench Verified, which had already been analysed; this is a test of
@@ -552,7 +558,7 @@ the software, not new evidence for the method.
 An agent's history is worth a computable number of tasks. Across \NConf{} real version transitions in five
 pre-registered confirmations, the law $1/(1-\rho^2)$, given $\rho^2$, predicted that number within a few percent, and a method in which
 the graph of earlier agents chooses the tasks, estimates with calibrated intervals and decides, divided the number of
-tasks needed for a given precision by $\GGregFive$ to $\GGregSix$ (median) in the last two confirmations. The graph also has structure of its own---scaffolds, more than models, shape which tasks
+tasks needed for a given precision by $\GGregFive$ to $\GGregSix$ (median) in v5 and v6, and by $\GEight$ on agents released after them (v8). The graph also has structure of its own---scaffolds, more than models, shape which tasks
 agents fail---but for evaluation its value lies in the difficulty scale it has learned. The method held across
 agentic patterns, including multi-agent systems; evaluations stopped at a deadline remain biased, and correcting
 them across agent generations is the next problem, pre-registered prospectively for agents not yet released. Evaluation does not have to start

@@ -9,9 +9,10 @@ Usage
     python paper/make_numbers.py      # writes numbers.tex, fig_law.pdf, fig_gains.pdf, fig_structure.pdf
 """
 import csv
-import re, re
+import re
 from pathlib import Path
 import numpy as np
+from scipy import stats
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -234,6 +235,12 @@ put("GEightWins", int((f(v8, "gain_greg_cf_s") > 1).sum()), "{}")
 put("GEightMAS", np.median(f(v8m, "gain_greg_cf_s")), "{:.2f}"); put("GEightMASMin", f(v8m, "gain_greg_cf_s").min(), "{:.2f}")
 for _cls, _nm in (("RL-trained", "RL"), ("single-agent", "Single")):
     put(f"GEight{_nm}", np.median(f([r for r in v8 if r["pattern"] == _cls], "gain_greg_cf_s")), "{:.2f}")
+_ag8 = {}
+for _r in v8:
+    _ag8.setdefault(_r["agent"], []).append(float(_r["gain_greg_cf_s"]))
+_g8a = np.array([np.exp(np.mean(np.log(v))) for v in _ag8.values()])
+put("GEightAgentMin", _g8a.min(), "{:.2f}")
+put("PEightAgent", texp(float(stats.wilcoxon(np.log(_g8a), alternative="greater").pvalue)), "{}")
 put("CovEight", f(v8, "cov_greg_cf_s").mean(), "{:.3f}"); put("CovEightMAS", f(v8m, "cov_greg_cf_s").mean(), "{:.3f}")
 put("CovEightMin", f(v8, "cov_greg_cf_s").min(), "{:.3f}")
 _ok8 = ~np.isnan(f(v8, "gain_law_strat"))
