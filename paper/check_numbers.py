@@ -12,12 +12,23 @@ import re
 from pathlib import Path
 R = Path(__file__).resolve().parents[1] / "results"
 M = dict(re.findall(r"\\newcommand\{\\(\w+)\}\{([^}]*)\}", open(Path(__file__).parent / "numbers.tex").read()))
-S = {k: open(R / f"{k}/summary.txt").read() for k in ("g2", "v2", "v3", "v4", "v5", "v6", "v7")}
+S = {k: open(R / f"{k}/summary.txt").read() for k in ("g2", "v2", "v3", "v4", "v5", "v6", "v7", "v8")}
 def num(study, pat):
     """First number captured by regex ``pat`` in the summary of ``study``."""
     return float(re.search(pat, S[study], re.S).group(1))
 # (macro, value in the frozen output, tolerance)
 checks = [
+    ("GEight", num("v8", r"N1-v8.*?median x([0-9.]+)"), 0.006),
+    ("GEightMin", num("v8", r"N1-v8.*?\(min x([0-9.]+)\)"), 0.006),
+    ("GEightMAS", num("v8", r"N2-v8.*?median x([0-9.]+)"), 0.006),
+    ("CovEight", num("v8", r"N3-v8.*?mean ([0-9.]+)"), 0.0006),
+    ("CovEightMAS", num("v8", r"N3-v8.*?multi-agent ([0-9.]+)"), 0.0006),
+    ("LawErrEight", 100 * num("v8", r"N4-v8.*?median error ([0-9.]+)"), 0.06),
+    ("BiasNaiveEight", 100 * num("v8", r"A1-v8.*?bias median \+([0-9.]+)"), 0.06),
+    ("RmseRatioEight", num("v8", r"A2-v8.*?median ([0-9.]+) ;"), 0.006),
+    ("CovDeadlineEight", num("v8", r"A3-v8.*?mean ([0-9.]+)"), 0.0006),
+    ("PatPosEight", num("v8", r"P1-v8.*?positive in (\d)/7"), 0.1),
+    ("PhiPosEight", num("v8", r"P2-v8.*?positive in (\d)/7"), 0.1),
     ("LawErrPilot", 100 * num("g2", r"H1 m=20 — erreur relative médiane loi\(phi² vrai\) ([0-9.]+)"), 0.06),
     ("LawErrTwo", 100 * num("v2", r"H1-v2.*?loi ([0-9.]+)"), 0.06),
     ("LawErrThree", 100 * num("v3", r"H1-v3.*?loi ([0-9.]+)"), 0.06),

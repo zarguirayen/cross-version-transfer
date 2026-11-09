@@ -13,6 +13,11 @@ seen by earlier agents). The method: the graph **chooses** the tasks, a cross-fi
 **estimates** the new version's success rate with calibrated intervals, and the same tasks **decide**
 keep-or-replace. See `IDEA.md` for a one-page summary and `paper/main.pdf` for the paper.
 
+Study v8 extends the method to **agentic patterns and multi-agent systems** (13 agents submitted to AppWorld after its
+paper, including two multi-agent frameworks treated as single nodes) and to **asynchronous evaluation** (results that
+arrive out of order and an evaluation stopped at a deadline). The graph here records evaluation evidence; it is not an
+orchestration graph of agents calling one another.
+
 ## Repository layout
 
 | Path | Content |
@@ -64,6 +69,7 @@ lists every source, its exact commit and where the scripts expect it.
     python -m pytest -q tests
     python experiments/v6_unified_preregistered.py 400          # one study (about 40 min on 2 cores)
     python experiments/kernel_replay_verified.py 100            # kernel validation
+    python experiments/v8_patterns_async_preregistered.py 200   # v8 (needs the unpacked AppWorld bundles, see DATA.md)
     cd paper && python make_numbers.py && python check_numbers.py && latexmk -pdf main.tex
 
 ## Licence and citation

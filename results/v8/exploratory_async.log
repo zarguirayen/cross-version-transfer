@@ -1,0 +1,31 @@
+test_normal: corr(steps, success), paper agents median -0.31
+test_challenge: corr(steps, success), paper agents median -0.29
+new agents: corr(steps, success) median +nan; gamma graph median -0.67 vs own +0.02; Spearman(mismatch, graph bias) = -0.83 (p = 1.7e-07)
+  challenge rooagi_agentbuilder_memtune_rl_gpt RL-trained   p=0.15 g_graph=-0.64 g_own=-1.32 bias naive=+0.126 graph=+0.030
+  challenge lara                               multi-agent  p=0.38 g_graph=-0.56 g_own=-0.44 bias naive=+0.095 graph=-0.025
+  normal    lara                               multi-agent  p=0.62 g_graph=-0.69 g_own=-0.54 bias naive=+0.195 graph=+0.002
+  normal    rooagi_agentbuilder_memtune_rl_gpt RL-trained   p=0.76 g_graph=-0.77 g_own=-0.55 bias naive=+0.166 graph=-0.047
+  normal    kecaipan_capybara_gpt56luna_202608 single-agent p=0.85 g_graph=-0.71 g_own=-0.27 bias naive=+0.090 graph=-0.080
+  normal    react-gpt4o-2_setbsr_upfront_demos single-agent p=0.68 g_graph=-0.90 g_own=-0.36 bias naive=+0.175 graph=-0.052
+  challenge ibm-hcl-gp-claude-sonnet-4-6       single-agent p=0.98 g_graph=-0.58 g_own=+0.00 bias naive=-0.000 graph=-0.091
+  challenge alibaba_cloud_apsaralab_0118_qwen3 RL-trained   p=0.68 g_graph=-0.69 g_own=-0.08 bias naive=+0.150 graph=-0.072
+  challenge atlasharness                       single-agent p=0.89 g_graph=-0.46 g_own=+0.17 bias naive=+0.042 graph=-0.063
+  normal    ibm_cuga_glm53flash                multi-agent  p=0.93 g_graph=-0.61 g_own=+0.04 bias naive=+0.050 graph=-0.049
+  normal    ibm-hcl-gp-claude-sonnet-4-6       single-agent p=0.98 g_graph=-0.67 g_own=+0.00 bias naive=-0.002 graph=-0.077
+  normal    loop                               RL-trained   p=0.73 g_graph=-0.95 g_own=-0.22 bias naive=+0.162 graph=-0.088
+  normal    atlasharness                       single-agent p=0.94 g_graph=-0.59 g_own=+0.22 bias naive=+0.047 graph=-0.056
+  challenge loop                               RL-trained   p=0.47 g_graph=-0.96 g_own=-0.11 bias naive=+0.118 graph=-0.079
+  challenge kecaipan_capybara_gpt56luna_202608 single-agent p=0.73 g_graph=-0.61 g_own=+0.26 bias naive=+0.060 graph=-0.120
+  challenge cuga                               multi-agent  p=0.58 g_graph=-0.87 g_own=+0.00 bias naive=-0.042 graph=-0.141
+  normal    cuga                               multi-agent  p=0.73 g_graph=-0.92 g_own=+0.00 bias naive=+0.002 graph=-0.109
+  challenge synthapi_27b                       RL-trained   p=0.84 g_graph=-0.44 g_own=+0.49 bias naive=+0.048 graph=-0.097
+  challenge button_agent                       single-agent p=0.72 g_graph=-0.65 g_own=+0.38 bias naive=+0.098 graph=-0.121
+  challenge ibm_cuga_glm53flash                multi-agent  p=0.93 g_graph=-0.48 g_own=+0.67 bias naive=+0.043 graph=-0.107
+  challenge react-gpt4o-2_setbsr_upfront_demos single-agent p=0.39 g_graph=-0.81 g_own=+0.38 bias naive=+0.067 graph=-0.089
+  normal    lara_opus                          multi-agent  p=0.89 g_graph=-0.66 g_own=+0.58 bias naive=+0.084 graph=-0.080
+  normal    alibaba_cloud_apsaralab_0118_qwen3 RL-trained   p=0.87 g_graph=-0.84 g_own=+0.46 bias naive=+0.094 graph=-0.114
+  challenge lara_opus                          multi-agent  p=0.86 g_graph=-0.54 g_own=+0.81 bias naive=+0.022 graph=-0.118
+  normal    synthapi_27b                       RL-trained   p=0.89 g_graph=-0.58 g_own=+0.84 bias naive=+0.038 graph=-0.125
+  normal    button_agent                       single-agent p=0.91 g_graph=-0.76 g_own=+2.25 bias naive=-0.043 graph=-0.253
+  normal    button_agent                       single-agent p=0.91 g_graph=-0.76 g_own=+2.25 bias naive=-0.043 graph=-0.253
+difficulty-only imputation (k=10): bias mean -0.032, median |bias| 0.038; RMSE ratio naive/difficulty-only median 1.23; coverage mean 0.860 (min 0.400)

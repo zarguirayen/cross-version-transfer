@@ -1,0 +1,13 @@
+N1-v8 — new agents (n=26): GREG-cf gain median x1.309 (min x0.914); Wilcoxon log-gain > 0 p = 3.73e-07 ; supported (median > 1 and p < 0.05): True
+N2-v8 — multi-agent systems (n=8): gain median x1.183 (min x0.914); Wilcoxon p = 0.00781 ; supported (median > 1 and p < 0.05): True
+N3-v8 — calibration: GREG-cf 90% coverage mean 0.959 (min 0.915); multi-agent 0.949 ; supported (both >= 0.85): True
+N4-v8 — stratified law: median error 0.081 (n=26) ; supported (<= 0.20): True
+A1-v8 — deadline bias exists (k=10): naive signed bias median +0.063 (mean +0.072); Wilcoxon > 0 p = 3.77e-06 ; supported (median > 0 and p < 0.05): True
+A2-v8 — graph corrects it: |bias| naive 0.063 vs graph 0.084 (medians); Wilcoxon p = 0.742 ; RMSE ratio naive/graph median 0.86 ; supported (p < 0.05 and ratio > 1): False
+A3-v8 — calibration at the deadline: coverage mean 0.770 (min 0.270) ; supported (>= 0.85): False
+P1-v8 — same pattern fails together (residuals, different scaffold and model): difference median +0.044, positive in 6/7 languages ; Wilcoxon p = 0.0234 ; supported (p < 0.05): True
+P2-v8 — same model, pattern kept vs changed (raw phi²): difference median +0.037, positive in 5/7 ; Wilcoxon p = 0.109 ; supported (p < 0.05): False
+Reported without criterion: gains and coverage by pattern class, k = 15, decisions against the best earlier agent, step-success correlations, pattern-class descriptives.
+  multi-agent  n= 8 gain median x1.183 cov 0.949 naive bias +0.056 graph bias -0.078 cov_deadline 0.807
+  RL-trained   n= 8 gain median x1.215 cov 0.961 naive bias +0.113 graph bias -0.074 cov_deadline 0.816
+  single-agent n=10 gain median x1.406 cov 0.964 naive bias +0.053 graph bias -0.100 cov_deadline 0.704

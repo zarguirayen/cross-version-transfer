@@ -29,35 +29,24 @@ Institut Polytechnique de Paris\\
 \maketitle
 
 \begin{abstract}
-Every new version of an AI agent---a new model, prompt, or scaffold---is evaluated as if nothing had been
-learned before, although the outcomes of every earlier agent on the same tasks are already known. We organise
-this history as a \emph{graph of agents}: nodes are agent versions, lineage edges link a version to its
-predecessor, and every node carries its outcome on each task of a shared suite. We ask how many tasks that
-history is worth, and answer with a closed-form law: testing $m$ tasks of a new version with the help of the
-graph is as precise as testing $m/(1-\rho^2)$ tasks at random, where $\rho^2$ is the share of the new version's
-task-level variance already explained by the graph---$\phisq$ with the predecessor (double sampling), $\eta^2$
-with the task difficulty seen by all earlier agents (stratified sampling). We turn the law into a three-move
-method: the graph \emph{chooses} the tasks, a cross-fitted model-assisted estimator \emph{estimates} the new
-version's success rate with calibrated intervals, and the same tasks \emph{decide} whether to keep or replace the
-current version. Every confirmatory hypothesis was pre-registered and frozen by a git tag before the corresponding statistics
-were computed. After a
-pilot on model versions, five confirmations cover \NConf{} real version transitions never analysed before:
-agents on AppWorld, SWE-bench (Verified, Lite, test, multilingual), Multi-SWE-bench in seven languages, model
-versions on LiveCodeBench, and office agents on TheAgentCompany. Given $\rho^2$, the law predicts the observed
-efficiency gain within \LawErrPooled\% (median) across all \NConf{} transitions---the order of the simulation noise---and
-within 10\% for \LawWithinTen\% of them. Most of the gain comes from letting the graph choose the tasks: with 20
-graph-chosen tasks, estimates are as precise as with about \EquivProbesFour--\EquivProbesSixStrat{} random tasks on SWE-bench Lite,
-LiveCodeBench and TheAgentCompany (\EquivProbesFive{} in the study dominated by versions that solve almost nothing). The cross-fitted estimator
-never lost to random testing in the last two confirmations (worst case $\times\GGregMinFive$ and
-$\times\GGregMinSix$), including on versions that solve almost nothing, and its 90\% intervals covered the truth
-\CovGregSix{} of the time; keep-or-replace decisions were wrong \DecRedSix--\DecRedFour\% less often than with
-random testing. A pre-registered secondary analysis shows that the graph also has structure of its own: beyond task
-difficulty, agents that share a scaffold fail on the same tasks in all seven languages of Multi-SWE-bench, more than
-agents that share a model; yet this structure adds nothing to the efficiency of evaluation, which comes from the
-difficulty scale the graph has learned. Of \HypTotal{} pre-registered hypotheses, \HypSupported{} were supported; we
-report the \HypFailed{} failures in full.
-We release a small kernel that implements the graph and reproduces the research results when replaying 89 real
-SWE-bench transitions.
+Every new version of an AI agent is evaluated as if nothing had been learned before, although the outcomes of
+earlier agents on the same tasks are known. We organise this history as a \emph{graph of agents}---nodes are agent
+versions carrying their task-level outcomes, edges link versions---and ask how many tasks it is worth. A closed-form
+law answers: testing $m$ tasks with the graph is as precise as testing $m/(1-\rho^2)$ at random, where $\rho^2$ is
+the share of the new version's task-level variance the graph explains ($\phisq$ with the predecessor, $\eta^2$ with the
+difficulty seen by earlier agents). We turn it into a method: the graph \emph{chooses} the tasks, a cross-fitted
+estimator \emph{estimates} with calibrated intervals, and the same tasks \emph{decide} keep-or-replace. In eight
+studies, each pre-registered by a git tag, the law predicted the observed gain within \LawErrPooled\% (median) over
+\NConf{} real version transitions on AppWorld, SWE-bench, Multi-SWE-bench, LiveCodeBench and TheAgentCompany; 20
+graph-chosen tasks were worth \EquivProbesFour--\EquivProbesSixStrat{} random ones on three benchmarks, 90\% intervals
+covered the truth \CovGregSix--\CovEight{} of the time, and decisions erred \DecRedSix--\DecRedFour\% less often. On
+\NEightAgents{} agents submitted to AppWorld after its paper, two of them multi-agent systems, the method beat random
+testing in \GEightWins{} of \NEight{} evaluations ($\times\GEight$; $\times\GEightMAS$ for multi-agent systems). The
+graph also has structure: agents sharing a scaffold or an agentic pattern fail on the same tasks, though this adds
+nothing to evaluation efficiency. When results arrive asynchronously and evaluation stops at a deadline, naive
+estimates overshoot by \BiasNaiveEight{} points; a correction learned from older agents did not transfer to newer
+ones. Of \HypTotal{} pre-registered hypotheses, \HypSupported{} were supported; all failures are reported. A small
+kernel implements the graph.
 \end{abstract}
 
 \section{Introduction}
@@ -88,12 +77,13 @@ measurable quantity, which can be estimated from the tested tasks themselves or 
 difficulty seen by earlier agents), which provides most of the gain; a cross-fitted generalised regression estimator
 \citep{sarndal1992,zrnic2024cross} with effective-sample-size intervals \citep{korn1998} estimates the new version's
 rate without catastrophic losses; the same tasks decide keep-or-replace and flag whether the decision is sure.
-\item \textbf{A pre-registered evidence chain} (Section~\ref{sec:protocol}). Seven studies---one pilot, five
-confirmations on data never analysed before, and one secondary analysis of a new question---each frozen by a git tag and SHA-256 hashes before the first
+\item \textbf{A pre-registered evidence chain} (Section~\ref{sec:protocol}). Eight studies---a pilot, six
+confirmations on data never analysed before, and secondary analyses of new questions---each frozen by a git tag and SHA-256 hashes before the first
 statistic, with every development step done on previously seen data only and every deviation logged.
 \item \textbf{Results on \NConf{} real version transitions} (Section~\ref{sec:results}), including an atlas of
 what survives a version change, evidence that the graph has structure of its own---an agent's scaffold, more than its
-model, shapes which tasks it fails---and \HypFailed{} pre-registered failures reported in full.
+model, shapes which tasks it fails---an extension to agentic patterns, multi-agent systems and asynchronous evaluation
+(Section~\ref{sec:v8}), and \HypFailed{} pre-registered failures reported in full.
 \item \textbf{A kernel} (Section~\ref{sec:kernel}) implementing the graph of agents---an append-only event log, a
 registry of slots and versions, and the operations \texttt{record}, \texttt{plan}, \texttt{estimate},
 \texttt{decide}, \texttt{lint}---validated by replaying 89 real transitions.
@@ -104,7 +94,9 @@ registry of slots and versions, and the operations \texttt{record}, \texttt{plan
 A \emph{task suite} is a fixed set of $N$ tasks with binary outcomes (resolved or not). An \emph{agent version}
 $v$ has an outcome vector $y_v\in\{0,1\}^N$ and a success rate $p_v=\frac1N\sum_j y_{vj}$. The \emph{graph}
 $\mathcal G$ at time $t$ contains every version released before $t$ whose outcome vector is fully known, and a
-lineage edge $v\to v'$ when $v'$ is the next version of the same product (the same agent \emph{slot}).
+lineage edge $v\to v'$ when $v'$ is the next version of the same product (the same agent \emph{slot}). The graph
+records \emph{evaluation evidence}: it is not an orchestration graph of agents calling one another. A multi-agent
+system, however it is organised inside, is one node.
 
 When a new version $v'$ arrives, its outcome vector is unknown. We test it on $m\ll N$ \emph{probe} tasks and must
 (i) estimate $p_{v'}$ with an interval, and (ii) decide whether $p_{v'}\ge p_v$. The baseline is \emph{random
@@ -208,10 +200,12 @@ likelihoods.
 \label{sec:protocol}
 \paragraph{Pre-registration.} Each study was written as a protocol (hypotheses, thresholds, estimators, seeds,
 data rules) and an analysis script, committed together and frozen by a git tag (\texttt{prereg-v1} to
-\texttt{prereg-v6}) and SHA-256 hashes \emph{before any statistic was computed on its data}
+\texttt{prereg-v6}, \texttt{prereg-v8}) and SHA-256 hashes \emph{before any statistic was computed on its data}
 \citep{nosek2018prereg}. A seventh study (\texttt{prereg-v7}) is a pre-registered secondary analysis: no new
 source with enough agents was available, so it re-uses the data of v4--v6 to test a new question (the structure of the
-graph) on which no statistic had been computed before its freeze. Only format audits (file keys, task identifiers, submission names and dates) were
+graph) on which no statistic had been computed before its freeze. An eighth study (\texttt{prereg-v8},
+Section~\ref{sec:v8}) confirms the method on \NEightAgents{} agents released on AppWorld after the earlier studies,
+and adds a secondary analysis of agentic patterns on Multi-SWE-bench. Only format audits (file keys, task identifiers, submission names and dates) were
 allowed before the freeze. Every method change was developed on data already analysed in an earlier study, never on
 the data of the next confirmation. All deviations---including one accidental display of a single submission's
 total during a format audit---are logged in the repository. Hashes were re-verified after each run.
@@ -246,6 +240,7 @@ v5 & Multi-SWE-bench \citep{zan2025multiswe} (7 lang.), & \NFive & 128--1{,}587 
 v6 & LiveCodeBench \citep{jain2024livecodebench}, & \NSix & 713 / 175 & models; office agents\\
  & TheAgentCompany \citep{xu2024theagentcompany} & & & \\
 v7 (secondary) & data of v4--v6, re-analysed for graph structure & \NSeven & as v4--v6 & as v4--v6\\
+v8 & AppWorld, \NEightAgents{} later agents; Multi-SWE-bench (patterns) & \NEight{} evaluations & 168 / 417 & 4 pattern classes, incl.\ multi-agent\\
 \midrule
 Total (confirmations v2--v6) & & \NConf & & \\
 \bottomrule
@@ -253,7 +248,7 @@ Total (confirmations v2--v6) & & \NConf & & \\
 \end{table}
 
 \paragraph{Replays.} For every transition we simulate the evaluation of the new version 400 times (1{,}000 in the
-pilot, 200 in v7): draw the probes (uniformly, or with the graph's stratified design, independently), apply every estimator to
+pilot, 200 in v7 and v8): draw the probes (uniformly, or with the graph's stratified design, independently), apply every estimator to
 the same probes, and compare with the true rate measured on all $N$ tasks. The primary budget is $m=20$; $m=40$ is
 reported as secondary. Coverage is the fraction of replays whose 90\% interval contains the truth.
 
@@ -408,15 +403,56 @@ model. Only differences between types of pairs are interpreted (the fit induces 
 \label{fig:structure}
 \end{figure}
 
+\subsection{Agentic patterns, multi-agent systems and asynchronous evaluation (v8)}\label{sec:v8}
+Does the method depend on how an agent is built, and what happens when results do not all arrive? Study v8 uses the
+\NEightAgents{} agents submitted to the AppWorld leaderboard after its paper (April 2025 to October 2026), never
+analysed before. Before any outcome was computed, each received a pattern class from its own description: multi-agent
+systems (LARA,\footnote{\url{https://github.com/Omer212111/LARA}} where an explorer writes a plan executed by
+per-application specialist agents, and IBM CUGA,\footnote{\url{https://arxiv.org/abs/2510.23856}} a hierarchical
+planner--executor whose controller delegates to specialised sub-agents; two models each), single agents trained by
+reinforcement learning (four) and prompted single agents with a tool harness (five). Each agent, on each split, is
+evaluated as a new version whose graph holds every agent released strictly before it (\NEight{} evaluations).
+
+\paragraph{Patterns and multi-agent systems.} The method beat random testing in \GEightWins{} of \NEight{} evaluations
+(median $\times\GEight$, worst $\times\GEightMin$; $p=\PEightNOne$), including the multi-agent systems
+($\times\GEightMAS$ over \NEightMAS{} evaluations, $p=\PEightNTwo$), RL-trained agents ($\times\GEightRL$) and prompted
+single agents ($\times\GEightSingle$). Intervals covered the truth \CovEight{} of the time (\CovEightMAS{} for
+multi-agent systems), and the stratified law predicted the gain within \LawErrEight\% (median). Gains are smaller than on
+SWE-bench because AppWorld's graph explains less of a new agent's variance (median $\eta^2=\EtaEight$), as the law
+says they should be. On the \NDecEight{} evaluations whose rate differs by at least 5 points from the best earlier agent, the question
+``does the new agent beat it?'' was answered wrongly in \DecGregEight\% of replays by the method and \DecResetUEight\%
+by random testing (reported without criterion), another sign that the best decider remains open.
+
+\paragraph{Pattern structure.} On Multi-SWE-bench, after removing ability and difficulty, two agents of the same
+pattern (two agent loops) fail together more than an agent loop and a fixed Agentless-style workflow, with different
+scaffolds and different models in both cases (median difference \PatDiffEight, positive in \PatPosEight{} of 7
+languages, $p=\PEightPOne$). For the same model, keeping the pattern preserved more transferable information than
+changing it ($\phisq$ difference \PhiDiffEight, \PhiPosEight{} of 7 languages), but not significantly
+($p=\PEightPTwo$).
+
+\paragraph{Asynchronous evaluation.} Probes usually run in parallel and return in an order set by how many steps the
+agent takes. Replaying this with each agent's own step counts, stopping when 10 of the 20 probes have returned
+overestimates the success rate by \BiasNaiveEight{} points (median, $p=\PEightAOne$): slow tasks are hard ones. In
+development on the paper's 14 agents, a correction learned from the graph---how much more often earlier agents fail
+where they are slow---removed this bias (\DevBiasNaiveEight{} to \DevBiasGraphEight{} points, coverage
+\DevCovEight). It did not transfer: on the new agents it over-corrected (median bias \BiasGraphEight{} points), erred
+more than the naive estimate (RMSE ratio \RmseRatioEight) and covered only \CovDeadlineEight. An exploratory diagnosis
+explains why: earlier agents failed more often on tasks where they were slow (slowness effect \GammaGraphEight{} on the
+logit scale), the new agents did not (median \GammaOwnEight), and the mismatch tracks the bias (Spearman
+\RhoMismatchEight). Correcting for difficulty alone (exploratory, not confirmed) cut the naive error by a factor
+\DiffOnlyRatio{} with coverage \DiffOnlyCov. Deadline bias is real; correcting it across agent generations is open.
+
 \subsection{What failed}
 \label{sec:failures}
-Five of the \HypTotal{} pre-registered hypotheses were not supported (Appendix~\ref{app:ledger}). (i)~In the pilot,
+Of the \HypTotal{} pre-registered hypotheses, \HypFailed{} were not supported (Appendix~\ref{app:ledger}). (i)~In the pilot,
 predecessor-based estimates did not reduce decision regret significantly and (ii)~sequential detection lacked power
 at 40 probes; the detection rule was retuned on development data and later confirmed in v2 and v3. (iii)~On SWE-bench
 Verified the graph estimator lost badly on near-zero versions, so the hypothesis of no catastrophic loss failed. (iv)~In v5,
 the model-based estimator with graph-chosen tasks did not stay above random testing on 90\% of transitions, because
 most new versions solved almost nothing. (v)~In v7, neighbours learned from the graph's structure did not improve
-estimation (Section~\ref{sec:structure}). Two further observations qualify our method. An unbiased estimator is not
+estimation (Section~\ref{sec:structure}). (vi--vii)~In v8, the graph's correction of deadline bias
+did not reduce the error and was not calibrated on newer agents, and (viii)~the loss of transferable information when
+the pattern changes was in the predicted direction but not significant (Section~\ref{sec:v8}). Two further observations qualify our method. An unbiased estimator is not
 automatically a good decision rule: in v5, GREG's decisions were wrong in \DecGregAllFive\% of replays against
 \DecResetAllFive\% for random testing (\DecGregFive\% versus \DecResetFive\% on differences of at least 5 points). The
 gap comes from transitions where both versions solve almost nothing: in the extreme case (both below 1\%), GREG chose
@@ -481,7 +517,7 @@ contributes only two transitions.
 \paragraph{Statistics.} Paired Wilcoxon tests treat transitions as independent units, although transitions of a study
 share agents and ecosystems; their $p$-values should be read as descriptive of consistency rather than exact. The freezes are
 recorded by git tags and hashes whose timestamps are self-reported, not certified by a third party; future studies
-should be registered on a public registry before data access. Each study's hypotheses were tested at level 0.05 without correction across the seven studies; the ledger
+should be registered on a public registry before data access. Each study's hypotheses were tested at level 0.05 without correction across the eight studies; the ledger
 (Appendix~\ref{app:ledger}) reports all \HypTotal{} tests so that readers can apply their own correction. The law is
 tested at the true $\rho^2$; with $\rho^2$ estimated from the probes, it was tested only in the pilot.
 
@@ -490,7 +526,13 @@ ecosystem difficulty (v3), and the plain mean of graph-chosen tasks (exploratory
 multidimensional IRT or gp-IRT \citep{polo2024tiny,she2026production}; our claims concern the law, calibration and
 decisions, not point accuracy against these methods.
 
-\paragraph{Secondary analysis.} Study v7 re-uses data already analysed for other questions; it is weaker evidence than a
+\paragraph{Agentic patterns and asynchronous evaluation.} A multi-agent system is a single node: we test whether the
+method evaluates such systems, not how their inner agents interact, and only two multi-agent frameworks (four agents)
+were available. Pattern classes were assigned from the submissions' own descriptions. The number of environment
+steps stands in for completion time; asynchronous here means evaluation results that arrive out of order, not the
+internal architecture of the agents.
+
+\paragraph{Secondary analysis.} Study v7 and the pattern analysis of v8 re-use data already analysed for other questions; it is weaker evidence than a
 confirmation on new data. Residual correlations depend on the one-dimensional model used to remove difficulty.
 
 \paragraph{Kernel.} The kernel was validated on SWE-bench Verified, which had already been analysed; this is a test of
@@ -501,7 +543,9 @@ An agent's history is worth a computable number of tasks. Across \NConf{} real v
 pre-registered confirmations, the law $1/(1-\rho^2)$, given $\rho^2$, predicted that number within a few percent, and a method in which
 the graph of earlier agents chooses the tasks, estimates with calibrated intervals and decides, divided the number of
 tasks needed for a given precision by $\GGregFive$ to $\GGregSix$ (median) in the last two confirmations. The graph also has structure of its own---scaffolds, more than models, shape which tasks
-agents fail---but for evaluation its value lies in the difficulty scale it has learned. Evaluation does not have to start
+agents fail---but for evaluation its value lies in the difficulty scale it has learned. The method held across
+agentic patterns, including multi-agent systems; evaluations stopped at a deadline remain biased, and correcting
+them across agent generations is the next problem. Evaluation does not have to start
 from zero at every release: the graph of agents remembers.
 
 \section*{Code and data availability}
@@ -523,9 +567,10 @@ manuscript. In line with arXiv policy, it is not listed as an author.
 \bibliography{references}
 
 \appendix
+\clearpage
 \section{Ledger of pre-registered hypotheses}
 \label{app:ledger}
-\begin{table}[h]
+\begin{table}[!h]
 \centering\footnotesize
 \begin{tabular}{@{}llp{4.2cm}p{3.6cm}@{}}
 \toprule
@@ -565,6 +610,15 @@ v7 & S2 scaffold more than model & Wilcoxon over 7 languages & supported (7/7)\\
 v7 & S3 structure: shared provider & permutation test & supported\\
 v7 & S4 learned neighbours help estimation & Wilcoxon & \textbf{not supported}\\
 v7 & S5 structure's gain is second-order & median ratio $\le 1.10$ & supported (trivially, given S4)\\
+v8 & N1 method beats random, new agents & median $>1$, Wilcoxon & supported ($\times\GEight$)\\
+v8 & N2 including multi-agent systems & as N1, 8 evaluations & supported ($\times\GEightMAS$)\\
+v8 & N3 calibrated & coverage $\ge 0.85$ & supported (\CovEight)\\
+v8 & N4 stratified law & median error $\le 0.20$ & supported (\LawErrEight\%)\\
+v8 & A1 deadline bias exists & Wilcoxon & supported (+\BiasNaiveEight{} points)\\
+v8 & A2 graph corrects deadline bias & Wilcoxon, RMSE ratio $>1$ & \textbf{not supported}\\
+v8 & A3 calibrated at the deadline & coverage $\ge 0.85$ & \textbf{not supported} (\CovDeadlineEight)\\
+v8 & P1 same pattern, same failures & Wilcoxon over 7 languages & supported (\PatPosEight/7)\\
+v8 & P2 pattern change loses information & Wilcoxon over 7 languages & \textbf{not supported} (\PhiPosEight/7)\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -574,7 +628,7 @@ Between studies, methods were changed only on data already analysed: the Bayesia
 predecessor-only estimator (synthetic worlds, before v1); the graph estimator and the sequential rule (pilot data,
 before v2); finite-population prediction, model averaging and an identifiability guard (AppWorld and pilot data,
 before v3); the stratified design and GREG (SWE-bench Verified and AppWorld, before v4); cross-fitting, the
-Korn--Graubard interval and the Jeffreys boundary convention (Verified, Lite, AppWorld, before v5). Variants tried and
+Korn--Graubard interval and the Jeffreys boundary convention (Verified, Lite, AppWorld, before v5). Before v8, the deadline correction (the 14 agents of the AppWorld paper, whose step counts had never been analysed). Variants tried and
 abandoned (an empirical-Bayes slope prior; fallback rules on the number of successes) are listed in the
 pre-registration documents.
 

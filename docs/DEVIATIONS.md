@@ -54,5 +54,12 @@ Chaque entrée : date, ce qui change, pourquoi, effet attendu sur les conclusion
   aucun écart ; un test ajouté (`test_greg_cf_covers_zero_rate_and_is_calibrated`), sans effet sur l'analyse.
 - **8 novembre 2026, v7** : avant le gel, exclusion des variantes d'effort de LiveCodeBench (un nœud par modèle),
   décidée à l'audit des noms. Après le gel : aucun écart.
+- **9 novembre 2026, v8** : avant le gel, déchiffrement des 13 nouveaux classements AppWorld avec le paquet officiel,
+  audit de forme seulement ; IBM-HCL-GP n'a pas de fichier d'évaluation, succès lu dans les rapports par tâche (règle
+  vérifiée identique sur 4 agents) ; un répertoire « _OLD_54.8_hardcoded » contenu dans un paquet LARA est ignoré.
+  Développement de l'estimateur d'échéance sur les 14 agents de l'article : une première version, sans incertitude sur
+  la capacité, couvrait 0,84 ; corrigée avant le gel. Après le gel : analyse exploratoire
+  `experiments/v8_exploratory_async.py` (diagnostic de l'échec d'A2–A3 et variante « difficulté seule ») ; aucun
+  verdict modifié.
 - **Constat** : écart de 0,6 point entre notre taux de régression Mistral MATH (55,8 %) et celui publié par
   Sheng & Lu (55,2 %). Non expliqué ; sans effet sur les conclusions.

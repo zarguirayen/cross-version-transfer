@@ -16,3 +16,11 @@ hashes stay valid; create the same paths or symbolic links).
 Only per-task outcome files are needed (`results/results.json`, `per_instance_details.json`, `metadata.yaml`,
 `eval_*.json`); a sparse checkout is enough. Task-set rules (exclusions, name normalisation, removal of SWE-bench test
 tasks that belong to Verified or Lite) are applied by the loaders in `experiments/` and described in each protocol.
+
+## Study v8 (AppWorld leaderboard bundles)
+
+The 13 agents submitted to `stonybrooknlp/appworld-leaderboard` after the AppWorld paper (snapshot of 2026-11-04) are
+distributed as encrypted `leaderboard.bundle` files. Unpack each with the official package
+(`pip install appworld`; `appworld.common.utils.unpack_bundle(path, out_dir, PASSWORD, SALT)` with the constants of
+`appworld.common.constants`) into `/home/claude/data/aw_new/`. Do not redistribute the decrypted files (see each
+bundle's `README_BEFORE_SHARING.md`); this repository only contains derived statistics.

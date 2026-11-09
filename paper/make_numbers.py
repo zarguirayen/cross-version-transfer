@@ -8,7 +8,8 @@ Usage
 -----
     python paper/make_numbers.py      # writes numbers.tex, fig_law.pdf, fig_gains.pdf, fig_structure.pdf
 """
-import csv, re
+import csv
+import re, re
 from pathlib import Path
 import numpy as np
 import matplotlib
@@ -217,7 +218,57 @@ ax.set_ylabel("mean residual correlation", fontsize=8.5); ax.legend(fontsize=6.5
 ax.set_ylim(-0.13, 0.19)
 fig.tight_layout(); fig.savefig(OUT / "fig_structure.pdf"); plt.close(fig)
 # ledger of pre-registered hypotheses
-put("HypTotal", 34, "{}"); put("HypSupported", 29, "{}"); put("HypFailed", 5, "{}")
+_v8sum = (RES / "v8" / "summary.txt").read_text()
+_v8v = re.findall(r"^[NAP]\d-v8 .*: (True|False)$", _v8sum, re.M)
+assert len(_v8v) == 9, _v8v
+put("HypEight", len(_v8v), "{}"); put("HypEightOk", _v8v.count("True"), "{}")
+put("HypTotal", 34 + len(_v8v), "{}"); put("HypSupported", 29 + _v8v.count("True"), "{}")
+put("HypFailed", 5 + _v8v.count("False"), "{}")
+
+# ---------------- v8: agentic patterns, multi-agent systems, asynchronous evaluation
+v8 = rd("v8/new_agents.csv"); v8m = [r for r in v8 if r["pattern"] == "multi-agent"]
+put("NEight", len(v8), "{}"); put("NEightMAS", len(v8m), "{}")
+put("NEightAgents", len({r["agent"] for r in v8}), "{}")
+put("GEight", np.median(f(v8, "gain_greg_cf_s")), "{:.2f}"); put("GEightMin", f(v8, "gain_greg_cf_s").min(), "{:.2f}")
+put("GEightWins", int((f(v8, "gain_greg_cf_s") > 1).sum()), "{}")
+put("GEightMAS", np.median(f(v8m, "gain_greg_cf_s")), "{:.2f}"); put("GEightMASMin", f(v8m, "gain_greg_cf_s").min(), "{:.2f}")
+for _cls, _nm in (("RL-trained", "RL"), ("single-agent", "Single")):
+    put(f"GEight{_nm}", np.median(f([r for r in v8 if r["pattern"] == _cls], "gain_greg_cf_s")), "{:.2f}")
+put("CovEight", f(v8, "cov_greg_cf_s").mean(), "{:.3f}"); put("CovEightMAS", f(v8m, "cov_greg_cf_s").mean(), "{:.3f}")
+put("CovEightMin", f(v8, "cov_greg_cf_s").min(), "{:.3f}")
+_ok8 = ~np.isnan(f(v8, "gain_law_strat"))
+put("LawErrEight", 100 * np.median(np.abs(f(v8, "gain_reset_s")[_ok8] / f(v8, "gain_law_strat")[_ok8] - 1)), "{:.1f}")
+put("EtaEight", np.nanmedian(f(v8, "eta2")), "{:.2f}")
+put("BiasNaiveEight", 100 * np.median(f(v8, "bias_naive_k10")), "{:.1f}")
+put("BiasNaiveEightFifteen", 100 * f(v8, "bias_naive_k15").mean(), "{:.1f}")
+put("BiasGraphEight", 100 * np.median(f(v8, "bias_graph_k10")), "{:.1f}")
+put("AbsBiasGraphEight", 100 * np.median(np.abs(f(v8, "bias_graph_k10"))), "{:.1f}")
+put("RmseRatioEight", np.median(f(v8, "rmse_naive_k10") / f(v8, "rmse_graph_k10")), "{:.2f}")
+put("CovDeadlineEight", f(v8, "cov_graph_k10").mean(), "{:.3f}"); put("CovDeadlineEightMin", f(v8, "cov_graph_k10").min(), "{:.2f}")
+_D8 = [r for r in v8 if abs(float(r["delta_best"])) >= 0.05]
+put("NDecEight", len(_D8), "{}")
+put("DecGregEight", 100 * f(_D8, "decerr_greg_cf_s").mean(), "{:.1f}"); put("DecResetUEight", 100 * f(_D8, "decerr_reset_u").mean(), "{:.1f}")
+put("DecResetSEight", 100 * f(_D8, "decerr_reset_s").mean(), "{:.1f}")
+put("PEightNOne", texp(float(grab("v8/summary.txt", r"N1-v8.*?p = ([0-9.e+-]+)"))), "{}")
+put("PEightNTwo", texp(float(grab("v8/summary.txt", r"N2-v8.*?p = ([0-9.e+-]+)"))), "{}")
+put("PEightAOne", texp(float(grab("v8/summary.txt", r"A1-v8.*?p = ([0-9.e+-]+)"))), "{}")
+put("PEightATwo", texp(float(grab("v8/summary.txt", r"A2-v8.*?p = ([0-9.e+-]+)"))), "{}")
+ps = rd("v8/pattern_structure.csv")
+_d1 = f(ps, "resid_same_pattern") - f(ps, "resid_diff_pattern"); _d2 = f(ps, "phi2_same_pattern") - f(ps, "phi2_diff_pattern")
+put("PatDiffEight", np.median(_d1), "{:+.3f}"); put("PatPosEight", int((_d1 > 0).sum()), "{}")
+put("PhiDiffEight", np.median(_d2), "{:+.3f}"); put("PhiPosEight", int((_d2 > 0).sum()), "{}")
+put("PEightPOne", texp(float(grab("v8/summary.txt", r"P1-v8.*?p = ([0-9.e+-]+)"))), "{}")
+put("PEightPTwo", texp(float(grab("v8/summary.txt", r"P2-v8.*?p = ([0-9.e+-]+)"))), "{}")
+ex8 = rd("v8/exploratory_async.csv")
+put("GammaGraphEight", np.median(f(ex8, "gamma_graph")), "{:+.2f}"); put("GammaOwnEight", np.median(f(ex8, "gamma_own")), "{:+.2f}")
+put("RhoMismatchEight", float(grab("v8/exploratory_async.log", r"Spearman\(mismatch, graph bias\) = ([+-][0-9.]+)")), "{:+.2f}")
+dox = rd("v8/exploratory_async_difficulty_only.csv")
+put("DiffOnlyBias", 100 * f(dox, "bias_difficulty_only").mean(), "{:+.1f}")
+put("DiffOnlyCov", f(dox, "cov_difficulty_only").mean(), "{:.2f}")
+put("DiffOnlyRatio", float(grab("v8/exploratory_async.log", r"RMSE ratio naive/difficulty-only median ([0-9.]+)")), "{:.2f}")
+dv8 = rd("dev_v8_async.csv"); dv8k = [r for r in dv8 if r["k"] == "10"]
+put("DevBiasNaiveEight", 100 * f(dv8k, "bias_naive").mean(), "{:+.1f}"); put("DevBiasGraphEight", 100 * f(dv8k, "bias_graph").mean(), "{:+.1f}")
+put("DevCovEight", f(dv8k, "cov_graph").mean(), "{:.2f}")
 # v3: subgroup of new versions between 10% and 90%
 mid3 = [r for r in v3 if 0.10 <= float(r["p_new"]) < 0.90]
 put("ThreeMidN", len(mid3), "{}"); put("ThreeMidMin", f(mid3, "gain_graph_v3").min())

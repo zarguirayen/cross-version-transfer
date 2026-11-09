@@ -57,6 +57,16 @@ afterwards.
 | `_bma_predict`, `graph_greg_cf` | **Cross-fitted GREG**, the estimator of the unified method (see below) | v5 |
 | `neighbour_feature`, `graph_greg_cf_knn`, `graph_v3_knn` | Learned edges: the k earlier agents that agree most with the new version on the probes become an extra covariate (chosen within each fold for the cross-fitted version) | v7 |
 
+### `src/cvt/asynchronous.py` — evaluation stopped at a deadline (study v8)
+
+| Function | What it does |
+|---|---|
+| `fit_slow_model(Y, S)` | On the earlier agents: logit P = ability + task easiness + γ · slow, where slow = more steps than on half of the agent's tasks |
+| `deadline_estimate(...)` | Ability of the new version from its returned probes; unreturned probes imputed with the slowness effect; stratified estimate with an interval that adds imputation, ability and γ uncertainty |
+
+This module is frozen by `prereg-v8`. In v8 its correction did not transfer to newer agents (hypotheses A2, A3 not
+supported); see `docs/RESULTS_V8.md`.
+
 **`graph_greg_cf` step by step** (paper Section 4, "Estimate"):
 
 1. The probes come from the stratified design, one per stratum, in stratum order. Fold A = even strata, fold B =
@@ -101,6 +111,7 @@ Each study has a data loader (`*_data.py`, which computes no outcome statistic) 
 | v5 Multi-SWE-bench, SWE-bench test and multilingual | `v5_general_data.py` | `v5_general_preregistered.py` | `results/v5/` |
 | v6 LiveCodeBench, TheAgentCompany | `v6_data.py` | `v6_unified_preregistered.py` | `results/v6/` |
 | v7 structure (secondary) | data of v4–v6 | `v7_structure_preregistered.py` | `results/v7/` |
+| v8 patterns, multi-agent, asynchronous | `v8_data.py` | `v8_patterns_async_preregistered.py` | `results/v8/` |
 
 The data loaders implement the rules of the paper's "Data" paragraph: `lineage` / `provider` (product lines),
 `transitions` (each submission paired with the latest strictly earlier one of the same lineage) and `ecosystem`
