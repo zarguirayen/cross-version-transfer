@@ -25,8 +25,10 @@ random tasks.
 **Evidence (all pre-registered, frozen by git tags before looking at the data).** A pilot on model versions
 (Sheng & Lu), then five confirmations on 219 real version transitions never analysed before: agents on AppWorld,
 SWE-bench Verified, Lite, test and multilingual, Multi-SWE-bench in 7 languages, model versions on LiveCodeBench,
-and office agents on TheAgentCompany. The law predicts the
-observed gain within 3–6 % (median) in every source. On the last two confirmations, the cross-fitted estimator
+and office agents on TheAgentCompany. Given the true ρ², the law matches the observed gain within 3–6 % (median)
+in every source; with φ² estimated from the 20 tested tasks it still matches on average (5.3 %, exploratory), but a
+single 20-task evaluation estimates the gain only to about ±20 %. Most of the gain comes from letting the graph choose
+the tasks. On the last two confirmations, the cross-fitted estimator
 never lost to plain random testing (worst ×1.08 and ×1.45) with 94–95 % coverage of 90 % intervals. Version
 decisions made with graph-chosen tasks are wrong about half as often.
 

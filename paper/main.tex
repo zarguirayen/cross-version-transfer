@@ -40,7 +40,7 @@ studies, each pre-registered by a git tag, the law, given the true $\rho^2$, mat
 \LawErrPooled\% (median) over \NConf{} real version transitions from five agent benchmarks; with $\phisq$ estimated from the 20 tested tasks it still matched on average (\PhiHatErr\%,
 exploratory), but a single evaluation's estimate erred by \PhiHatSingle\%. Choosing the tasks gives most of the gain:
 with the cross-fitted estimator, 20 graph-chosen tasks were worth \EquivProbesFive--\EquivProbesSix{} random ones in
-v5--v6 and 90\% intervals covered the truth \CovGregSix--\CovEight{} of the time; decisions taken on the same tasks
+two confirmations and 90\% intervals covered the truth \CovGregSix--\CovEight{} of the time; decisions taken on the same tasks
 erred \DecRedSix--\DecRedFour\% less often. On \NEightAgents{} agents submitted to AppWorld after its paper, four of them
 multi-agent systems, the method beat random testing in \GEightWins{} of \NEight{} evaluations ($\times\GEight$). Agents
 sharing a scaffold or an agentic pattern fail on the same tasks, though this adds nothing to evaluation efficiency.
@@ -262,7 +262,7 @@ true $\phisq$, matches the gain of the double-sampling estimator within \LawErrP
 error) over the \NConf{} confirmation transitions; the correlation of log-gains is \LawCorrLog. The error is
 \LawErrTwo\%, \LawErrThree\%, \LawErrFour\%, \LawErrFive\% and \LawErrSix\% in the five confirmations, and
 \LawErrPilot\% in the pilot: six pre-registered tests of the same law, all within the 20\% threshold. The graph law
-(\ref{eq:strat}) predicts the gain of graph-chosen tasks within \StratErrPooled\% over \StratN{} transitions
+(\ref{eq:strat}), at the true $\eta^2_{\mathcal G}$, matches the gain of graph-chosen tasks within \StratErrPooled\% over \StratN{} transitions
 (\StratErrFour\%, \StratErrFive\%, \StratErrSix\% in v4--v6); the median $\eta^2_{\mathcal G}$ is \EtaMedFour{} on
 SWE-bench Lite and \EtaMedSix{} on LiveCodeBench, i.e.\ the history of other agents explains about half of a new
 version's task-level variance.
@@ -274,24 +274,24 @@ oracle constant equal to the median observed gain of these same transitions; the
 the \StratBigN{} transitions where it predicts at least $\times1.5$. The law therefore tracks how large the gain is, not
 only whether there is one.
 
-\paragraph{With $\phisq$ estimated from the tested tasks (exploratory).} These checks use the true $\phisq$, computed
-on every task, which is unknown when a new version is evaluated. In an exploratory, retrospective analysis whose
-protocol was committed before it was run (\texttt{docs/EXPLORATORY\_PHIHAT.md}), we re-drew 20 random tasks
-\PhiHatR{} times for each of the \PhiHatN{} transitions of v3--v6 and computed $\hat\phi^2$ from those tasks alone.
-Taking the median announced gain per transition, the law erred by \PhiHatErr\% against \PhiTrueErrSub\% with the true
-$\phisq$ on the same transitions (and \PhiNoneErr\% for ``no transfer''); $\hat\phi^2$ is nearly unbiased (median bias
-\PhiHatBias). A single evaluation is another matter: with 20 tasks $\hat\phi^2$ is noisy (median interquartile range
-\PhiHatIqr), so the gain announced by one evaluation erred by \PhiHatSingle\% (median), and \PhiHatDeg\% of draws were
-degenerate (one version all-success or all-failure on the 20 tasks; \PhiHatDegFive\% in v5, where the law erred by
-\PhiHatErrFive\%). The law is thus a reliable guide to the expected value of the history, but forecasting the budget
-from one small evaluation needs more tasks or a prior from earlier transitions of the same kind (Table~\ref{tab:atlas});
-a prospective test remains to be done.
-
 \paragraph{How precise is this test?} Each observed gain is itself estimated from 400 replays; a bootstrap over replays
 puts its relative Monte Carlo error at about \MCErr\% (median over transitions). The residual error of the law is
-therefore of the order of the simulation noise. The tests above use the true $\rho^2$, measured on all $N$ tasks. In
-practice $\rho^2$ must be estimated: in the pilot, plugging the $\phisq$ estimated from the 20 probes into
-(\ref{eq:law}) predicted the gain within \LawErrPilotProbe\% (median), against \LawErrPilot\% with the true value.
+therefore of the order of the simulation noise.
+
+\paragraph{With $\phisq$ estimated from the tested tasks.} The tests above use the true $\rho^2$, measured on all $N$
+tasks, which is unknown when a new version is evaluated. In the pilot (pre-registered), plugging the $\phisq$ estimated
+from the 20 probes into (\ref{eq:law}) gave the gain within \LawErrPilotProbe\% (median), against \LawErrPilot\% with
+the true value. In an exploratory, retrospective analysis of v3--v6 whose protocol was committed before it was run
+(\texttt{docs/EXPLORATORY\_PHIHAT.md}), we re-drew 20 random tasks \PhiHatR{} times for each of the \PhiHatN{}
+transitions and computed $\hat\varphi^2$ from those tasks alone. Taking the median announced gain per transition, the
+law erred by \PhiHatErr\%, against \PhiTrueErrSub\% with the true $\phisq$ on the same transitions and \PhiNoneErr\% for
+``no transfer''; $\hat\varphi^2$ is nearly unbiased (median bias $\PhiHatBias$). A single evaluation is another matter:
+with 20 tasks $\hat\varphi^2$ is noisy (median interquartile range \PhiHatIqr), so the gain announced by one evaluation
+erred by \PhiHatSingle\% (median), and \PhiHatDeg\% of draws were degenerate (one version all-success or all-failure on
+the 20 tasks; \PhiHatDegFive\% in v5, where the law erred by \PhiHatErrFive\%). The law is thus a reliable guide to the
+expected value of the history, but forecasting the budget from one small evaluation needs more tasks or a prior from
+earlier transitions of the same kind (Table~\ref{tab:atlas}); a prospective test remains to be done. We did not
+estimate $\eta^2_{\mathcal G}$ from the probes: with one probe per stratum, within-stratum variance is not observed.
 
 \begin{figure}[t]
 \centering
