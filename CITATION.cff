@@ -9,3 +9,8 @@ authors:
 date-released: 2026-11-10
 license: MIT
 type: software
+doi: 10.5281/zenodo.24118729
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.24118729
+    description: Zenodo archive of this repository (v0.4)

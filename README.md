@@ -1,5 +1,7 @@
 # How Much Is an Agent's History Worth?
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24118729.svg)](https://doi.org/10.5281/zenodo.24118729)
+
 Code, pre-registrations, results and paper for
 
 > Rayen Zargui. *How Much Is an Agent's History Worth? A Law of Evaluation Transfer Across Agent Versions,
@@ -77,3 +79,5 @@ lists every source, its exact commit and where the scripts expect it.
 
 Code under the MIT licence (`LICENSE`); paper and documents under CC BY 4.0. Cite with `CITATION.cff`.
 The benchmark outputs belong to their authors and keep their own licences.
+
+Archived on Zenodo: [10.5281/zenodo.24118729](https://doi.org/10.5281/zenodo.24118729).
