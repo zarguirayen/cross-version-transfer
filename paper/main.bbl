@@ -1,4 +1,4 @@
-\begin{thebibliography}{28}
+\begin{thebibliography}{29}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -18,6 +18,13 @@ Anastasios~N. Angelopoulos, Stephen Bates, Clara Fannjiang, Michael~I. Jordan,
 Anastasios~N. Angelopoulos, John~C. Duchi, and Tijana Zrnic.
 \newblock {PPI++}: Efficient prediction-powered inference.
 \newblock \emph{arXiv preprint arXiv:2311.01453}, 2023{\natexlab{b}}.
+
+\bibitem[Barbaste et~al.(2026)Barbaste, Darrigol, Vu, and
+  Wiltberger]{barbaste2026harness}
+Paul Barbaste, Tristan Darrigol, Germain Vu, and Tom Wiltberger.
+\newblock Harness engineering: Anatomy, architecture, and evolution of coding
+  agents. {A} source-code study of eleven systems.
+\newblock \emph{arXiv preprint arXiv:2609.00006}, 2026.
 
 \bibitem[Brown et~al.(2001)Brown, Cai, and DasGupta]{brown2001}
 Lawrence~D. Brown, T.~Tony Cai, and Anirban DasGupta.

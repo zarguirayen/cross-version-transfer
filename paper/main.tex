@@ -48,7 +48,9 @@ points; a correction learned from older agents did not transfer. Of \HypTotal{} 
 
 \section{Introduction}
 Agents change constantly. A coding agent ships a new model in March, a new scaffold in May, a new prompt every
-week. Each change raises the same question---is the new version better than the one in production?---and the
+week. A source-level study of eleven production coding agents measured this pace: over one quarter of 2026 one
+code base nearly doubled, and prompts were re-tuned on the server without a client release
+\citep{barbaste2026harness}. Each change raises the same question---is the new version better than the one in production?---and the
 standard answer is to re-run the full evaluation suite. On agentic benchmarks this is expensive: a single
 SWE-bench Verified run executes 500 repository-level tasks, each in its own container
 \citep{jimenez2024swebench}, and office-automation suites run long multi-step tasks in simulated companies
@@ -89,12 +91,13 @@ registry of slots and versions, and the operations \texttt{record}, \texttt{plan
 
 \section{Setting}
 \label{sec:setting}
-A \emph{task suite} is a fixed set of $N$ tasks with binary outcomes (resolved or not). An \emph{agent version}
-$v$ has an outcome vector $y_v\in\{0,1\}^N$ and a success rate $p_v=\frac1N\sum_j y_{vj}$. The \emph{graph}
+A \emph{task suite} is a fixed set of $N$ tasks with binary outcomes (resolved or not). An \emph{agent version}---a model plus its harness, the runtime around the model \citep{barbaste2026harness}, so that a change of either
+makes a new version---has an outcome vector $y_v\in\{0,1\}^N$ and a success rate $p_v=\frac1N\sum_j y_{vj}$. The \emph{graph}
 $\mathcal G$ at time $t$ contains every version released before $t$ whose outcome vector is fully known, and a
 lineage edge $v\to v'$ when $v'$ is the next version of the same product (the same agent \emph{slot}). The graph
 records \emph{evaluation evidence}: it is not an orchestration graph of agents calling one another. A multi-agent
-system, however it is organised inside, is one node.
+system, however it is organised inside, is one node; most production harnesses likewise keep the coordination of their
+sub-agents inside one runtime \citep{barbaste2026harness}.
 
 When a new version $v'$ arrives, its outcome vector is unknown. We test it on $m\ll N$ \emph{probe} tasks and must
 (i) estimate $p_{v'}$ with an interval, and (ii) decide whether $p_{v'}\ge p_v$. The baseline is \emph{random
@@ -467,7 +470,8 @@ least five are available.
 
 \paragraph{Relation to asynchronous agents.} The deadline setting is the evaluation-side instance of a pattern now
 common in agent architectures: an orchestrator launches background workers (asynchronous subagents) and acts on those
-that have reported, without waiting for the others \citep{runkle2026async}. Our evaluation harness is such an
+that have reported, without waiting for the others \citep{runkle2026async}; background sub-agents and parallel child
+sessions are documented in the source of production coding harnesses \citep{barbaste2026harness}. Our evaluation harness is such an
 orchestrator, with one worker per probe. The result suggests a caution for orchestrators in general: when the workers
 that finish first are those with easier subtasks, aggregating early reports overstates progress. We did not evaluate
 agents that use asynchronous subagents internally; no public per-task outcomes exist for them yet.
