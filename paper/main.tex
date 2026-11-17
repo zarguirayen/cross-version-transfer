@@ -54,7 +54,9 @@ code base nearly doubled, and prompts were re-tuned on the server without a clie
 standard answer is to re-run the full evaluation suite. On agentic benchmarks this is expensive: a single
 SWE-bench Verified run executes 500 repository-level tasks, each in its own container
 \citep{jimenez2024swebench}, and office-automation suites run long multi-step tasks in simulated companies
-\citep{xu2024theagentcompany}.
+\citep{xu2024theagentcompany}. The question is now also asked inside automated loops: systems that evolve an
+agent's harness evaluate a candidate version at every round \citep{wang2026harnessevo}, and keep it only if it improves
+current tasks without losing earlier ones \citep{kang2026hcl}.
 
 Yet a team that evaluates a new version is never starting from nothing. It knows how the previous version did on
 every task, and how every other agent it ever tested did on the same tasks. This paper starts from a simple
@@ -547,6 +549,13 @@ come from the graph of earlier agents rather than from a single predictor.
 after an LLM update. We do not predict individual flips; we measure how much the history reduces the cost of
 estimating and deciding, which is what a team shipping a new version needs.
 
+\paragraph{Noise and pre-registration in agent evaluation.} Agent results are noisy: over three runs, the best and
+worst runs of the same self-improving agent differed by up to 10 points, and a reported gain of 1.5 points had
+$p=0.23$ \citep{ye2026fragility}; compared with search under a matched budget, evolved harnesses lost their apparent
+advantage \citep{wang2026harnessevo}. Our intervals and decision error rates are a response to this for the
+sampling of tasks. Pre-registration has also entered agent evaluation, with frozen protocols and holdout tasks
+\citep{weinberger2026waste}.
+
 \section{Limitations and threats to validity}\label{sec:limits}
 \paragraph{Scope.} The law assumes probes drawn at random (or within strata) from a fixed task suite; it says nothing
 about tasks outside the suite. Gains depend on the graph: with fewer than 20 earlier agents the median gain on SWE-bench Verified
@@ -560,7 +569,9 @@ contributes only two transitions.
 share agents and ecosystems; their $p$-values should be read as descriptive of consistency rather than exact. In v8 each agent contributes one
 evaluation per split; the per-agent check of Section~\ref{sec:v8} gives the same conclusion. The freezes are
 recorded by git tags and hashes whose timestamps are self-reported, not certified by a third party; future studies
-should be registered on a public registry before data access. Each study's hypotheses were tested at level 0.05 without correction across the eight studies; the ledger
+should be registered on a public registry before data access. Each agent's outcome on a task is the single run
+its authors published: our intervals describe the sampling of tasks, not run-to-run variance, which adds to it
+\citep{ye2026fragility}. Each study's hypotheses were tested at level 0.05 without correction across the eight studies; the ledger
 (Appendix~\ref{app:ledger}) reports all \HypTotal{} tests so that readers can apply their own correction. The law is
 tested at the true $\rho^2$; with $\phisq$ estimated from the probes it was tested in the pilot and, exploratorily and
 retrospectively, on v3--v6 (Section~\ref{sec:res-law}); a prospective test, and an estimate of $\eta^2_{\mathcal G}$
@@ -617,7 +628,7 @@ Between studies, methods were changed only on data already analysed: the Bayesia
 predecessor-only estimator (synthetic worlds, before v1); the graph estimator and the sequential rule (pilot data,
 before v2); finite-population prediction, model averaging and an identifiability guard (AppWorld and pilot data,
 before v3); the stratified design and GREG (SWE-bench Verified and AppWorld, before v4); cross-fitting, the
-Korn--Graubard interval and the Jeffreys boundary convention (Verified, Lite, AppWorld, before v5). Before v8, the deadline correction (the 14 agents of the AppWorld paper, whose step counts had never been analysed). Variants tried and
+Korn--Graubard interval and the Jeffreys boundary convention (Verified, Lite, AppWorld, before v5). Before v8, the deadline correction was developed on the 14 agents of the AppWorld paper, whose step counts had never been analysed. Variants tried and
 abandoned (an empirical-Bayes slope prior; fallback rules on the number of successes) are listed in the
 pre-registration documents.
 

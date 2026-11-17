@@ -1,4 +1,4 @@
-\begin{thebibliography}{29}
+\begin{thebibliography}{33}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -70,6 +70,12 @@ Carlos~E. Jimenez, John Yang, Alexander Wettig, Shunyu Yao, Kexin Pei, Ofir
 Ben Johnson and Hayden Helm.
 \newblock Task-efficient agent evaluation using cached traces.
 \newblock \emph{arXiv preprint arXiv:2611.06803}, 2026.
+
+\bibitem[Kang et~al.(2026)Kang, Gu, Lv, Li, Wang, and Gao]{kang2026hcl}
+Borui Kang, Jinrui Gu, Junhan Lv, Wenbin Li, Lei Wang, and Yang Gao.
+\newblock Harness continual learning: Continual adaptation beyond model
+  parameters.
+\newblock \emph{arXiv preprint arXiv:2608.19013}, 2026.
 
 \bibitem[Karpathy(2026)]{karpathy2026wiki}
 Andrej Karpathy.
@@ -173,11 +179,31 @@ Rajan Vivek, Kawin Ethayarajh, Diyi Yang, and Douwe Kiela.
 \newblock In \emph{Proceedings of the 18th Conference of the European Chapter
   of the Association for Computational Linguistics}, 2024.
 
+\bibitem[Wang et~al.(2026)Wang, Zhu, Hu, Yuan, Chen, Senthil, Hajishirzi,
+  Tsvetkov, Smith, Dasigi, and Xiao]{wang2026harnessevo}
+Yike Wang, Huaisheng Zhu, Zhengyu Hu, Yige Yuan, Zhengyu Chen, Shakti Senthil,
+  Hannaneh Hajishirzi, Yulia Tsvetkov, Noah~A. Smith, Pradeep Dasigi, and Teng
+  Xiao.
+\newblock Rethinking the evaluation of harness evolution for agents.
+\newblock \emph{arXiv preprint arXiv:2607.12227}, 2026.
+
+\bibitem[Weinberger and Hozez(2026)]{weinberger2026waste}
+Sarel Weinberger and Amir Hozez.
+\newblock Prompt-induced waste in coding agents: Reasoning, effort, harness
+  design, and end-to-end cost.
+\newblock \emph{arXiv preprint arXiv:2608.01347}, 2026.
+
 \bibitem[Xu et~al.(2024)]{xu2024theagentcompany}
 Frank~F. Xu et~al.
 \newblock {TheAgentCompany}: Benchmarking {LLM} agents on consequential real
   world tasks.
 \newblock \emph{arXiv preprint arXiv:2412.14161}, 2024.
+
+\bibitem[Ye et~al.(2026)Ye, Li, Pruksachatkun, Zhang, and Wu]{ye2026fragility}
+Qinyuan Ye, Yu~Li, Yada Pruksachatkun, Jiaxin Zhang, and Chien-Sheng Wu.
+\newblock On the fragility of self-improving agents: Variance, task order, and
+  underspecification.
+\newblock \emph{arXiv preprint arXiv:2608.18066}, 2026.
 
 \bibitem[Zan et~al.(2025)]{zan2025multiswe}
 Daoguang Zan et~al.
