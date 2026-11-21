@@ -1,6 +1,6 @@
 # How Much Is an Agent's History Worth?
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24118729.svg)](https://doi.org/10.5281/zenodo.24118729)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24118723.svg)](https://zenodo.org/records/24221130)
 
 Code, pre-registrations, results and paper for
 
