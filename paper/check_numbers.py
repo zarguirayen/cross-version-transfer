@@ -19,6 +19,9 @@ def num(study, pat):
 # (macro, value in the frozen output, tolerance)
 checks = [
     ("PhiHatErr", 100 * float(re.search(r"^all .*?phi-hat ([0-9.]+)", open(R / "exploratory_phihat" / "summary.txt").read(), re.M).group(1)), 0.06),
+    ("CovAttThree", float(re.search(r"^v3 .*?success \d+ \(([0-9.]+)%\) \| attempted_failure \d+ \(([0-9.]+)%", open(R / "exploratory_coverage" / "summary.txt").read(), re.M).group(1)) + float(re.search(r"^v3 .*?attempted_failure \d+ \(([0-9.]+)%", open(R / "exploratory_coverage" / "summary.txt").read(), re.M).group(1)), 0.06),
+    ("CovMaxOne", 100 * float(re.search(r"^s1: .*?rel d gain\| median [0-9.]+ max ([0-9.]+)", open(R / "exploratory_coverage" / "summary.txt").read(), re.M).group(1)), 0.6),
+    ("CovMaxTwo", 100 * float(re.search(r"^s2: .*?rel d gain\| median [0-9.]+ max ([0-9.]+)", open(R / "exploratory_coverage" / "summary.txt").read(), re.M).group(1)), 0.6),
     ("PhiTrueErrSub", 100 * float(re.search(r"^all .*?true phi ([0-9.]+)", open(R / "exploratory_phihat" / "summary.txt").read(), re.M).group(1)), 0.06),
     ("GEight", num("v8", r"N1-v8.*?median x([0-9.]+)"), 0.006),
     ("GEightMin", num("v8", r"N1-v8.*?\(min x([0-9.]+)\)"), 0.006),

@@ -232,6 +232,25 @@ put("PhiHatDeg", 100 * np.mean(f(ph, "share_degenerate")), "{:.0f}")
 _ph5 = [r for r in ph if r["study"] == "v5"]
 put("PhiHatDegFive", 100 * np.mean(f(_ph5, "share_degenerate")), "{:.0f}")
 put("PhiHatErrFive", 100 * np.median(np.abs(f(_ph5, "gain_law_hat_median") / f(_ph5, "gain_obs") - 1)), "{:.1f}")
+# ---------------- exploratory: coverage of the SWE-bench-family outcome matrices (v3-v5)
+_cc = rd("exploratory_coverage/status_counts.csv"); _ct = rd("exploratory_coverage/transitions.csv")
+_c3 = [r for r in _cc if r["study"] == "v3"][0]
+_tot = lambda k, S=_cc: sum(int(r[k]) for r in S)
+put("CovCellsThree", f"{int(_c3['cells']):,}".replace(",", "{,}"), "{}")
+put("CovAttThree", 100 * (int(_c3["success"]) + int(_c3["attempted_failure"])) / int(_c3["cells"]), "{:.1f}")
+put("CovNoPatchThree", f"{int(_c3['no_patch']):,}".replace(",", "{,}"), "{}")
+put("CovNoLogThree", int(_c3["no_log"]), "{}"); put("CovNotRunThree", int(_c3["not_run"]), "{}")
+put("CovCellsAll", f"{_tot('cells'):,}".replace(",", "{,}"), "{}")
+put("CovMissAll", 100 * (_tot("no_log") + _tot("not_run")) / _tot("cells"), "{:.1f}")
+put("CovNoPatchAll", 100 * _tot("no_patch") / _tot("cells"), "{:.1f}")
+_m = [r for r in _cc if r["taskset"].startswith("mswe-")]
+put("CovNoPatchMswe", 100 * _tot("no_patch", _m) / _tot("cells", _m), "{:.0f}")
+put("CovNTrans", len(_ct), "{}")
+for _lab, _nm in (("s1", "One"), ("s2", "Two")):
+    _g = np.abs(np.array([float(r[f"rgain_{_lab}"]) for r in _ct]))
+    put(f"CovBig{_nm}", int(np.sum(_g > 0.05)), "{}")
+    put(f"CovMax{_nm}", 100 * np.nanmax(_g), "{:.0f}")
+put("CovBigTwoMswe", int(sum(abs(float(r["rgain_s2"])) > 0.05 for r in _ct if r["taskset"].startswith("mswe-"))), "{}")
 # v6 by benchmark (LiveCodeBench: 713 tasks; TheAgentCompany: 175)
 _v6m = [r for r in rd("v6/replays.csv") if r["m"] == "20"]
 for _n, _nm in (("713", "Lcb"), ("175", "Tac")):

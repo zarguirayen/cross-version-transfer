@@ -71,5 +71,11 @@ Chaque entrée : date, ce qui change, pourquoi, effet attendu sur les conclusion
   dont les 4 agents multi-agents (avec 4 unités, aucun test ne peut atteindre 5 %). Le rapport RMSE de la correction
   « difficulté seule » vaut 1,23 dans l'analyse exploratoire v8 et 1,30 dans `dev_v9_deadline.py` : mêmes agents, autres
   tirages aléatoires (graines différentes).
+- **21 novembre 2026, audit de couverture** (exploratoire ; protocole `docs/EXPLORATORY_COVERAGE.md` commité avant
+  l'exécution de `experiments/exploratory_coverage.py`) : les chargeurs figés de v3–v5 codent 0 toute tâche non
+  résolue, comme les classements officiels. Sur les 215 488 cellules, 0,5 % n'ont pas de journal ou n'ont jamais été
+  lancées, et 8,9 % sont des patchs vides (27 % dans Multi-SWE-bench). Traitées comme manquantes, les premières changent
+  le gain de la loi de plus de 5 % sur 2 transitions sur 150 (au plus 22 %) ; avec les patchs vides, sur 17 (au plus
+  66 %). Les replays ne sont pas relancés ; aucun verdict modifié. Paragraphe ajouté à la section Protocole du papier.
 - **Constat** : écart de 0,6 point entre notre taux de régression Mistral MATH (55,8 %) et celui publié par
   Sheng & Lu (55,2 %). Non expliqué ; sans effet sur les conclusions.

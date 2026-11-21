@@ -226,6 +226,19 @@ product lines and release dates written down before the freeze (Section~\ref{sec
 are excluded from the graphs. Tasks of SWE-bench test that also belong to Verified or Lite (analysed earlier) were
 removed before the freeze.
 
+\paragraph{Coverage of the outcome matrices.} As on the official leaderboards, a SWE-bench or Multi-SWE-bench task not
+listed as resolved counts as a failure, but not every such zero is an evaluated attempt. Of the \CovCellsThree{} cells
+of SWE-bench Verified, \CovAttThree\% are a resolved task or an evaluated failure; the rest are \CovNoPatchThree{}
+cells where the agent produced no patch, \CovNoLogThree{} with no evaluation log and \CovNotRunThree{} tasks never run.
+Over the \CovCellsAll{} cells of v3--v5, cells with no log or never run are \CovMissAll\%, and empty patches
+\CovNoPatchAll\% (\CovNoPatchMswe\% in Multi-SWE-bench). In an exploratory analysis whose protocol was committed before
+it was run (\texttt{docs/EXPLORATORY\_COVERAGE.md}), treating cells with no log or never run as missing changed the
+predecessor law's gain by more than 5\% on \CovBigOne{} of \CovNTrans{} transitions (at most \CovMaxOne\%). Treating
+empty patches as missing as well changed it by more than 5\% on \CovBigTwo{} transitions (at most \CovMaxTwo\%),
+\CovBigTwoMswe{} of them in Multi-SWE-bench. That second analysis changes the target, from the official score to the
+success rate among non-empty patches; an empty patch is a failure under the benchmarks' scoring, which the
+confirmations keep. The replays were not re-run under either alternative.
+
 \begin{table}[t]
 \centering\small
 \caption{Pre-registered studies. ``Transitions'' are real version changes; ``Tasks'' is the task suite size.}

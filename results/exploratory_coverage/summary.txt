@@ -1,0 +1,6 @@
+v3  cells  87500 | success 46320 (52.94%) | attempted_failure 39814 (45.50%) | no_patch 1050 (1.20%) | no_log 216 (0.25%) | not_run 100 (0.11%)
+v4  cells  25200 | success 8406 (33.36%) | attempted_failure 15737 (62.45%) | no_patch 809 (3.21%) | no_log 165 (0.65%) | not_run 83 (0.33%)
+v5  cells 102788 | success 11663 (11.35%) | attempted_failure 73357 (71.37%) | no_patch 17234 (16.77%) | no_log 262 (0.25%) | not_run 272 (0.26%)
+all cells 215488 | success 66389 (30.81%) | attempted_failure 128908 (59.82%) | no_patch 19093 (8.86%) | no_log 643 (0.30%) | not_run 455 (0.21%)
+s1: transitions 150, with removed cells 54 | |d p_new| median 0.0000 max 0.0961 | |d phi2| median 0.0000 max 0.1530 | |rel d gain| median 0.0000 max 0.2192
+s2: transitions 150, with removed cells 116 | |d p_new| median 0.0031 max 0.2177 | |d phi2| median 0.0023 max 0.4174 | |rel d gain| median 0.0039 max 0.6593
